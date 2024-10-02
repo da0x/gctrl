@@ -1,0 +1,38 @@
+name: License Check
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  license-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Verify license headers
+        run: |
+          missing_license=0
+          
+          # Define the paths to ignore
+          ignore_paths="./lib ./platform/commercial_platform"
+
+          # Loop through all .c, .cpp, .h, and .hpp files excluding the ignore paths
+          for file in $(find . -type f \( -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" \) ! -path "./lib/*" ! -path "./platform/commercial_platform/*"); do
+            # Check if the file contains the GPL license
+            if ! grep -q "GNU General Public License" "$file"; then
+              echo "License header missing in: $file"
+              missing_license=1
+            fi
+          done
+          
+          # Exit with error if any file is missing the license header
+          if [ "$missing_license" -eq 1 ]; then
+            echo "Some files are missing license headers."
+            exit 1
+          else
+            echo "All files have the correct license header."
+          fi
