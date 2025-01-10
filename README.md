@@ -13,6 +13,8 @@ GCtrl offers:
 - **Simulation-ready**: Easily simulate systems with built-in tools for debugging and live data visualization.
 - **Chronological design approach**: Organize system design from functions and elements to controllers and machine definitions for seamless integration.
 
+<img width="1271" alt="Screenshot 2024-12-13 070035" src="https://github.com/user-attachments/assets/1709ca82-60ba-4309-a234-7f8fcd8b8e68" />
+
 ---
 
 ## Example Implementation
