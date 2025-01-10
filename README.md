@@ -1,61 +1,99 @@
-# gctrl
+# GCtrl: General System Controls Engine
 
-General Controls Engine
+GCtrl is a high-level programming language and IDE designed specifically for system controls engineers. The language enables efficient modeling, simulation, and deployment of control systems with a focus on modularity and portability.
+
+---
 
 ## Overview
-gctrl is a powerful integrated development environment (IDE) and framework for building modular, diagram-driven controls code in C++ for embedded systems. It serves as an engine with full C++ code generation capabilities for any control system. The generated code is cross-platform and works seamlessly on any embedded system, Linux, or microcontroller.
+
+GCtrl offers:
+
+- **Full C++ code generation**: Automatically generate cross-platform, high-performance C++ code for any control system.
+- **Extensibility**: Design modular, reusable components for embedded systems, microcontrollers, and Linux-based platforms.
+- **Simulation-ready**: Easily simulate systems with built-in tools for debugging and live data visualization.
+- **Chronological design approach**: Organize system design from functions and elements to controllers and machine definitions for seamless integration.
 
 <img width="1271" alt="Screenshot 2024-12-13 070035" src="https://github.com/user-attachments/assets/1709ca82-60ba-4309-a234-7f8fcd8b8e68" />
----
-
-## Core Concepts
-
-### System
-A **system** is a collection of subsystems, each with clearly defined behaviors and application programming interfaces (APIs).
-
-### Subsystem
-A **subsystem** comprises physical and logical devices, some of which:
-- Run software.
-- Accept settings for operation.
-
-### Machine (Target)
-A **machine**, or target, is an embedded device that hosts and executes one or more controllers and device drivers.
-
-### Controller
-A **controller** is a logical device representing software functions and their associated interfaces. It consists of:
-- **Control Elements**: Algorithms with defined inputs and outputs.
-- **Ports**: Objects facilitating data exchange between controllers and drivers.
-
-Controllers are composed of interconnected control elements and ports, enabling defined signal flows:
-- **Inputs** can be constants or outputs from other elements.
-- **Outputs** can be signals to other elements or external interfaces.
-
-### Element
-An **element** is an algorithm with:
-- A clearly defined function.
-- Signal inputs and outputs that specify all required data and provided results.
-
-### Port
-A **port** is an object that facilitates data exchange between controllers and/or drivers. Ports manage two signal buses:
-1. **Plug Data**
-2. **Socket Data**
-
-When instantiated within a controller, ports expose signals as follows:
-- **Plug Data**: Outgoing signals, sourced from element outputs.
-- **Socket Data**: Incoming signals, connected to element inputs.
-
-Each port instance is defined as either a **plug** or a **socket**, determining which signals are considered incoming or outgoing. This definition enforces compatibility between port connections in controllers and drivers. For example:
-- A **plug** port exposes its plug data as outgoing signals and socket data as incoming signals.
-- A **socket** port reverses this arrangement.
-
-### Driver
-A **driver** is a module designed to:
-- Interface with physical devices.
-- Handle external communications.
-
-Drivers use port instances (plug or socket) to interact with controllers on the same machine.
 
 ---
+
+## Example Implementation
+
+Here’s an example implementation of a thermostat system using GCtrl:
+
+```gctrl
+namespace gctrl {
+    function logistic {
+        input float x;
+        output float control_signal;
+
+        operation {
+            control_signal = 1.0 / (1.0 + exp(-x));
+        }
+    }
+
+    element low_pass_filter {
+        input float current_value;
+        input float smoothing_factor;
+        output float filtered;
+        memory float previous_value = 0.0;
+
+        operation {
+            filtered = smoothing_factor * current_value + (1.0 - smoothing_factor) * previous_value;
+            previous_value = filtered;
+        }
+    }
+
+    element thermal_regulator {
+        input float setpoint;
+        input float temperature;
+        output float heating;
+        output float cooling;
+        memory float error;
+
+        operation {
+            error = setpoint - temperature;
+            heating = logistic(error) * max(0.0, error);
+            cooling = logistic(error) * max(0.0, -error);
+        }
+    }
+
+    element humidity_regulator {
+        input float setpoint;
+        input float humidity;
+        output float command;
+        memory float error;
+
+        operation {
+            error = setpoint - humidity;
+            command = logistic(error) * max(0.0, error);
+        }
+    }
+
+    controller thermal_controller {
+        element thermal_regulator thermal;
+        element low_pass_filter lpfc;
+
+        connection thermal.setpoint -> lpfc.filtered;
+        connection lpfc.current_value -> thermal.temperature;
+    }
+
+    controller humidity_controller {
+        element humidity_regulator humid;
+        element low_pass_filter lpfh;
+
+        connection humid.setpoint -> lpfh.filtered;
+        connection lpfh.current_value -> humid.humidity;
+    }
+
+    machine thermostat {
+        controller thermal_controller tc;
+        controller humidity_controller hc;
+
+        connection tc.heating -> hc.command;
+    }
+}
+```
 
 ## Diagram-Driven Development
 The gctrl framework leverages diagrams to visually represent and structure systems, subsystems, controllers, elements, ports, and drivers. This approach simplifies understanding and maintenance of complex embedded systems.
