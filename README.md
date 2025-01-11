@@ -1,6 +1,6 @@
-# GCtrl: General System Controls Engine
+# GCtrl: General Controls Engine
 
-GCtrl is a high-level programming language and IDE designed specifically for system controls engineers. The language enables efficient modeling, simulation, and deployment of control systems with a focus on modularity and portability.
+GCtrl is a high-level programming language and IDE designed specifically for control engineers. The language enables efficient modeling, simulation, and deployment of control systems with a focus on modularity and portability.
 
 ---
 
@@ -19,7 +19,7 @@ GCtrl offers:
 
 ## Example Implementation
 
-Here’s an example implementation of a thermostat system using GCtrl:
+Hereâ€™s an example implementation of a thermostat system using GCtrl:
 
 ```gctrl
 namespace gctrl {
