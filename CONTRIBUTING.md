@@ -12,7 +12,7 @@ The key points of the CLA are:
 3. Your contribution must be original work or appropriately licensed.
 4. Your contribution must not infringe any third-party rights.
 
-The full text of the CLA can be found in the `CLA.txt` file in this repository.
+The full text of the CLA can be found in the `CLA.md` file in this repository.
 
 ## How to Contribute
 

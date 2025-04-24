@@ -1,0 +1,75 @@
+﻿//
+// General Controls Engine
+//
+// Copyright (C) 2024 Daher Alfawares
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <https://www.gnu.org/licenses/>.
+//
+// Contact Information: www.gctrl.org
+//
+
+#include "debug/thread.hpp"
+#include "ui/ui.hpp"
+#include "project.hpp"
+#include "database/engine.hpp"
+#include "ui/ui.hpp"
+#include <filesystem>
+
+namespace fs = std::filesystem;
+
+void parse_command_line(fs::path& project_path, LPSTR lpCmdLine) {
+    std::string cmd_line(lpCmdLine);
+    if (!cmd_line.empty()) {
+        fs::path path(cmd_line);
+        if (fs::exists(path) && path.extension() == ".ctrl") {
+            project_path = path;
+        }
+    }
+}
+
+int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+    ui::good << "gctrl v0.0.1" << ui::endl;
+    ui::good << "Copyright(C) 2024 www.gctrl.org" << ui::endl;
+    ui::warn << "This is free software; see the source for copying conditions." << ui::endl;
+    ui::warn << "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE." << ui::endl;
+
+    ui::app app("General Controls Engine");
+    fs::path project_path;
+
+    ui::theme::vs2022::apply();
+
+    parse_command_line(project_path, lpCmdLine);
+
+    while (app.frame()) {
+        project::show_project_modal(project_path);
+        app.render();
+        if (!project_path.empty()) {
+            break;
+        }
+    }
+
+    if (!project_path.empty()) {
+        database::engine e(project_path);
+        debug::begin();
+
+        while (app.frame()) {
+            e.render();
+            app.render();
+        }
+
+        debug::end();
+    }
+
+    return 0;
+}

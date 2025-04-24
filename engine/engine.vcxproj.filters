@@ -1,0 +1,356 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\lib\imgui\imgui.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\imgui-node-editor\imgui_canvas.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\imgui\imgui_draw.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\imgui\backends\imgui_impl_opengl3.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\imgui\backends\imgui_impl_sdl2.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\imgui-node-editor\imgui_node_editor.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\imgui-node-editor\imgui_node_editor_api.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\imgui\imgui_tables.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\imgui\imgui_widgets.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\imgui-node-editor\crude_json.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\imgui-color-text-edit\text_editor.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\implot\implot.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\implot\implot_items.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="network\udp_windows.cpp">
+      <Filter>network</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\lib\imgui\imconfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\imgui\imgui.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\imgui-node-editor\imgui_bezier_math.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\imgui-node-editor\imgui_canvas.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\imgui-node-editor\imgui_extra_math.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\imgui\backends\imgui_impl_opengl3.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\imgui\backends\imgui_impl_sdl2.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\imgui\imgui_internal.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\imgui-node-editor\imgui_node_editor.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\imgui-node-editor\imgui_node_editor_internal.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\imgui-node-editor\crude_json.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\imgui\imstb_rectpack.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\imgui\imstb_textedit.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\imgui\imstb_truetype.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="resources\targetver.h">
+      <Filter>resources</Filter>
+    </ClInclude>
+    <ClInclude Include="resources\resource.h">
+      <Filter>resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\app.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\chart.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\code.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\connector.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="function\object.hpp">
+      <Filter>function</Filter>
+    </ClInclude>
+    <ClInclude Include="machine\object.hpp">
+      <Filter>machine</Filter>
+    </ClInclude>
+    <ClInclude Include="port\object.hpp">
+      <Filter>port</Filter>
+    </ClInclude>
+    <ClInclude Include="controller\object.hpp">
+      <Filter>controller</Filter>
+    </ClInclude>
+    <ClInclude Include="element\object.hpp">
+      <Filter>element</Filter>
+    </ClInclude>
+    <ClInclude Include="driver\object.hpp">
+      <Filter>driver</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\dpi.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="machine\editor.hpp">
+      <Filter>machine</Filter>
+    </ClInclude>
+    <ClInclude Include="driver\editor.hpp">
+      <Filter>driver</Filter>
+    </ClInclude>
+    <ClInclude Include="function\editor.hpp">
+      <Filter>function</Filter>
+    </ClInclude>
+    <ClInclude Include="element\editor.hpp">
+      <Filter>element</Filter>
+    </ClInclude>
+    <ClInclude Include="signal\editor.hpp">
+      <Filter>signal</Filter>
+    </ClInclude>
+    <ClInclude Include="controller\editor.hpp">
+      <Filter>controller</Filter>
+    </ClInclude>
+    <ClInclude Include="port\editor.hpp">
+      <Filter>port</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\font.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="exec\frequency.hpp">
+      <Filter>exec</Filter>
+    </ClInclude>
+    <ClInclude Include="code\generator.hpp">
+      <Filter>code</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\icons.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="database\json.hpp">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\menu.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="signal\object.hpp">
+      <Filter>signal</Filter>
+    </ClInclude>
+    <ClInclude Include="database\record.hpp">
+      <Filter>database</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\terminal.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\theme.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\theme_editor.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\ui.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="database\list.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="database\engine.hpp">
+      <Filter>database</Filter>
+    </ClInclude>
+    <ClInclude Include="project.hpp">
+      <Filter>project</Filter>
+    </ClInclude>
+    <ClInclude Include="database\instance.hpp">
+      <Filter>database</Filter>
+    </ClInclude>
+    <ClInclude Include="database\link.hpp">
+      <Filter>database</Filter>
+    </ClInclude>
+    <ClInclude Include="element\instance.hpp">
+      <Filter>element</Filter>
+    </ClInclude>
+    <ClInclude Include="port\instance.hpp">
+      <Filter>port</Filter>
+    </ClInclude>
+    <ClInclude Include="controller\instance.hpp">
+      <Filter>controller</Filter>
+    </ClInclude>
+    <ClInclude Include="driver\instance.hpp">
+      <Filter>driver</Filter>
+    </ClInclude>
+    <ClInclude Include="function\instance.hpp">
+      <Filter>function</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\navigation.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="signal\instance.hpp">
+      <Filter>signal</Filter>
+    </ClInclude>
+    <ClInclude Include="database\graph.hpp">
+      <Filter>database</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\graph.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\implot\implot.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="network\udp.hpp">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\instance.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="machine\instance.hpp">
+      <Filter>machine</Filter>
+    </ClInclude>
+    <ClInclude Include="debug\thread.hpp">
+      <Filter>debug</Filter>
+    </ClInclude>
+    <ClInclude Include="debug\viewer.hpp">
+      <Filter>debug</Filter>
+    </ClInclude>
+    <ClInclude Include="controller\viewer.hpp">
+      <Filter>controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\imgui-color-text-edit\text_editor.hpp">
+      <Filter>lib</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="editor.ico">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="small.ico">
+      <Filter>resources</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="resources\fonts\cascadia-code.ttf">
+      <Filter>resources</Filter>
+    </Font>
+    <Font Include="resources\fonts\consola.ttf">
+      <Filter>resources</Filter>
+    </Font>
+    <Font Include="resources\fonts\fa-brands-regular-400.otf">
+      <Filter>resources</Filter>
+    </Font>
+    <Font Include="resources\fonts\fa-regular-400.otf">
+      <Filter>resources</Filter>
+    </Font>
+    <Font Include="resources\fonts\fa-solid-900.otf">
+      <Filter>resources</Filter>
+    </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="arrow.cur">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="..\lib\imgui-node-editor\imgui_bezier_math.inl">
+      <Filter>lib</Filter>
+    </None>
+    <None Include="..\lib\imgui-node-editor\imgui_extra_math.inl">
+      <Filter>lib</Filter>
+    </None>
+    <None Include="..\lib\imgui-node-editor\imgui_node_editor_internal.inl">
+      <Filter>lib</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="resources">
+      <UniqueIdentifier>{4a96c50d-44fd-4b21-9ed9-665e27520839}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib">
+      <UniqueIdentifier>{18d05073-2a57-4e6b-9de7-d7af82d29c22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="function">
+      <UniqueIdentifier>{d442da6f-cbcb-4cde-8c9e-face855f0ed6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui">
+      <UniqueIdentifier>{5968106f-a494-43f6-aa44-6374c40ce526}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="machine">
+      <UniqueIdentifier>{5827e65b-00c8-4d8d-a46f-f64c409a4a30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="port">
+      <UniqueIdentifier>{2c86d534-1067-43b6-b12f-3cf8b784c472}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="controller">
+      <UniqueIdentifier>{8415654d-e79e-406b-9856-12a336fb45e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="element">
+      <UniqueIdentifier>{97e49057-b44f-46fc-acd3-b0b2f035e0f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="driver">
+      <UniqueIdentifier>{94d38508-eb14-419d-9dae-ce710dbf706e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="signal">
+      <UniqueIdentifier>{135723e9-fa5b-4937-9e95-00c7e544776d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="exec">
+      <UniqueIdentifier>{7834b706-38ca-4a16-b69b-66b32ff7ee29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="code">
+      <UniqueIdentifier>{76661556-ac1e-422d-bee3-98dd1f862497}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="project">
+      <UniqueIdentifier>{ca697edc-313a-441f-b63b-40646b215de2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="network">
+      <UniqueIdentifier>{3a020952-88d7-4b83-b7f2-d6505c0b1a39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="debug">
+      <UniqueIdentifier>{addbf1e6-78c6-4995-82da-ea8309d263ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="database">
+      <UniqueIdentifier>{01c831e4-f95b-4ebf-a08b-c44bfed87bbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build">
+      <UniqueIdentifier>{5c1f0df8-1d87-4ca2-9896-58b410501ae2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resources\editor.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="resources\app.manifest">
+      <Filter>resources</Filter>
+    </Manifest>
+  </ItemGroup>
+</Project>
