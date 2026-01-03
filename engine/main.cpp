@@ -19,11 +19,10 @@
 // Contact Information: www.gctrl.org
 //
 
-#include "debug/thread.hpp"
+#include "controls/debug/thread.hpp"
 #include "ui/ui.hpp"
 #include "project.hpp"
-#include "database/engine.hpp"
-#include "ui/ui.hpp"
+#include "controls/engine.hpp"
 #include <filesystem>
 
 namespace fs = std::filesystem;
@@ -60,15 +59,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     }
 
     if (!project_path.empty()) {
-        database::engine e(project_path);
-        debug::begin();
+        controls::engine e(project_path);
+        controls::debug::begin();
 
         while (app.frame()) {
             e.render();
             app.render();
         }
 
-        debug::end();
+        controls::debug::end();
     }
 
     return 0;

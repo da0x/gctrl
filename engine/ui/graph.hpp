@@ -49,7 +49,7 @@ namespace ui {
             }
         }
 
-        void handle_link_creation(database::graph& graph) {
+        void handle_link_creation(controls::graph& graph) {
             if (ed::BeginCreate()) {
                 ed::PinId start_pin, end_pin;
                 if (ed::QueryNewLink(&start_pin, &end_pin) && start_pin && end_pin && start_pin != end_pin) {
@@ -70,14 +70,14 @@ namespace ui {
             ed::EndCreate();
         }
 
-        void render_existing_links(const database::graph& graph) {
+        void render_existing_links(const controls::graph& graph) {
             for (const auto& link : graph.get_links()) {
                 ed::Link(ed::LinkId(link.id), ed::PinId(link.start), ed::PinId(link.end));
             }
         }
 
         template <typename T, typename LG, typename RG>
-        void render_node(ui::icon::type icon, T& instance, LG& lg, RG& rg, const database::graph& graph, ui::connector::shape shape) {
+        void render_node(ui::icon::type icon, T& instance, LG& lg, RG& rg, const controls::graph& graph, ui::connector::shape shape) {
             ui::node::begin_node(instance.id());
             ui::id::push(instance.id());
             ui::text(icon);
