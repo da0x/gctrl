@@ -41,7 +41,7 @@
     <ClCompile Include="..\lib\implot\implot_items.cpp">
       <Filter>lib</Filter>
     </ClCompile>
-    <ClCompile Include="network\udp_windows.cpp">
+    <ClCompile Include="controls\network\udp_windows.cpp">
       <Filter>Controls\network</Filter>
     </ClCompile>
   </ItemGroup>
