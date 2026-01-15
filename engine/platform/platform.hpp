@@ -21,15 +21,21 @@
 
 #pragma once
 
-#include "platform/dpi.hpp"
-#include <SDL2/SDL.h>
+// Platform detection
+#if defined(_WIN32) || defined(_WIN64)
+    #define GCTRL_PLATFORM_WINDOWS 1
+    #define GCTRL_PLATFORM_LINUX 0
+#elif defined(__linux__)
+    #define GCTRL_PLATFORM_WINDOWS 0
+    #define GCTRL_PLATFORM_LINUX 1
+#else
+    #error "Unsupported platform"
+#endif
 
-namespace ui {
-    namespace scaling {
-        // Get the scaling factor using SDL's window information
-        // This is now a thin wrapper around the platform abstraction
-        inline float get_scaling_factor_from_sdl(SDL_Window* window) {
-            return platform::dpi::get_scaling_factor(window);
-        }
-    } // namespace scaling
-} // namespace ui
+// Platform-specific includes
+#if GCTRL_PLATFORM_WINDOWS
+    #ifndef WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN
+    #endif
+    #include <Windows.h>
+#endif

@@ -21,18 +21,27 @@
 
 #pragma once
 
+#include "platform/platform.hpp"
 #include <cstdint>
+#include <cstring>
 #include <vector>
 #include <unordered_map>
 #include <functional>
 #include <thread>
 #include <mutex>
 #include <string>
-#include <winsock2.h>
-#include <ws2tcpip.h>
 #include <iostream>
 
-#pragma comment(lib, "Ws2_32.lib")
+#if GCTRL_PLATFORM_WINDOWS
+    #include <winsock2.h>
+    #include <ws2tcpip.h>
+    #pragma comment(lib, "Ws2_32.lib")
+    using socket_t = SOCKET;
+    constexpr socket_t INVALID_SOCKET_VALUE = INVALID_SOCKET;
+#else
+    using socket_t = int;
+    constexpr socket_t INVALID_SOCKET_VALUE = -1;
+#endif
 
 namespace network {
     namespace udp {
@@ -59,7 +68,7 @@ namespace network {
             void stop();
 
         private:
-            SOCKET socket_fd_;
+            socket_t socket_fd_;
             bool stop_ = false;
             std::thread listener_thread_;
             void initialize_socket(const std::string& address, uint16_t port);
@@ -77,7 +86,7 @@ namespace network {
         private:
             std::string address_;
             uint16_t port_;
-            SOCKET socket_fd_;
+            socket_t socket_fd_;
             void initialize_socket();
             void close_socket();
         };

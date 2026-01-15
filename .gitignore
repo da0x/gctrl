@@ -42,3 +42,4 @@ x64/
 *.json
 imgui.ini
 machine/include/
+build/

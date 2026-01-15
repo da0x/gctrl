@@ -21,12 +21,11 @@
 
 #pragma once
 
+#include "platform/platform.hpp"
+#include "platform/font.hpp"
 #include <unordered_map>
 #include <string>
 #include "imgui.h"
-#include <Windows.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_syswm.h>
 
 namespace ui {
     namespace font {
@@ -41,7 +40,9 @@ namespace ui {
 
         inline std::unordered_map<type, ImFont*> fonts;
 
-        void load(type font_type, const char* file_name, float font_size_pixels = 16.0f, bool merge = false, const ImWchar* glyph_ranges = nullptr) {
+        inline void load(type font_type, const char* file_name, float font_size_pixels = 16.0f, bool merge = false, const ImWchar* glyph_ranges = nullptr) {
+            if (!file_name || file_name[0] == '\0') return;
+
             ImGuiIO& io = ImGui::GetIO();
             ImFontConfig font_config;
             font_config.OversampleH = 2;
@@ -68,21 +69,13 @@ namespace ui {
             }
         }
 
-        ImFont* load_from_resource(type font_type, int resource_id, float font_size_pixels = 16.0f, bool merge = false, const ImWchar* glyph_ranges = nullptr) {
+        inline ImFont* load_from_resource(type font_type, int resource_id, float font_size_pixels = 16.0f, bool merge = false, const ImWchar* glyph_ranges = nullptr) {
+            auto font_data = platform::font::load_font_resource(static_cast<platform::font::resource_id>(resource_id));
+            if (!font_data.has_value() || font_data->empty()) return nullptr;
 
-            HRSRC hRes = FindResource(NULL, MAKEINTRESOURCE(resource_id), RT_FONT);
-            if (!hRes) return nullptr;
-
-            HGLOBAL hMem = LoadResource(NULL, hRes);
-            if (!hMem) return nullptr;
-
-            void* pFontData = LockResource(hMem);
-            DWORD font_size = SizeofResource(NULL, hRes);
-            if (!pFontData || font_size == 0) return nullptr;
-
-            void* font_data_copy = malloc(font_size);
+            void* font_data_copy = malloc(font_data->size());
             if (!font_data_copy) return nullptr;
-            memcpy(font_data_copy, pFontData, font_size);
+            memcpy(font_data_copy, font_data->data(), font_data->size());
 
             ImGuiIO& io = ImGui::GetIO();
             ImFontConfig font_config;
@@ -103,7 +96,7 @@ namespace ui {
 
             const ImWchar* ranges_to_use = glyph_ranges ? glyph_ranges : default_glyph_ranges;
 
-            ImFont* font = io.Fonts->AddFontFromMemoryTTF(font_data_copy, font_size, font_size_pixels, &font_config, ranges_to_use);
+            ImFont* font = io.Fonts->AddFontFromMemoryTTF(font_data_copy, static_cast<int>(font_data->size()), font_size_pixels, &font_config, ranges_to_use);
             if (font && !merge) {
                 fonts[font_type] = font;
             }
@@ -111,13 +104,13 @@ namespace ui {
             return font;
         }
 
-        void push(type font_type) {
+        inline void push(type font_type) {
             if (fonts.find(font_type) != fonts.end()) {
                 ImGui::PushFont(fonts[font_type]);
             }
         }
 
-        void pop() {
+        inline void pop() {
             ImGui::PopFont();
         }
 

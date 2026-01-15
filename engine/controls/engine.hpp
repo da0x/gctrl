@@ -292,9 +292,9 @@ namespace controls {
         }
 
         void render_run_mode() {
-
-            std::lock_guard<std::mutex> lock(debug::state.data_mutex);
-            debug::viewer::render(machines, debug::state.signal_data);
+            auto& state = debug::get_state();
+            std::lock_guard<std::mutex> lock(state.data_mutex);
+            debug::viewer::render(machines, state.signal_data);
         }
 
         void view_menu(const std::string& label, const std::string& shortcut, ui::navigation::type navigation_type) {

@@ -19,6 +19,7 @@
 // Contact Information: www.gctrl.org
 //
 
+#include "platform/platform.hpp"
 #include "controls/debug/thread.hpp"
 #include "ui/ui.hpp"
 #include "project.hpp"
@@ -27,6 +28,7 @@
 
 namespace fs = std::filesystem;
 
+#if GCTRL_PLATFORM_WINDOWS
 void parse_command_line(fs::path& project_path, LPSTR lpCmdLine) {
     std::string cmd_line(lpCmdLine);
     if (!cmd_line.empty()) {
@@ -38,17 +40,30 @@ void parse_command_line(fs::path& project_path, LPSTR lpCmdLine) {
 }
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+    fs::path project_path;
+    parse_command_line(project_path, lpCmdLine);
+#else
+void parse_command_line(fs::path& project_path, int argc, char* argv[]) {
+    if (argc > 1) {
+        fs::path path(argv[1]);
+        if (fs::exists(path) && path.extension() == ".ctrl") {
+            project_path = path;
+        }
+    }
+}
+
+int main(int argc, char* argv[]) {
+    fs::path project_path;
+    parse_command_line(project_path, argc, argv);
+#endif
     ui::good << "gctrl v0.0.1" << ui::endl;
     ui::good << "Copyright(C) 2024 www.gctrl.org" << ui::endl;
     ui::warn << "This is free software; see the source for copying conditions." << ui::endl;
     ui::warn << "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE." << ui::endl;
 
     ui::app app("General Controls Engine");
-    fs::path project_path;
 
     ui::theme::vs2022::apply();
-
-    parse_command_line(project_path, lpCmdLine);
 
     while (app.frame()) {
         project::show_project_modal(project_path);

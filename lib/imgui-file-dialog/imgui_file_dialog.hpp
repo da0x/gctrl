@@ -3,8 +3,18 @@
 #include <imgui.h>
 #include <chrono>
 #include <string>
+#include <cstring>
 #include <filesystem>
 #include <vector>
+
+namespace {
+    inline void safe_strcpy(char* dest, size_t dest_size, const char* src) {
+        if (dest_size > 0) {
+            std::strncpy(dest, src, dest_size - 1);
+            dest[dest_size - 1] = '\0';
+        }
+    }
+}
 
 namespace ui {
 
@@ -70,7 +80,7 @@ namespace ui {
             }
         }
         catch (...) {
-            strcpy_s(file_dialog_error, "error: unable to read directory.");
+            safe_strcpy(file_dialog_error, sizeof(file_dialog_error), "error: unable to read directory.");
         }
 
         // Use available space intelligently for the files display
@@ -112,7 +122,7 @@ namespace ui {
 
         // Copy selected file path to the buffer if a file is selected
         if (!current_file.empty()) {
-            std::string full_path = current_path + (current_path.back() == '\\' ? "" : "\\") + current_file;
+            std::string full_path = current_path + (current_path.back() == std::filesystem::path::preferred_separator ? "" : std::string(1, std::filesystem::path::preferred_separator)) + current_file;
             strncpy(buffer, full_path.c_str(), buffer_size - 1);
             buffer[buffer_size - 1] = '\0'; // Ensure null-termination
         }
@@ -125,7 +135,7 @@ namespace ui {
         // Action buttons
         if (ImGui::Button("Open")) {
             if (current_file.empty()) {
-                strcpy_s(file_dialog_error, "error: you must select a file!");
+                safe_strcpy(file_dialog_error, sizeof(file_dialog_error), "error: you must select a file!");
             }
             else {
                 file_dialog_open = false;
@@ -155,7 +165,7 @@ namespace ui {
 
         // Copy selected file path to the buffer if a file is selected
         if (!current_folder.empty()) {
-            std::string full_path = current_path + (current_path.back() == '\\' ? "" : "\\") + current_folder;
+            std::string full_path = current_path + (current_path.back() == std::filesystem::path::preferred_separator ? "" : std::string(1, std::filesystem::path::preferred_separator)) + current_folder;
             strncpy(buffer, full_path.c_str(), buffer_size - 1);
             buffer[buffer_size - 1] = '\0'; // Ensure null-termination
         }
@@ -169,13 +179,13 @@ namespace ui {
         if (ImGui::Button("Open")) {
             if (current_folder.empty()) {
                 // Default to current path if no folder is selected
-                strcpy_s(buffer, buffer_size, current_path.c_str());
+                safe_strcpy(buffer, buffer_size, current_path.c_str());
             }
             else {
-                auto path = current_path + (current_path.back() == '\\' ? "" : "\\") + current_folder;
-                strcpy_s(buffer, buffer_size, path.c_str());
+                auto path = current_path + (current_path.back() == std::filesystem::path::preferred_separator ? "" : std::string(1, std::filesystem::path::preferred_separator)) + current_folder;
+                safe_strcpy(buffer, buffer_size, path.c_str());
             }
-            strcpy_s(file_dialog_error, "");
+            safe_strcpy(file_dialog_error, sizeof(file_dialog_error), "");
             file_dialog_open = false;
             return true;
         }
