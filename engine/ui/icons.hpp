@@ -26,26 +26,26 @@
 
 namespace ui {
 	namespace icon {
-		typedef const char* type;
+		using type = const char*;
 
-		type save = ICON_FA_FLOPPY_DISK;
-		type edit = ICON_FA_PENCIL " Edit";
-		type insert = ICON_FA_ARROW_RIGHT " Insert";
-		type trash = ICON_FA_TRASH;
-		type play = ICON_FA_PLAY;
-		type stop = ICON_FA_STOP;
-		type build = ICON_FA_ARROW_DOWN_SHORT_WIDE;
-		type rebuild = ICON_FA_ROTATE_RIGHT; 
+		inline constexpr type save = ICON_FA_FLOPPY_DISK;
+		inline constexpr type edit = ICON_FA_PENCIL " Edit";
+		inline constexpr type insert = ICON_FA_ARROW_RIGHT " Insert";
+		inline constexpr type trash = ICON_FA_TRASH;
+		inline constexpr type play = ICON_FA_PLAY;
+		inline constexpr type stop = ICON_FA_STOP;
+		inline constexpr type build = ICON_FA_ARROW_DOWN_SHORT_WIDE;
+		inline constexpr type rebuild = ICON_FA_ROTATE_RIGHT;
 
-		type machine = ICON_FA_SERVER;
-		type controller = ICON_FA_GEAR;
-		type element = ICON_FA_MICROCHIP;
-		type function = ICON_FA_CODE;
-		type driver = ICON_FA_GEARS;
-		type plug = ICON_FA_SQUARE_PLUS;
-		type socket = ICON_FA_SQUARE_MINUS;
-		type signal = ICON_FA_BOLT;
+		inline constexpr type machine = ICON_FA_SERVER;
+		inline constexpr type controller = ICON_FA_GEAR;
+		inline constexpr type element = ICON_FA_MICROCHIP;
+		inline constexpr type function = ICON_FA_CODE;
+		inline constexpr type driver = ICON_FA_GEARS;
+		inline constexpr type plug = ICON_FA_SQUARE_PLUS;
+		inline constexpr type socket = ICON_FA_SQUARE_MINUS;
+		inline constexpr type signal = ICON_FA_BOLT;
 
-		type square = ICON_FA_SQUARE;
+		inline constexpr type square = ICON_FA_SQUARE;
 	}
 }

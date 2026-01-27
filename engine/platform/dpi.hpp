@@ -21,15 +21,16 @@
 
 #pragma once
 
-#include "platform/dpi.hpp"
-#include <SDL2/SDL.h>
+struct SDL_Window;
 
-namespace ui {
-    namespace scaling {
-        // Get the scaling factor using SDL's window information
-        // This is now a thin wrapper around the platform abstraction
-        inline float get_scaling_factor_from_sdl(SDL_Window* window) {
-            return platform::dpi::get_scaling_factor(window);
-        }
-    } // namespace scaling
-} // namespace ui
+namespace platform {
+namespace dpi {
+
+    // Get the scaling factor for the display containing the window
+    float get_scaling_factor(SDL_Window* window);
+
+    // Set DPI awareness for the application (call early in main)
+    void set_dpi_awareness();
+
+} // namespace dpi
+} // namespace platform

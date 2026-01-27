@@ -38,103 +38,103 @@ namespace ui {
     typedef ImGuiCol_ color_t;
 
     namespace colors {
-        ui::color_t text = ImGuiCol_Text;
-        ui::color_t text_disabled = ImGuiCol_TextDisabled;
-        ui::color_t window_bg = ImGuiCol_WindowBg;
-        ui::color_t child_bg = ImGuiCol_ChildBg;
-        ui::color_t popup_bg = ImGuiCol_PopupBg;
-        ui::color_t border = ImGuiCol_Border;
-        ui::color_t border_shadow = ImGuiCol_BorderShadow;
-        ui::color_t frame_bg = ImGuiCol_FrameBg;
-        ui::color_t frame_bg_hovered = ImGuiCol_FrameBgHovered;
-        ui::color_t frame_bg_active = ImGuiCol_FrameBgActive;
-        ui::color_t title_bg = ImGuiCol_TitleBg;
-        ui::color_t title_bg_active = ImGuiCol_TitleBgActive;
-        ui::color_t title_bg_collapsed = ImGuiCol_TitleBgCollapsed;
-        ui::color_t menu_bar_bg = ImGuiCol_MenuBarBg;
-        ui::color_t scrollbar_bg = ImGuiCol_ScrollbarBg;
-        ui::color_t scrollbar_grab = ImGuiCol_ScrollbarGrab;
-        ui::color_t scrollbar_grab_hovered = ImGuiCol_ScrollbarGrabHovered;
-        ui::color_t scrollbar_grab_active = ImGuiCol_ScrollbarGrabActive;
-        ui::color_t check_mark = ImGuiCol_CheckMark;
-        ui::color_t slider_grab = ImGuiCol_SliderGrab;
-        ui::color_t slider_grab_active = ImGuiCol_SliderGrabActive;
-        ui::color_t button = ImGuiCol_Button;
-        ui::color_t button_hovered = ImGuiCol_ButtonHovered;
-        ui::color_t button_active = ImGuiCol_ButtonActive;
-        ui::color_t header = ImGuiCol_Header;
-        ui::color_t header_hovered = ImGuiCol_HeaderHovered;
-        ui::color_t header_active = ImGuiCol_HeaderActive;
-        ui::color_t separator = ImGuiCol_Separator;
-        ui::color_t separator_hovered = ImGuiCol_SeparatorHovered;
-        ui::color_t separator_active = ImGuiCol_SeparatorActive;
-        ui::color_t resize_grip = ImGuiCol_ResizeGrip;
-        ui::color_t resize_grip_hovered = ImGuiCol_ResizeGripHovered;
-        ui::color_t resize_grip_active = ImGuiCol_ResizeGripActive;
-        ui::color_t tab = ImGuiCol_Tab;
-        ui::color_t tab_hovered = ImGuiCol_TabHovered;
-        ui::color_t tab_selected = ImGuiCol_TabSelected;
-        ui::color_t tab_selected_overline = ImGuiCol_TabSelectedOverline;
-        ui::color_t tab_dimmed = ImGuiCol_TabDimmed;
-        ui::color_t tab_dimmed_selected = ImGuiCol_TabDimmedSelected;
-        ui::color_t tab_dimmed_selected_overline = ImGuiCol_TabDimmedSelectedOverline;
-        ui::color_t docking_preview = ImGuiCol_DockingPreview;
-        ui::color_t docking_empty_bg = ImGuiCol_DockingEmptyBg;
-        ui::color_t plot_lines = ImGuiCol_PlotLines;
-        ui::color_t plot_lines_hovered = ImGuiCol_PlotLinesHovered;
-        ui::color_t plot_histogram = ImGuiCol_PlotHistogram;
-        ui::color_t plot_histogram_hovered = ImGuiCol_PlotHistogramHovered;
-        ui::color_t table_header_bg = ImGuiCol_TableHeaderBg;
-        ui::color_t table_border_strong = ImGuiCol_TableBorderStrong;
-        ui::color_t table_border_light = ImGuiCol_TableBorderLight;
-        ui::color_t table_row_bg = ImGuiCol_TableRowBg;
-        ui::color_t table_row_bg_alt = ImGuiCol_TableRowBgAlt;
-        ui::color_t text_link = ImGuiCol_TextLink;
-        ui::color_t text_selected_bg = ImGuiCol_TextSelectedBg;
-        ui::color_t drag_drop_target = ImGuiCol_DragDropTarget;
-        ui::color_t nav_highlight = ImGuiCol_NavHighlight;
-        ui::color_t nav_windowing_highlight = ImGuiCol_NavWindowingHighlight;
-        ui::color_t nav_windowing_dim_bg = ImGuiCol_NavWindowingDimBg;
-        ui::color_t modal_window_dim_bg = ImGuiCol_ModalWindowDimBg;
+        inline constexpr ui::color_t text = ImGuiCol_Text;
+        inline constexpr ui::color_t text_disabled = ImGuiCol_TextDisabled;
+        inline constexpr ui::color_t window_bg = ImGuiCol_WindowBg;
+        inline constexpr ui::color_t child_bg = ImGuiCol_ChildBg;
+        inline constexpr ui::color_t popup_bg = ImGuiCol_PopupBg;
+        inline constexpr ui::color_t border = ImGuiCol_Border;
+        inline constexpr ui::color_t border_shadow = ImGuiCol_BorderShadow;
+        inline constexpr ui::color_t frame_bg = ImGuiCol_FrameBg;
+        inline constexpr ui::color_t frame_bg_hovered = ImGuiCol_FrameBgHovered;
+        inline constexpr ui::color_t frame_bg_active = ImGuiCol_FrameBgActive;
+        inline constexpr ui::color_t title_bg = ImGuiCol_TitleBg;
+        inline constexpr ui::color_t title_bg_active = ImGuiCol_TitleBgActive;
+        inline constexpr ui::color_t title_bg_collapsed = ImGuiCol_TitleBgCollapsed;
+        inline constexpr ui::color_t menu_bar_bg = ImGuiCol_MenuBarBg;
+        inline constexpr ui::color_t scrollbar_bg = ImGuiCol_ScrollbarBg;
+        inline constexpr ui::color_t scrollbar_grab = ImGuiCol_ScrollbarGrab;
+        inline constexpr ui::color_t scrollbar_grab_hovered = ImGuiCol_ScrollbarGrabHovered;
+        inline constexpr ui::color_t scrollbar_grab_active = ImGuiCol_ScrollbarGrabActive;
+        inline constexpr ui::color_t check_mark = ImGuiCol_CheckMark;
+        inline constexpr ui::color_t slider_grab = ImGuiCol_SliderGrab;
+        inline constexpr ui::color_t slider_grab_active = ImGuiCol_SliderGrabActive;
+        inline constexpr ui::color_t button = ImGuiCol_Button;
+        inline constexpr ui::color_t button_hovered = ImGuiCol_ButtonHovered;
+        inline constexpr ui::color_t button_active = ImGuiCol_ButtonActive;
+        inline constexpr ui::color_t header = ImGuiCol_Header;
+        inline constexpr ui::color_t header_hovered = ImGuiCol_HeaderHovered;
+        inline constexpr ui::color_t header_active = ImGuiCol_HeaderActive;
+        inline constexpr ui::color_t separator = ImGuiCol_Separator;
+        inline constexpr ui::color_t separator_hovered = ImGuiCol_SeparatorHovered;
+        inline constexpr ui::color_t separator_active = ImGuiCol_SeparatorActive;
+        inline constexpr ui::color_t resize_grip = ImGuiCol_ResizeGrip;
+        inline constexpr ui::color_t resize_grip_hovered = ImGuiCol_ResizeGripHovered;
+        inline constexpr ui::color_t resize_grip_active = ImGuiCol_ResizeGripActive;
+        inline constexpr ui::color_t tab = ImGuiCol_Tab;
+        inline constexpr ui::color_t tab_hovered = ImGuiCol_TabHovered;
+        inline constexpr ui::color_t tab_selected = ImGuiCol_TabSelected;
+        inline constexpr ui::color_t tab_selected_overline = ImGuiCol_TabSelectedOverline;
+        inline constexpr ui::color_t tab_dimmed = ImGuiCol_TabDimmed;
+        inline constexpr ui::color_t tab_dimmed_selected = ImGuiCol_TabDimmedSelected;
+        inline constexpr ui::color_t tab_dimmed_selected_overline = ImGuiCol_TabDimmedSelectedOverline;
+        inline constexpr ui::color_t docking_preview = ImGuiCol_DockingPreview;
+        inline constexpr ui::color_t docking_empty_bg = ImGuiCol_DockingEmptyBg;
+        inline constexpr ui::color_t plot_lines = ImGuiCol_PlotLines;
+        inline constexpr ui::color_t plot_lines_hovered = ImGuiCol_PlotLinesHovered;
+        inline constexpr ui::color_t plot_histogram = ImGuiCol_PlotHistogram;
+        inline constexpr ui::color_t plot_histogram_hovered = ImGuiCol_PlotHistogramHovered;
+        inline constexpr ui::color_t table_header_bg = ImGuiCol_TableHeaderBg;
+        inline constexpr ui::color_t table_border_strong = ImGuiCol_TableBorderStrong;
+        inline constexpr ui::color_t table_border_light = ImGuiCol_TableBorderLight;
+        inline constexpr ui::color_t table_row_bg = ImGuiCol_TableRowBg;
+        inline constexpr ui::color_t table_row_bg_alt = ImGuiCol_TableRowBgAlt;
+        inline constexpr ui::color_t text_link = ImGuiCol_TextLink;
+        inline constexpr ui::color_t text_selected_bg = ImGuiCol_TextSelectedBg;
+        inline constexpr ui::color_t drag_drop_target = ImGuiCol_DragDropTarget;
+        inline constexpr ui::color_t nav_highlight = ImGuiCol_NavHighlight;
+        inline constexpr ui::color_t nav_windowing_highlight = ImGuiCol_NavWindowingHighlight;
+        inline constexpr ui::color_t nav_windowing_dim_bg = ImGuiCol_NavWindowingDimBg;
+        inline constexpr ui::color_t modal_window_dim_bg = ImGuiCol_ModalWindowDimBg;
     }
 
     typedef ImGuiStyleVar var_t;
 
     namespace vars {
-        const var_t alpha = ImGuiStyleVar_Alpha;
-        const var_t disabled_alpha = ImGuiStyleVar_DisabledAlpha;
-        const var_t window_padding = ImGuiStyleVar_WindowPadding;
-        const var_t window_rounding = ImGuiStyleVar_WindowRounding;
-        const var_t window_border_size = ImGuiStyleVar_WindowBorderSize;
-        const var_t window_min_size = ImGuiStyleVar_WindowMinSize;
-        const var_t window_title_align = ImGuiStyleVar_WindowTitleAlign;
-        const var_t child_rounding = ImGuiStyleVar_ChildRounding;
-        const var_t child_border_size = ImGuiStyleVar_ChildBorderSize;
-        const var_t popup_rounding = ImGuiStyleVar_PopupRounding;
-        const var_t popup_border_size = ImGuiStyleVar_PopupBorderSize;
-        const var_t frame_padding = ImGuiStyleVar_FramePadding;
-        const var_t frame_rounding = ImGuiStyleVar_FrameRounding;
-        const var_t frame_border_size = ImGuiStyleVar_FrameBorderSize;
-        const var_t item_spacing = ImGuiStyleVar_ItemSpacing;
-        const var_t item_inner_spacing = ImGuiStyleVar_ItemInnerSpacing;
-        const var_t indent_spacing = ImGuiStyleVar_IndentSpacing;
-        const var_t cell_padding = ImGuiStyleVar_CellPadding;
-        const var_t scrollbar_size = ImGuiStyleVar_ScrollbarSize;
-        const var_t scrollbar_rounding = ImGuiStyleVar_ScrollbarRounding;
-        const var_t grab_min_size = ImGuiStyleVar_GrabMinSize;
-        const var_t grab_rounding = ImGuiStyleVar_GrabRounding;
-        const var_t tab_rounding = ImGuiStyleVar_TabRounding;
-        const var_t tab_border_size = ImGuiStyleVar_TabBorderSize;
-        const var_t tab_bar_border_size = ImGuiStyleVar_TabBarBorderSize;
-        const var_t tab_bar_overline_size = ImGuiStyleVar_TabBarOverlineSize;
-        const var_t table_angled_headers_angle = ImGuiStyleVar_TableAngledHeadersAngle;
-        const var_t table_angled_headers_text_align = ImGuiStyleVar_TableAngledHeadersTextAlign;
-        const var_t button_text_align = ImGuiStyleVar_ButtonTextAlign;
-        const var_t selectable_text_align = ImGuiStyleVar_SelectableTextAlign;
-        const var_t separator_text_border_size = ImGuiStyleVar_SeparatorTextBorderSize;
-        const var_t separator_text_align = ImGuiStyleVar_SeparatorTextAlign;
-        const var_t separator_text_padding = ImGuiStyleVar_SeparatorTextPadding;
-        const var_t docking_separator_size = ImGuiStyleVar_DockingSeparatorSize;
+        inline constexpr var_t alpha = ImGuiStyleVar_Alpha;
+        inline constexpr var_t disabled_alpha = ImGuiStyleVar_DisabledAlpha;
+        inline constexpr var_t window_padding = ImGuiStyleVar_WindowPadding;
+        inline constexpr var_t window_rounding = ImGuiStyleVar_WindowRounding;
+        inline constexpr var_t window_border_size = ImGuiStyleVar_WindowBorderSize;
+        inline constexpr var_t window_min_size = ImGuiStyleVar_WindowMinSize;
+        inline constexpr var_t window_title_align = ImGuiStyleVar_WindowTitleAlign;
+        inline constexpr var_t child_rounding = ImGuiStyleVar_ChildRounding;
+        inline constexpr var_t child_border_size = ImGuiStyleVar_ChildBorderSize;
+        inline constexpr var_t popup_rounding = ImGuiStyleVar_PopupRounding;
+        inline constexpr var_t popup_border_size = ImGuiStyleVar_PopupBorderSize;
+        inline constexpr var_t frame_padding = ImGuiStyleVar_FramePadding;
+        inline constexpr var_t frame_rounding = ImGuiStyleVar_FrameRounding;
+        inline constexpr var_t frame_border_size = ImGuiStyleVar_FrameBorderSize;
+        inline constexpr var_t item_spacing = ImGuiStyleVar_ItemSpacing;
+        inline constexpr var_t item_inner_spacing = ImGuiStyleVar_ItemInnerSpacing;
+        inline constexpr var_t indent_spacing = ImGuiStyleVar_IndentSpacing;
+        inline constexpr var_t cell_padding = ImGuiStyleVar_CellPadding;
+        inline constexpr var_t scrollbar_size = ImGuiStyleVar_ScrollbarSize;
+        inline constexpr var_t scrollbar_rounding = ImGuiStyleVar_ScrollbarRounding;
+        inline constexpr var_t grab_min_size = ImGuiStyleVar_GrabMinSize;
+        inline constexpr var_t grab_rounding = ImGuiStyleVar_GrabRounding;
+        inline constexpr var_t tab_rounding = ImGuiStyleVar_TabRounding;
+        inline constexpr var_t tab_border_size = ImGuiStyleVar_TabBorderSize;
+        inline constexpr var_t tab_bar_border_size = ImGuiStyleVar_TabBarBorderSize;
+        inline constexpr var_t tab_bar_overline_size = ImGuiStyleVar_TabBarOverlineSize;
+        inline constexpr var_t table_angled_headers_angle = ImGuiStyleVar_TableAngledHeadersAngle;
+        inline constexpr var_t table_angled_headers_text_align = ImGuiStyleVar_TableAngledHeadersTextAlign;
+        inline constexpr var_t button_text_align = ImGuiStyleVar_ButtonTextAlign;
+        inline constexpr var_t selectable_text_align = ImGuiStyleVar_SelectableTextAlign;
+        inline constexpr var_t separator_text_border_size = ImGuiStyleVar_SeparatorTextBorderSize;
+        inline constexpr var_t separator_text_align = ImGuiStyleVar_SeparatorTextAlign;
+        inline constexpr var_t separator_text_padding = ImGuiStyleVar_SeparatorTextPadding;
+        inline constexpr var_t docking_separator_size = ImGuiStyleVar_DockingSeparatorSize;
     }
 
     enum class direction { ltr, rtl };
@@ -345,13 +345,12 @@ namespace ui {
 
         namespace ed = ax::NodeEditor;
 
-        enum type {
-            input = ed::PinKind::Input,
-            output = ed::PinKind::Output
-        };
+        using type = ed::PinKind;
+        constexpr auto input = ed::PinKind::Input;
+        constexpr auto output = ed::PinKind::Output;
 
         inline void begin(uint64_t id, type pin_type) {
-            ed::BeginPin(id, static_cast<ed::PinKind>(pin_type));
+            ed::BeginPin(id, pin_type);
         }
 
         inline void end() {
@@ -634,12 +633,12 @@ namespace ui {
 
 namespace ui {
     namespace plot {
-        GLuint frame_buffer = 0;
-        GLuint texture = 0;
-        float width = 512;
-        float height = 512;
+        inline GLuint frame_buffer = 0;
+        inline GLuint texture = 0;
+        inline float width = 512;
+        inline float height = 512;
 
-        void initialize() {
+        inline void initialize() {
             if (frame_buffer == 0) {
                 glGenFramebuffers(1, &frame_buffer);
                 glGenTextures(1, &texture);
@@ -659,7 +658,7 @@ namespace ui {
             }
         }
 
-        void begin() {
+        inline void begin() {
             initialize();
             glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer);
             glViewport(0, 0, static_cast<GLsizei>(width), static_cast<GLsizei>(height));
@@ -667,7 +666,7 @@ namespace ui {
             glClear(GL_COLOR_BUFFER_BIT);
         }
 
-        void end() {
+        inline void end() {
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             ImGui::Image((void*)(intptr_t)texture, ImVec2(width, height));
         }

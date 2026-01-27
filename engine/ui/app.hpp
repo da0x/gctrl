@@ -21,27 +21,28 @@
 
 #pragma once
 
-#include <Windows.h>
+#include "platform/platform.hpp"
+#include "platform/dpi.hpp"
+#include "platform/font.hpp"
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl2.h"
 #include <implot.h>
 #include "ui/theme.hpp"
-#include <windows.h>
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
-#include <SDL2/SDL_syswm.h>
+#include <fstream>
+#include "ui/font.hpp"
+#include "ui/icons.hpp"
+
+#if GCTRL_PLATFORM_WINDOWS
 #include <dwmapi.h>
 #pragma comment(lib, "Dwmapi.lib")
 #include <shellscalingapi.h>
 #pragma comment(lib, "Shcore.lib")
-#include <fstream>
 #include "resources/resource.h"
-#include <VersionHelpers.h>
-#include "ui/font.hpp"
-#include "ui/icons.hpp"
-#include "ui/dpi.hpp"
+#endif
 
 namespace ui {
 
@@ -52,7 +53,7 @@ namespace ui {
         bool fullscreen = false;
 
         app(const char* title) {
-            SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
+            platform::dpi::set_dpi_awareness();
 
             if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
                 return;
@@ -74,21 +75,24 @@ namespace ui {
             ImPlot::CreateContext();
             ImGuiIO& io = ImGui::GetIO();
             io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+#if GCTRL_PLATFORM_WINDOWS
             io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+#endif
 
             ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
             ImGui_ImplOpenGL3_Init("#version 130");
 
-            float scaling_factor = scaling::get_scaling_factor_from_sdl(window);
+            float scaling_factor = platform::dpi::get_scaling_factor(window);
             io.FontGlobalScale = scaling_factor;
 
             const ImWchar glyph_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
-            ui::font::load(ui::font::type::ui, "C:\\Windows\\Fonts\\segoeui.ttf", 16.0f);
-            ui::font::load_from_resource(ui::font::type::ui, IDR_FONT_AWESOME, 12.0f, true, glyph_ranges);
-            ui::font::load(ui::font::type::ui_large, "C:\\Windows\\Fonts\\segoeui.ttf", 28.0f);
-            ui::font::load_from_resource(ui::font::type::code, IDR_FONT_CASCADIA_CODE, 16.0f);
-            ui::font::load_from_resource(ui::font::type::code, IDR_FONT_AWESOME, 12.0f, true, glyph_ranges);
-            ui::font::load_from_resource(ui::font::type::console, IDR_FONT_CONSOLA, 16.0f);
+            std::string system_ui_font = platform::font::get_system_ui_font();
+            ui::font::load(ui::font::type::ui, system_ui_font.c_str(), 16.0f);
+            ui::font::load_from_resource(ui::font::type::ui, platform::font::FONT_AWESOME, 12.0f, true, glyph_ranges);
+            ui::font::load(ui::font::type::ui_large, system_ui_font.c_str(), 28.0f);
+            ui::font::load_from_resource(ui::font::type::code, platform::font::CASCADIA_CODE, 16.0f);
+            ui::font::load_from_resource(ui::font::type::code, platform::font::FONT_AWESOME, 12.0f, true, glyph_ranges);
+            ui::font::load_from_resource(ui::font::type::console, platform::font::CONSOLA, 16.0f);
 
             io.Fonts->Build();
             apply_theme();
@@ -132,7 +136,9 @@ namespace ui {
 
         void render() {
             ImGui::Render();
-            glViewport(0, 0, 1280, 720);
+            int w, h;
+            SDL_GL_GetDrawableSize(window, &w, &h);
+            glViewport(0, 0, w, h);
             glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
             glClear(GL_COLOR_BUFFER_BIT);
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

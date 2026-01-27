@@ -46,7 +46,7 @@ namespace signal {
         std::string default_value;
 
         object(const char* uuid, const char* name, const char* default_value, const char* description, const char* include_path)
-            : record(uuid, name, "", description), type(type), default_value(default_value), include(include_path) {}
+            : record(uuid, name, "", description), type(name), default_value(default_value), include(include_path) {}
 
         object(const json& j)
             : record("", j),
@@ -77,7 +77,7 @@ namespace signal {
         }
     };
 
-    const object::list default_signals = {
+    inline const object::list default_signals = {
         signal::object("12270a17-e1f4-4473-91c3-f698d303e093", "float", "0e+0f", "Real Number", ""),
         signal::object("3a87cbc2-b213-4e5e-8c5a-720dadb19f91", "complex", "(0.0f, 0.0f)", "Complex Number", "complex"),
         signal::object("9786c237-804e-4109-b3d8-e8f9bc43f682", "bool", "false", "Boolean", ""),
