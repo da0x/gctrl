@@ -1,0 +1,983 @@
+{
+    "controllers": [
+        {
+            "description": "",
+            "elements": [
+                {
+                    "description": "",
+                    "direction": "ltr",
+                    "name": "sw",
+                    "prototype_uuid": "02cb185f-f744-4944-97d2-f8544ead5d93",
+                    "uuid": "48a3143a-c028-460a-a7ae-1fdf378a429a"
+                },
+                {
+                    "description": "",
+                    "direction": "ltr",
+                    "name": "ne",
+                    "prototype_uuid": "b027896f-6802-4f2a-9a8e-ebe3232da053",
+                    "uuid": "b32d25c7-3234-4f74-9e0f-1a9bddeb8da8"
+                },
+                {
+                    "description": "",
+                    "direction": "rtl",
+                    "name": "lpf",
+                    "prototype_uuid": "9bba3d5c-35fb-469f-b234-73d9f1790100",
+                    "uuid": "b0613a07-a870-4ae9-863c-7138f4c8c003"
+                },
+                {
+                    "description": "",
+                    "direction": "ltr",
+                    "name": "fastwave",
+                    "prototype_uuid": "33899100-ec73-4938-a47e-ce20ddddebe9",
+                    "uuid": "d16c6cca-7005-438e-a06b-d63cba235716"
+                },
+                {
+                    "description": "",
+                    "direction": "ltr",
+                    "name": "e1hz",
+                    "prototype_uuid": "db5125e0-1918-4d53-b02f-ad00557caf05",
+                    "uuid": "3b27ccc2-8e68-4270-bdc7-cc95fd48b3fc"
+                },
+                {
+                    "description": "",
+                    "direction": "ltr",
+                    "name": "e100hz",
+                    "prototype_uuid": "a763cc87-acea-4cb9-8eb8-02aaec9fd007",
+                    "uuid": "81c8f6ce-8bed-4b58-8168-073d1c7b39ed"
+                },
+                {
+                    "description": "",
+                    "direction": "ltr",
+                    "name": "e1khz",
+                    "prototype_uuid": "3f156b8b-e92b-4e5d-b21a-cdede37ac94c",
+                    "uuid": "d7895254-7481-48bd-a1c1-1232b8cc2391"
+                },
+                {
+                    "description": "",
+                    "direction": "ltr",
+                    "name": "e10khz",
+                    "prototype_uuid": "b8bb7e54-7339-435d-8853-c6a1784fb068",
+                    "uuid": "30620ab3-99af-4865-9088-29cfbb42d7e9"
+                }
+            ],
+            "graph": [
+                {
+                    "end": 281186741517309,
+                    "id": 1,
+                    "start": 262782976458615
+                },
+                {
+                    "end": 251785974837883,
+                    "id": 2,
+                    "start": 281186272279533
+                },
+                {
+                    "end": 174684892278767,
+                    "id": 3,
+                    "start": 140737354058463
+                },
+                {
+                    "end": 193436585275391,
+                    "id": 4,
+                    "start": 210965572241375
+                },
+                {
+                    "end": 193445272730607,
+                    "id": 5,
+                    "start": 140735199275739
+                },
+                {
+                    "end": 246208813051886,
+                    "id": 6,
+                    "start": 105415538630590
+                },
+                {
+                    "end": 29394722594744,
+                    "id": 7,
+                    "start": 140737354058463
+                },
+                {
+                    "end": 30648315121659,
+                    "id": 8,
+                    "start": 140735199275739
+                },
+                {
+                    "end": 131103706630383,
+                    "id": 9,
+                    "start": 100862475099629
+                },
+                {
+                    "end": 246208813051886,
+                    "id": 10,
+                    "start": 272648684357975
+                },
+                {
+                    "end": 210968658279071,
+                    "id": 11,
+                    "start": 227456988479470
+                },
+                {
+                    "end": 246153164598255,
+                    "id": 12,
+                    "start": 237214166933279
+                },
+                {
+                    "end": 192195463200750,
+                    "id": 13,
+                    "start": 236118979344247
+                },
+                {
+                    "end": 236380972349238,
+                    "id": 14,
+                    "start": 227456988479470
+                },
+                {
+                    "end": 173721734078205,
+                    "id": 15,
+                    "start": 261683764854782
+                },
+                {
+                    "end": 63771614641886,
+                    "id": 16,
+                    "start": 140728311169021
+                },
+                {
+                    "end": 28037520285404,
+                    "id": 17,
+                    "start": 35132780017595
+                },
+                {
+                    "end": 279240485363668,
+                    "id": 18,
+                    "start": 186916908234731
+                }
+            ],
+            "name": "ctrl",
+            "namespace": "controller",
+            "plugs": [
+                {
+                    "description": "",
+                    "direction": "rtl",
+                    "name": "meter_plug",
+                    "prototype_uuid": "d3a78971-3042-40bd-bda3-bdf211d4ce9f",
+                    "uuid": "48ceec64-e2db-4f18-80ac-8eccf443abe6"
+                },
+                {
+                    "description": "",
+                    "direction": "ltr",
+                    "name": "ticks",
+                    "prototype_uuid": "d53f2c3e-e99d-4c37-ba58-7ef1294f581a",
+                    "uuid": "96e23d03-7f75-4bfb-a20f-18779c2fde54"
+                }
+            ],
+            "uuid": "1b46429b-991d-46c6-8f96-4d1e3852437d"
+        }
+    ],
+    "drivers": [
+        {
+            "description": "",
+            "frequency": 1,
+            "name": "meter_driver",
+            "namespace": "driver",
+            "sockets": [
+                {
+                    "description": "",
+                    "direction": "ltr",
+                    "name": "meter_socket",
+                    "prototype_uuid": "d3a78971-3042-40bd-bda3-bdf211d4ce9f",
+                    "uuid": "7a965f84-3ae1-4cda-84af-9628dfcadc51"
+                },
+                {
+                    "description": "",
+                    "direction": "ltr",
+                    "name": "element_ticks",
+                    "prototype_uuid": "d53f2c3e-e99d-4c37-ba58-7ef1294f581a",
+                    "uuid": "624d3871-3395-4764-85d4-302da5fe896e"
+                }
+            ],
+            "uuid": "cabc9b0f-8555-4e40-8f4a-e5cd60a9b0c8"
+        }
+    ],
+    "elements": [
+        {
+            "code_block": "out.y = -in.x;\n",
+            "description": "",
+            "frequency": 1000,
+            "inputs": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "x",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "54ad6c59-e567-424b-97fd-19a860134ad8",
+                    "value": "0e+0"
+                }
+            ],
+            "name": "negate",
+            "namespace": "element",
+            "outputs": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "y",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "0ce27b94-1f65-41b3-8256-2d3005df8989",
+                    "value": "0e+0"
+                }
+            ],
+            "uuid": "dca876fa-7d7f-4320-92ba-049c21cf71db"
+        },
+        {
+            "code_block": "mem.time += 1/100.0f;\nout.y = cos(mem.time) * in.scale;\nout.disconnect = out.y > 0 ? 100 : 0;\n",
+            "description": "",
+            "frequency": 1000,
+            "inputs": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "scale",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "ffc06745-ce37-423d-9e03-bcdac66f3a87",
+                    "value": "1e+3f"
+                }
+            ],
+            "memory": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "time",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "ce59ae46-e06b-43af-92b9-44eb71526c0e",
+                    "value": "0e+0"
+                }
+            ],
+            "name": "signwave",
+            "namespace": "element",
+            "outputs": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "y",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "2f786e05-6b82-40cf-8cb4-6b3ed07cc857",
+                    "value": "0e+0"
+                },
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "disconnect",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "3066d9e7-0fe1-4060-a2f3-70ba468d6ad9",
+                    "value": "0e+0"
+                }
+            ],
+            "uuid": "02cb185f-f744-4944-97d2-f8544ead5d93"
+        },
+        {
+            "code_block": "// Use a more robust random generator\nstatic std::mt19937 rng(static_cast<unsigned>(in.base * 12345));\nstatic std::uniform_real_distribution<float> dist(-1.0f, 1.0f);\n\n// Generate random value and scale it\nfloat random_val = dist(rng);\n\n// Layer additional jitter for more dynamic noise\nfloat high_freq_jitter = std::sin(in.base * 0.01f) * 0.5f;\n\n// Combine noise sources and apply scaling\nout.noise = (random_val + high_freq_jitter) * in.scale;\n",
+            "description": "",
+            "frequency": 1000,
+            "inputs": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "base",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "2b688e8e-bc4d-4f0d-b36f-023361d79338",
+                    "value": "0e+0"
+                },
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "scale",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "4fd5462e-922f-4098-99c6-1bc4d0c60e53",
+                    "value": "0e+0"
+                }
+            ],
+            "name": "noise",
+            "namespace": "element",
+            "outputs": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "noise",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "349015be-4f3d-49fb-951f-49b99ef455cd",
+                    "value": "0e+0"
+                }
+            ],
+            "uuid": "b027896f-6802-4f2a-9a8e-ebe3232da053"
+        },
+        {
+            "code_block": "out.filtered =\n    in.smoothing_factor * in.current_value +\n    (1.0f - in.smoothing_factor) * mem.previous_value;\n\nmem.previous_value = out.filtered;\n",
+            "description": "",
+            "frequency": 1000,
+            "inputs": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "current_value",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "33bb49b4-79c9-44b5-8e83-572435dc88ec",
+                    "value": "0e+0"
+                },
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "smoothing_factor",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "8bff1dd7-4c01-44ff-8604-ac4768eaf92a",
+                    "value": "0.1f"
+                }
+            ],
+            "memory": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "previous_value",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "a34175ae-f958-44f8-90f2-d20cb2f88900",
+                    "value": "0e+0"
+                }
+            ],
+            "name": "low_pass_filter",
+            "namespace": "element",
+            "outputs": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "filtered",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "4c304833-8c6a-4784-a051-c7d0d3320956",
+                    "value": "0e+0"
+                }
+            ],
+            "uuid": "9bba3d5c-35fb-469f-b234-73d9f1790100"
+        },
+        {
+            "code_block": "mem.time += 1/100.0f;\nout.y = cos(mem.time) * in.scale;\nout.disconnect = out.y > 0 ? 100 : 0;\n",
+            "description": "",
+            "frequency": 10000,
+            "inputs": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "scale",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "9508ff1f-235a-4b0b-9a78-c0c423c06632",
+                    "value": "0e+0f"
+                }
+            ],
+            "memory": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "time",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "ad3b093f-2448-48fb-ab08-ce5ae1d57a7c",
+                    "value": "0e+0f"
+                }
+            ],
+            "name": "signwave_10kHz",
+            "namespace": "element",
+            "outputs": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "y",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "5ae0f93b-c88e-4b6b-ad61-159212248d0f",
+                    "value": "0e+0f"
+                },
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "disconnect",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "db97ca75-8159-4b99-8cfe-d49713e23061",
+                    "value": "0e+0f"
+                }
+            ],
+            "uuid": "33899100-ec73-4938-a47e-ce20ddddebe9"
+        },
+        {
+            "code_block": "out.counter++;\n",
+            "description": "",
+            "frequency": 1,
+            "name": "element_1hz",
+            "namespace": "element",
+            "outputs": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "counter",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "7c4af5c7-c4ef-4725-9679-ed6aa2d0ef82",
+                    "value": "0e+0f"
+                }
+            ],
+            "uuid": "db5125e0-1918-4d53-b02f-ad00557caf05"
+        },
+        {
+            "code_block": "out.counter++;\n",
+            "description": "",
+            "frequency": 100,
+            "name": "element_100hz",
+            "namespace": "element",
+            "outputs": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "counter",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "d83e56ac-3115-47be-9a63-79d4d4a52635",
+                    "value": "0e+0f"
+                }
+            ],
+            "uuid": "a763cc87-acea-4cb9-8eb8-02aaec9fd007"
+        },
+        {
+            "code_block": "out.counter++;\n",
+            "description": "",
+            "frequency": 1000,
+            "name": "element_1khz",
+            "namespace": "element",
+            "outputs": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "counter",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "1ac09ba4-269f-4bd3-9299-1dd1541b57ba",
+                    "value": "0e+0f"
+                }
+            ],
+            "uuid": "3f156b8b-e92b-4e5d-b21a-cdede37ac94c"
+        },
+        {
+            "code_block": "out.counter++;\n",
+            "description": "",
+            "frequency": 1000,
+            "name": "element_10khz",
+            "namespace": "element",
+            "outputs": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "counter",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "9d8a6e7b-bc77-4407-bccd-a1795ba8a2ea",
+                    "value": "0e+0f"
+                }
+            ],
+            "uuid": "b8bb7e54-7339-435d-8853-c6a1784fb068"
+        }
+    ],
+    "functions": [
+        {
+            "code_block": "out.control_signal = 1.0f / (1.0f + std::exp(-in.x));\n",
+            "description": "Logistic distribution\nThe logistic function used in this control system is defined as:\n\n    f(x) = 1 / (1 + e^(-x))\n\nWhere:\n    - x is the input to the function, in this case, the error (setpoint - temperature).\n    - e is Euler's number, approximately 2.71828.",
+            "inputs": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "x",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "aa42d8a9-e5f9-42d3-9921-a1482777c5e9",
+                    "value": ""
+                }
+            ],
+            "name": "logistic",
+            "namespace": "function",
+            "outputs": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "control_signal",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "89a2de0a-c7c3-429b-b3f8-cf1413bc3e3e",
+                    "value": ""
+                }
+            ],
+            "uuid": "14164cef-cd7a-4e9c-b0e4-8a1910d62d95"
+        }
+    ],
+    "machines": [
+        {
+            "controllers": [
+                {
+                    "description": "",
+                    "direction": "ltr",
+                    "name": "controller",
+                    "prototype_uuid": "1b46429b-991d-46c6-8f96-4d1e3852437d",
+                    "uuid": "e6a1888d-b26f-40e7-99a7-70ee12f601bf"
+                }
+            ],
+            "description": "Machine description",
+            "drivers": [
+                {
+                    "description": "",
+                    "direction": "ltr",
+                    "name": "meter_driver",
+                    "prototype_uuid": "cabc9b0f-8555-4e40-8f4a-e5cd60a9b0c8",
+                    "uuid": "ab7c3a1f-0fec-4ef5-b9f5-442f33c53431"
+                }
+            ],
+            "graph": [
+                {
+                    "end": 281383926749661,
+                    "id": 1,
+                    "start": 280915739664207
+                },
+                {
+                    "end": 191843303815253,
+                    "id": 2,
+                    "start": 278725660213151
+                },
+                {
+                    "end": 138537857307615,
+                    "id": 3,
+                    "start": 280370079325618
+                },
+                {
+                    "end": 69239149687329,
+                    "id": 4,
+                    "start": 280916611948383
+                },
+                {
+                    "end": 262775191818871,
+                    "id": 5,
+                    "start": 263877403693665
+                },
+                {
+                    "end": 205056263585020,
+                    "id": 6,
+                    "start": 279136364902367
+                },
+                {
+                    "end": 235501643627633,
+                    "id": 7,
+                    "start": 280302299098111
+                },
+                {
+                    "end": 127748299275647,
+                    "id": 8,
+                    "start": 133039279562751
+                }
+            ],
+            "name": "thermostat",
+            "namespace": "machine",
+            "uuid": "95dab4a4-8f95-4591-b5c5-1143c8f69336"
+        }
+    ],
+    "ne_settings": {
+        "151956724430377": {
+            "nodes": {
+                "node:155679666689932": {
+                    "location": {
+                        "x": 318,
+                        "y": 556
+                    }
+                },
+                "node:230571631524799": {
+                    "location": {
+                        "x": 800,
+                        "y": 640
+                    }
+                },
+                "node:270996236078425": {
+                    "location": {
+                        "x": 800,
+                        "y": 352
+                    }
+                }
+            },
+            "selection": null,
+            "view": {
+                "scroll": {
+                    "x": -1084.58642578125,
+                    "y": -556.8656005859375
+                },
+                "visible_rect": {
+                    "max": {
+                        "x": 4260.56640625,
+                        "y": 2785.30029296875
+                    },
+                    "min": {
+                        "x": -2825.555908203125,
+                        "y": -1450.7418212890625
+                    }
+                },
+                "zoom": 0.3838488757610321
+            }
+        },
+        "18551586371962": {
+            "nodes": null,
+            "selection": null,
+            "view": {
+                "scroll": {
+                    "x": 0,
+                    "y": 0
+                },
+                "visible_rect": {
+                    "max": {
+                        "x": 2720,
+                        "y": 1626
+                    },
+                    "min": {
+                        "x": 0,
+                        "y": 0
+                    }
+                },
+                "zoom": 1
+            }
+        },
+        "18982832083766": {
+            "nodes": {
+                "node:124167822639551": {
+                    "location": {
+                        "x": 0,
+                        "y": 0
+                    }
+                },
+                "node:74969522713649": {
+                    "location": {
+                        "x": 480,
+                        "y": -2
+                    }
+                }
+            },
+            "selection": null,
+            "view": {
+                "scroll": {
+                    "x": -946.0350341796875,
+                    "y": -859.15087890625
+                },
+                "visible_rect": {
+                    "max": {
+                        "x": 1959.1959228515625,
+                        "y": 700.5084228515625
+                    },
+                    "min": {
+                        "x": -1047.177734375,
+                        "y": -951.004638671875
+                    }
+                },
+                "zoom": 0.9034140110015869
+            }
+        },
+        "224250191742415": {
+            "nodes": {
+                "node:110438716408509": {
+                    "location": {
+                        "x": 705,
+                        "y": 66
+                    }
+                },
+                "node:71863023402249": {
+                    "location": {
+                        "x": 917,
+                        "y": 394
+                    }
+                },
+                "node:88818257833834": {
+                    "location": {
+                        "x": 831,
+                        "y": 250
+                    }
+                }
+            },
+            "selection": [
+                "node:71863023402249"
+            ],
+            "view": {
+                "scroll": {
+                    "x": -156.01490783691406,
+                    "y": -305.0059509277344
+                },
+                "visible_rect": {
+                    "max": {
+                        "x": 2433.0166015625,
+                        "y": 1217.0098876953125
+                    },
+                    "min": {
+                        "x": -156.01693725585938,
+                        "y": -305.0099182128906
+                    }
+                },
+                "zoom": 0.999987006187439
+            }
+        },
+        "273882388383121": {
+            "nodes": {
+                "node:228408235679181": {
+                    "location": {
+                        "x": 688,
+                        "y": 398
+                    }
+                }
+            },
+            "selection": null,
+            "view": {
+                "scroll": {
+                    "x": -338.0035095214844,
+                    "y": 74.49803161621094
+                },
+                "visible_rect": {
+                    "max": {
+                        "x": 2290.005615234375,
+                        "y": 971.5018920898438
+                    },
+                    "min": {
+                        "x": -338.0048522949219,
+                        "y": 74.49832153320313
+                    }
+                },
+                "zoom": 0.9999961256980896
+            }
+        },
+        "54696526016129": {
+            "nodes": null,
+            "selection": null,
+            "view": {
+                "scroll": {
+                    "x": -525.4705200195313,
+                    "y": -298.86212158203125
+                },
+                "visible_rect": {
+                    "max": {
+                        "x": 3049.02001953125,
+                        "y": 867.400146484375
+                    },
+                    "min": {
+                        "x": -762.020263671875,
+                        "y": -433.400146484375
+                    }
+                },
+                "zoom": 0.6895754933357239
+            }
+        },
+        "7356594330874": {
+            "nodes": {
+                "node:176385170812575": {
+                    "location": {
+                        "x": 592,
+                        "y": 254
+                    }
+                }
+            },
+            "selection": null,
+            "view": {
+                "scroll": {
+                    "x": -1174.5001220703125,
+                    "y": -46.50063705444336
+                },
+                "visible_rect": {
+                    "max": {
+                        "x": 1453.5028076171875,
+                        "y": 850.5010986328125
+                    },
+                    "min": {
+                        "x": -1174.50244140625,
+                        "y": -46.500732421875
+                    }
+                },
+                "zoom": 0.9999979734420776
+            }
+        },
+        "84792189272957": {
+            "nodes": {
+                "node:124489438904323": {
+                    "location": {
+                        "x": 885,
+                        "y": 338
+                    }
+                },
+                "node:157010922548198": {
+                    "location": {
+                        "x": 448,
+                        "y": -286
+                    }
+                },
+                "node:20009058050961": {
+                    "location": {
+                        "x": -926,
+                        "y": -74
+                    }
+                },
+                "node:224944571593724": {
+                    "location": {
+                        "x": -914,
+                        "y": -458
+                    }
+                },
+                "node:235556309260054": {
+                    "location": {
+                        "x": 465,
+                        "y": -546
+                    }
+                },
+                "node:26902000557652": {
+                    "location": {
+                        "x": -208,
+                        "y": -246
+                    }
+                },
+                "node:29256745455016": {
+                    "location": {
+                        "x": 1008,
+                        "y": 82
+                    }
+                },
+                "node:35043569975962": {
+                    "location": {
+                        "x": 448,
+                        "y": 82
+                    }
+                },
+                "node:45972176689129": {
+                    "location": {
+                        "x": -939,
+                        "y": 118
+                    }
+                },
+                "node:7959052237293": {
+                    "location": {
+                        "x": -939,
+                        "y": -266
+                    }
+                }
+            },
+            "selection": [
+                "node:26902000557652"
+            ],
+            "view": {
+                "scroll": {
+                    "x": -177.2152557373047,
+                    "y": -715.295166015625
+                },
+                "visible_rect": {
+                    "max": {
+                        "x": 758.8931884765625,
+                        "y": 1100.2034912109375
+                    },
+                    "min": {
+                        "x": -255.29869079589844,
+                        "y": -1030.4638671875
+                    }
+                },
+                "zoom": 0.6941487193107605
+            }
+        }
+    },
+    "ports": [
+        {
+            "description": "",
+            "name": "meter",
+            "namespace": "port",
+            "plug_data": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "wave",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "ad94184c-f992-4093-991e-981b2eb30eaf",
+                    "value": "0e+0"
+                },
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "disconnect",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "bb7953cf-618a-4b44-9d11-2767bcc192ab",
+                    "value": "0e+0"
+                },
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "noise",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "597755ad-5910-4589-a243-df24c0d40e0a",
+                    "value": "0e+0"
+                },
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "fastwave",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "28860f52-a075-4115-805d-53d36bef214f",
+                    "value": "0e+0f"
+                },
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "fastwave_disconnect",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "ffed260b-482d-40a6-8414-28c09a0ebf8c",
+                    "value": "0e+0f"
+                }
+            ],
+            "socket_data": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "voltage",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "74dae029-bc79-470e-8dd5-c85a40fdd708",
+                    "value": "1e+3f"
+                },
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "frequency",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "d8de6592-ad9f-4636-8f04-1bcbbb499c64",
+                    "value": "0e+0"
+                }
+            ],
+            "uuid": "d3a78971-3042-40bd-bda3-bdf211d4ce9f"
+        },
+        {
+            "description": "",
+            "name": "element_ticks",
+            "namespace": "port",
+            "plug_data": [
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "tick_1hz",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "646575c3-51bc-482d-9c48-95e9321d84b9",
+                    "value": "0e+0f"
+                },
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "tick_100hz",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "2d46abaa-36c5-45e9-ba80-39ddfc60ac9a",
+                    "value": "0e+0f"
+                },
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "tick_1khz",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "33779942-586b-4591-867b-013a624ecac8",
+                    "value": "0e+0f"
+                },
+                {
+                    "description": "Real Number",
+                    "direction": "ltr",
+                    "name": "tick_100khz",
+                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+                    "uuid": "b4b8264d-028c-4510-a8f9-f5d73decc380",
+                    "value": "0e+0f"
+                }
+            ],
+            "uuid": "d53f2c3e-e99d-4c37-ba58-7ef1294f581a"
+        }
+    ],
+    "ui_settings": "[Window][WindowOverViewport_11111111]\nPos=0,30\nSize=1280,690\nCollapsed=0\n\n[Window][Debug##Default]\nViewportPos=3821,1001\nViewportId=0x9F5F46A1\nSize=621,882\nCollapsed=0\n\n[Window][Project Manager]\nViewportPos=1280,720\nViewportId=0x5E32ADE2\nPos=-1278,-675\nSize=1280,720\nCollapsed=0\nDockId=0x00000003,0\n\n[Window][Select Folder for New Project]\nViewportPos=950,718\nViewportId=0x5D052A8D\nSize=864,745\nCollapsed=0\n\n[Window][Dear ImGui Metrics/Debugger]\nViewportPos=2715,734\nViewportId=0x8FC55800\nSize=389,606\nCollapsed=0\n\n[Window][Select .ctrl Project File]\nViewportPos=558,717\nViewportId=0x67AA3A44\nSize=1071,779\nCollapsed=0\n\n[Window][Controller List]\nPos=339,1043\nSize=277,1010\nCollapsed=0\nDockId=0x0000001B,0\n\n[Window][Element List]\nPos=0,504\nSize=459,723\nCollapsed=0\nDockId=0x0000000D,0\n\n[Window][Controller Properties]\nPos=1191,30\nSize=725,798\nCollapsed=0\nDockId=0x0000004B,0\n\n[Window][Controller Editor]\nPos=469,30\nSize=720,1597\nCollapsed=0\nDockId=0x00000003,0\n\n[Window][Element Properties]\nPos=3115,890\nSize=725,856\nCollapsed=0\nDockId=0x00000044,0\n\n[Window][Edit Element]\nPos=429,28\nSize=1585,1657\nCollapsed=0\nDockId=0x00000003,1\n\n[Window][Port List]\nPos=0,1229\nSize=459,824\nCollapsed=0\nDockId=0x00000014,0\n\n[Window][Element Editor]\nPos=425,30\nSize=1491,1597\nCollapsed=0\nDockId=0x00000003,0\n\n[Window][Port Editor]\nPos=316,-15\nSize=1598,1597\nCollapsed=0\nDockId=0x00000003,0\n\n[Window][Theme Editor]\nViewportPos=3821,1061\nViewportId=0x1974BBCA\nSize=804,1386\nCollapsed=0\n\n[Window][Edit Port]\nPos=429,28\nSize=1306,1657\nCollapsed=0\nDockId=0x00000003,1\n\n[Window][Font Check]\nPos=166,248\nSize=419,72\nCollapsed=0\n\n[Window][Elements Library]\nPos=0,413\nSize=461,538\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Main Window]\nPos=490,128\nSize=701,253\nCollapsed=0\n\n[Window][Edit Element 3a6181e7-5234-4092-95d6-ab4bd44a9970]\nPos=1070,218\nSize=502,1467\nCollapsed=0\n\n[Window][Edit Element aa4d3cee-7dde-486e-b0ed-d8925efa96c2]\nPos=1669,565\nSize=502,923\nCollapsed=0\n\n[Window][Edit Element a2f29cfc-c84c-4169-8b4a-bcf415f4e772]\nPos=945,463\nSize=502,923\nCollapsed=0\n\n[Window][Edit Element 21a24e66-53f4-46fd-ae24-f2b7a082c068]\nPos=1158,341\nSize=1396,1014\nCollapsed=0\n\n[Window][Edit Element 05122a78-e808-4dcd-a024-85995698da6a]\nPos=1017,310\nSize=1791,1301\nCollapsed=0\n\n[Window][Machine List]\nPos=0,28\nSize=337,362\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][Driver List]\nPos=339,28\nSize=277,1013\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Machine Properties]\nPos=3157,30\nSize=683,1610\nCollapsed=0\nDockId=0x00000029,0\n\n[Window][Edit Driver]\nPos=3138,435\nSize=702,1618\nCollapsed=0\nDockId=0x0000001A,0\n\n[Window][Edit Controller]\nPos=2240,28\nSize=896,2025\nCollapsed=0\nDockId=0x00000020,0\n\n[Window][Ompa Editor]\nViewportPos=1951,1789\nViewportId=0x53EEDC46\nSize=947,599\nCollapsed=0\n\n[Window][Window 1]\nViewportPos=1951,1789\nViewportId=0x53EEDC46\nPos=291,36\nSize=648,554\nCollapsed=0\nDockId=0x00000024,0\n\n[Window][Window 2]\nViewportPos=1951,1789\nViewportId=0x53EEDC46\nPos=8,36\nSize=281,554\nCollapsed=0\nDockId=0x00000023,0\n\n[Window][Another Editor]\nPos=995,401\nSize=1042,609\nCollapsed=0\n\n[Window][Window A]\nPos=1274,779\nSize=1042,609\nCollapsed=0\n\n[Window][Window B]\nPos=1003,844\nSize=1026,157\nCollapsed=0\nDockId=0x00000022,0\n\n[Window][Toolbar]\nSize=2761,82\nCollapsed=0\nDockId=0x00000025,0\n\n[Window][Machine Editor]\nPos=423,30\nSize=2732,1610\nCollapsed=0\nDockId=0x00000003,0\n\n[Window][Controller Library]\nPos=0,395\nSize=372,437\nCollapsed=0\nDockId=0x00000033,0\n\n[Window][Machine Library]\nSize=372,393\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Driver Library]\nPos=0,834\nSize=372,363\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Element Library]\nPos=0,1199\nSize=372,372\nCollapsed=0\nDockId=0x0000002C,0\n\n[Window][Port Library]\nPos=0,1573\nSize=372,481\nCollapsed=0\nDockId=0x0000002A,0\n\n[Window][Terminal]\nPos=362,308\nSize=918,412\nCollapsed=0\nDockId=0x00000036,0\n\n[Window][Library]\nSize=450,2054\nCollapsed=0\nDockId=0x0000001D,0\n\n[Window][Machines]\nPos=0,30\nSize=421,2024\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Controllers]\nPos=-646,70\nSize=467,690\nCollapsed=0\nDockId=0x00000016,0\n\n[Window][Drivers]\nPos=0,30\nSize=444,2011\nCollapsed=0\nDockId=0x0000003A,0\n\n[Window][Elements]\nPos=0,30\nSize=423,2011\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Ports]\nPos=-2,-15\nSize=316,2011\nCollapsed=0\nDockId=0x00000038,0\n\n[Window][Driver Editor]\nPos=446,30\nSize=1470,1597\nCollapsed=0\nDockId=0x00000003,0\n\n[Window][Square Chart with Ball]\nPos=0,632\nSize=427,88\nCollapsed=0\nDockId=0x00000034,0\n\n[Window][Compilation Output]\nSize=46,2082\nCollapsed=0\n\n[Window][Controller Code]\nPos=2726,740\nSize=1114,741\nCollapsed=0\nDockId=0x00000048,0\n\n[Window][Functions]\nPos=0,30\nSize=417,2011\nCollapsed=0\nDockId=0x00000009,0\n\n[Window][Function Editor]\nPos=419,30\nSize=1785,1597\nCollapsed=0\nDockId=0x00000003,0\n\n[Window][Machine Code]\nPos=2924,715\nSize=916,971\nCollapsed=0\nDockId=0x0000003F,0\n\n[Window][Select a folder]\nSize=1280,543\nCollapsed=0\nDockId=0x00000046,0\n\n[Window][Select Folder]\nPos=-879,-463\nSize=740,474\nCollapsed=0\n\n[Window][Engine Manager]\nSize=1280,720\nCollapsed=0\nDockId=0x00000003,0\n\n[Window][Select File]\nPos=94,170\nSize=761,508\nCollapsed=0\n\n[Window][Clone Engine]\nPos=-926,-398\nSize=572,144\nCollapsed=0\n\n[Window][Element Instance]\nPos=3260,30\nSize=580,2024\nCollapsed=0\nDockId=0x0000004B,1\n\n[Window][Port Instance]\nPos=2107,30\nSize=617,1451\nCollapsed=0\nDockId=0x00000042,0\n\n[Window][Controller Instance]\nPos=3157,837\nSize=683,803\nCollapsed=0\nDockId=0x00000010,0\n\n[Window][Driver Instance]\nPos=3157,837\nSize=683,803\nCollapsed=0\nDockId=0x00000040,0\n\n[Window][Clone Project]\nPos=354,288\nSize=632,144\nCollapsed=0\n\n[Window][Plug Instance]\nPos=3260,30\nSize=580,2024\nCollapsed=0\nDockId=0x0000004B,1\n\n[Window][Socket Instance]\nPos=3260,30\nSize=580,2024\nCollapsed=0\nDockId=0x0000004B,1\n\n[Window][Node Editor]\nPos=419,30\nSize=2839,1679\nCollapsed=0\nDockId=0x00000003,0\n\n[Window][Plug Properties]\nPos=1191,830\nSize=725,797\nCollapsed=0\nDockId=0x0000004C,0\n\n[Window][Socket Properties]\nPos=3115,890\nSize=725,856\nCollapsed=0\nDockId=0x0000004A,0\n\n[Window][Signal Viewer]\nPos=362,30\nSize=3478,1610\nCollapsed=0\nDockId=0x00000003,1\n\n[Window][Tree View]\nPos=0,30\nSize=360,690\nCollapsed=0\nDockId=0x0000004D,0\n\n[Window][Detail View]\nPos=362,30\nSize=918,276\nCollapsed=0\nDockId=0x00000003,0\n\n[Table][0x3070622A,3]\nRefScale=13\nColumn 0  Width=28\nColumn 1  Width=49\nColumn 2  Width=91\n\n[Table][0x46991BDF,3]\nRefScale=13\nColumn 0  Width=28\nColumn 1  Width=49\nColumn 2  Width=91\n\n[Table][0xD97CF651,3]\nRefScale=13\nColumn 0  Width=28\nColumn 1  Width=49\nColumn 2  Width=91\n\n[Table][0x29EC528E,3]\nRefScale=13\nColumn 0  Width=28\nColumn 1  Width=49\nColumn 2  Width=91\n\n[Table][0x973BE01E,3]\nRefScale=13\nColumn 0  Width=28\nColumn 1  Width=49\nColumn 2  Width=91\n\n[Table][0xC0E0C6F5,3]\nRefScale=13\nColumn 0  Width=28\nColumn 1  Width=49\nColumn 2  Width=91\n\n[Table][0x6F3049EE,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xDACF5D5D,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x863CDD95,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xC0409094,3]\nRefScale=13\nColumn 0  Width=28\nColumn 1  Width=49\nColumn 2  Width=91\n\n[Table][0x6AB0B5A6,3]\nRefScale=13\nColumn 0  Width=28\nColumn 1  Width=49\nColumn 2  Width=91\n\n[Table][0x294C04EF,3]\nRefScale=13\nColumn 0  Width=28\nColumn 1  Width=49\nColumn 2  Width=91\n\n[Table][0xB3876DC0,3]\nRefScale=13\nColumn 0  Width=28\nColumn 1  Width=49\nColumn 2  Width=91\n\n[Table][0x06C5E7B6,3]\nRefScale=13\nColumn 0  Width=28\nColumn 1  Width=49\nColumn 2  Width=91\n\n[Table][0x5A8BF9BB,3]\nRefScale=13\nColumn 0  Width=28\nColumn 1  Width=49\nColumn 2  Width=91\n\n[Table][0x084EFAB6,3]\nRefScale=13\nColumn 0  Width=28\nColumn 1  Width=49\nColumn 2  Width=91\n\n[Table][0xBF18FA28,3]\nRefScale=13\nColumn 0  Width=28\nColumn 1  Width=49\nColumn 2  Width=91\n\n[Table][0xE1426ECD,3]\nRefScale=13\nColumn 0  Width=28\nColumn 1  Width=49\nColumn 2  Width=91\n\n[Table][0x0F0A719E,3]\nRefScale=13\nColumn 0  Width=28\nColumn 1  Width=49\nColumn 2  Width=91\n\n[Table][0x8AAA1659,3]\nRefScale=13\nColumn 0  Width=28\nColumn 1  Width=49\nColumn 2  Width=91\n\n[Table][0xE606E5E5,3]\nRefScale=13\nColumn 0  Width=28\nColumn 1  Width=49\nColumn 2  Width=91\n\n[Table][0x5F1C5337,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x25F01B37,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xB610C74C,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x69681682,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x9ECD2871,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x806482F9,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x97D75D0D,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xE334098B,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x7EDBC976,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xA1DA3CFD,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x5EBFF6F6,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x48D6A886,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x21350883,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x2CC9FDC8,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x08812114,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xC5C569B3,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xD209B340,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x3D95FF14,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x87F5E3E9,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xD4996B6F,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x1B924E98,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x63DD2B53,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xF29EDAE3,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x0ED21106,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x747FD54F,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xE7DE857D,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xA4E13FCF,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x53AB06EC,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x2292D920,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xA2A7E324,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xA1B3E159,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x4BAB775F,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x0B6A71AF,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xE10CAA6C,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xD9E51F97,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xF3A04193,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x30E98BEC,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xE674BB42,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xF938B0B9,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x2F5691F3,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x103424C2,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x01CE0850,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xF6783D97,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xE8C29C2B,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x32F2161A,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x139477CF,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xD811AC2D,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xD815EFB2,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x3CC70297,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xF345638E,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x5C601B56,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x1F4636B1,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x818F312C,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xAF4B41B9,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x65B7378D,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x0E7EEAC1,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x8CBBA3F6,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x0FA7893A,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x5B11DC50,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xE6AB1D41,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xECBCEF66,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x392FDAE9,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x05B07B1D,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xAB2E5B95,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x1DDCEBFB,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x4222CFEE,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x878D8A4A,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x0B9C876F,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x6E811E31,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xEC3E9C3A,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x5BF24545,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x05320841,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x8DC01CA2,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xA547A0B3,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x53C4853A,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x5B4DBF5C,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x72D0090F,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x0DDF6FF3,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xD92C0A13,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x1975CFBF,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x30209E68,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x286F6BEE,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xDA88027F,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x2269ED35,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xCB830FA5,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xCB65794E,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xDDCAE3F7,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xBE160F37,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xFCDE6FC2,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xE884DF98,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x9D233A65,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xA0571486,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x742FAE1E,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x0F8157E1,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x4A10F1D2,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xCF35D149,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x92DD6E8E,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x26394532,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xEFE87E67,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x4E2BBEEE,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x06E4EA1C,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x6BFD7882,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x9ECFBD1F,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x71D1F689,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x09074819,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x98DD62F2,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xD4D98227,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x38CCCE82,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xB180EBBA,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xB6177812,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x588C7FC1,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x39AAE8CA,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xE69A232D,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xD0A67CB1,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xDA33FDCA,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xE679BA38,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x333F69B1,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x03CE7A6F,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x401C10D8,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xDAB18E96,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x84A42594,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x33BD1AED,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xD26E7D9B,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xFA1D86DA,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x53BA567D,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xB3F515BC,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xBAB6C206,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x4A9BC571,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xBA5A7804,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xAB9F321B,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x17DCF4B5,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xDBD701DE,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xFCA28AB9,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x64A2FD60,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xD0C461CE,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x8DAE691B,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x966B87A4,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x4C3FAE1D,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x7F6713DF,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xC335AFA8,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x45DCBC1E,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x2A393BD3,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x7F174340,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xEBB1F4B8,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x961BD73B,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x3CB27C5C,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xFFF30DC8,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xD5BEE827,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xF4CEF456,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x1FEE985E,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x1DC2602D,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xC793BC38,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xB5D78949,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x2E9F2843,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x1A54F0D0,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x1BDB244F,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xF35864AB,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xC69DB5B4,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x51D8484B,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x2F9121CF,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x25DBD7E5,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x4D576F4B,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xCCD7439E,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x60EDD786,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x99A969A9,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xD5F7078B,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xE7AD0FC4,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x9A4F2EC0,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x06EC2FF5,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x7D024F5B,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x61D62858,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xADB5A8E8,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x336E7D89,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xD2E46510,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x8077566A,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xAAB18C78,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xC366EAE9,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x43BD1803,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xAB4697D9,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x62B68E8C,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x424A03A2,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x6538D2D8,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x157FC05F,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x8C3446A3,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x05F496FA,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xC07F4DFF,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xECF80281,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x7FEB0D67,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x4EBBBD9D,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x96E7991C,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x9BF977DB,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x8C885040,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x72F5E3A0,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xC275E6D1,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x6C0435CF,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x2B7972AA,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x2D9F2F68,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xDE56D42E,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xC493BB13,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xD86C556F,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x40C7B2F7,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x3160C114,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x1DA47AF7,3]\nRefScale=22.4\nColumn 0  Width=45\nColumn 1  Width=79\nColumn 2  Width=146\n\n[Table][0xBED661AE,3]\nRefScale=22.4\nColumn 0  Width=45\nColumn 1  Width=79\nColumn 2  Width=146\n\n[Table][0xF4A8EE8C,3]\nRefScale=22.4\nColumn 0  Width=45\nColumn 1  Width=79\nColumn 2  Width=146\n\n[Table][0xCE973895,3]\nRefScale=22.4\nColumn 0  Width=45\nColumn 1  Width=79\nColumn 2  Width=146\n\n[Table][0x1DB95298,3]\nRefScale=22.4\nColumn 0  Width=45\nColumn 1  Width=79\nColumn 2  Width=146\n\n[Table][0x279BACEE,3]\nRefScale=22.4\nColumn 0  Width=45\nColumn 1  Width=79\nColumn 2  Width=146\n\n[Table][0xDFB98340,3]\nRefScale=22.4\nColumn 0  Width=45\nColumn 1  Width=79\nColumn 2  Width=146\n\n[Table][0xEB115A78,3]\nRefScale=22.4\nColumn 0  Width=45\nColumn 1  Width=79\nColumn 2  Width=146\n\n[Table][0x36B5173B,3]\nRefScale=22.4\nColumn 0  Width=45\nColumn 1  Width=79\nColumn 2  Width=146\n\n[Table][0xB9609750,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xF6C09308,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x506C032B,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x75E427A4,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x4CDC21BD,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x9CE8B3DF,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xB823487C,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xC419BC34,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x512FDC07,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xAA5C0B5A,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x1606468A,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x43509F21,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xFE33F109,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xE430293E,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x14E40A07,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x0362D3C2,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x57556ADF,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x8B293844,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x58A08D7C,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xC4F93FF1,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x1DA9C04E,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x0C6B673C,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x9A477F8B,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xE7E2BFBC,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x294F79EB,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xAAE3D6E2,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xC043ED90,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x5961DB33,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x229BA2A6,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x11F788B0,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x5662E66F,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x8D38C206,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x74FC3F9C,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x6434567D,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x1401AFE6,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xD46FE489,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xC202CB13,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x196EE17E,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x2B0E5F68,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x4E8EF32B,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x31E0D5D8,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xA7826750,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x22BC0FF0,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x208DEC78,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xCBB09B8B,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x136B1703,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x040898C6,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xAD507099,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x146CD9FB,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x445CE4E2,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xC04F19E4,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x3AB5CB13,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xA2A5331E,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x67BF3A3B,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x4BA9A765,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xBC10097D,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xB31ABFE3,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x551C9D06,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xD4B17B2F,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x36172E49,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x58031B09,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xE49619D4,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x20C60BFB,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xB75D4FF4,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xC9CA9F80,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x473B8CF8,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x2E33E3C9,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x0159D21C,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x8912A7F6,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xE8554667,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x9D6571CE,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xE15328AD,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x9B5D1169,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xA9E72686,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x72518512,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xD9916DDD,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x65A99D6F,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x16CB6A0B,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0x0AD6B089,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xFFC7FE70,3]\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\n\n[Table][0xDD0D2DED,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x43743183,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x3401B996,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x52BB059E,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0x079A7E4B,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x7C1BA00D,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xEE96EA30,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x70B32CE6,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0x67FEE80B,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x0AA7850B,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x8EF27C70,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x6DED299B,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0x794BD268,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xDE0200D3,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x90474613,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xB9DEC586,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0xDAB7336A,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x30AF9D1E,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x33BBA711,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x49346DD1,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0xDF778E15,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xF010310E,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xCB89ECDE,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xFCB2D454,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x580F7850,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0x19C65E71,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=106\n\n[Table][0x87D38CF7,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xBE4C1658,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x6EDF188C,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x957D5119,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0xF05278D0,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x1B3122C7,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x195EECAB,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x42109604,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0x2935C628,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xA88E3F57,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xC0395253,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x5057C378,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0xBEA47170,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xCDA97726,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x57A8E50B,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x1E74274A,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0x04D56C3A,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x5B1AAEB5,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xEDD9F841,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xBB170250,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0x3C7E245A,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x169064A5,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xA28464CB,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x91063D37,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x95DB08C4,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x018E7FCA,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x4594A65B,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x61EEBEB1,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xF1C38413,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x195D2031,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x3D71B8E9,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x44F9890F,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xD47D2C92,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x0037EEEA,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0x21F77A1C,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x8932095E,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xCFE99984,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x77080CCB,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x26E50DFF,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x3273B8FE,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0x31127486,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x99F8960A,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xD81EE0FD,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xF048CA5B,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0x945E65A1,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x3C576F70,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x7D52F1DA,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xE1F9B430,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0xB72B5F80,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x701D0A14,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x0B707468,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xDE703B75,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x09DA84F3,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xB9AFDB49,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xBB902EB1,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x21CFB15F,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x529CBACA,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x928E6E16,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0xB0B14BE8,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x3373796A,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x59BDDF93,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xA500F49E,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0x611D3B98,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x63A7A426,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x8811AFE3,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x01AE0A2A,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0x3A5317EA,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xDDF7FA1A,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xD35F8391,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xFE8EB176,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0x72E98A6A,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x3007C3A7,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x9BE51E11,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xF0E0047B,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0x4CEA1B4A,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x0B57E0FE,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xA5E68F31,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x39FEA844,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0x286E1715,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xF0E72897,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xC162836E,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x187EC998,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0x152E9710,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x80B09C98,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xA5FB93EE,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=106\n\n[Table][0x16AA6640,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0x77A77867,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x4EB3F1E8,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xF74DDA40,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xEB39AE21,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x64FCFBD0,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x1BA58C44,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xBDA90053,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x6FCD0B25,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x54A59428,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x6CEAEBFA,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0x3A90AE89,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x094C0941,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x005C1C33,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=106\n\n[Table][0x247DDC6E,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=106\n\n[Table][0xC382C0D1,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=106\n\n[Table][0xA328A768,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=106\n\n[Table][0x8B167D20,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=106\n\n[Table][0xD14D629A,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=106\n\n[Table][0x18E087F7,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=106\n\n[Table][0x4E40E684,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=106\n\n[Table][0x8DB9E4D1,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=106\n\n[Table][0xA71CE34E,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=106\n\n[Table][0x607DFC3E,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x5C13C23C,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x89716845,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x15520B28,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0x1D16F12E,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x41D9B955,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xB7F18AC6,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xEFA23464,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x5EFD1EBD,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x33EE38EC,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0xE756E15A,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x164B4C60,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x0E5A7521,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x095CFD0F,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0x3A54AF78,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=106\n\n[Table][0x47F77502,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x735B3432,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x7541C1B3,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=106\n\n[Table][0xF4D83ACD,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0x0ADC4630,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xBBC14E81,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x7EE2161A,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x600EB907,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x83C0FB59,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=106\n\n[Table][0xE2812411,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=79\n\n[Table][0xA7628850,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xF6DE9117,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xFD230B1B,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0x178A488C,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=79\n\n[Table][0xFA87BE02,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=0\n\n[Table][0x2E2F6CAF,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=0\n\n[Table][0xDB55337E,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=0\n\n[Table][0xC723F8D4,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=0\n\n[Table][0x1DA76363,2]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Width=0\n\n[Table][0x84AC09EE,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=0\n\n[Table][0xDA24C11D,4]\nRefScale=22.4\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=0\n\n[Table][0xACE6A264,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0xD761E188,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x45EA361F,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x379C9A94,2]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Width=84\n\n[Table][0x9CB584E1,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x4A83C501,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0xFA23DE31,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0xCC36818F,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x132F4A4A,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x356F765C,2]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Width=84\n\n[Table][0x53D30087,2]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Width=84\n\n[Table][0x29938E63,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x49800107,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x17858293,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0xF403E517,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0xFE8916E8,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0xC628EB3A,2]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Width=84\n\n[Table][0x76DB6A1C,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x8965254E,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x9FD7FE67,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x3635B2F1,2]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Width=84\n\n[Table][0x49CACE10,2]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Width=84\n\n[Table][0x17E7D459,2]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Width=84\n\n[Table][0x71EEF9CF,2]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Width=84\n\n[Table][0x6735AE9A,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x8DAFED9F,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x8E393AE1,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x3BA908E7,3]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Width=84\n\n[Table][0xE5F7344A,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x0BFEFDD1,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x0CFBA031,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x48E4FC59,3]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Width=84\n\n[Table][0x120152A4,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x4CBBC4C8,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0xFB0DC6DF,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0xF9B6C414,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x8731C0D2,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x10BA506F,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0xEA166224,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0xA1FB50D8,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x031AF65F,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x71307008,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x93B81A29,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x983CE473,4]\nRefScale=24\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=84\n\n[Table][0x8345F4F0,6]\nRefScale=24\nColumn 0  Width=17\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=25\n\n[Table][0x202C1583,6]\nRefScale=24\nColumn 0  Width=17\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=25\n\n[Table][0x6A49608B,6]\nRefScale=24\nColumn 0  Width=17\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=25\n\n[Table][0x6EB88217,4]\nRefScale=24\nColumn 0  Width=23\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=25\n\n[Table][0xB6FF9868,6]\nRefScale=24\nColumn 0  Width=17\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=25\n\n[Table][0xDECDB499,6]\nRefScale=24\nColumn 0  Width=17\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=25\n\n[Table][0x5FF30C13,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x7F441553,4]\nRefScale=24\nColumn 0  Width=23\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=25\n\n[Table][0x8DF45268,6]\nRefScale=24\nColumn 0  Width=17\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=25\n\n[Table][0xDEF6BF53,6]\nRefScale=24\nColumn 0  Width=17\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=25\n\n[Table][0x64F8C613,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xD983F324,4]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0x58C33AAB,4]\nRefScale=24\nColumn 0  Width=17\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=25\n\n[Table][0x85CA59C3,6]\nRefScale=24\nColumn 0  Width=17\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=25\n\n[Table][0x487A6C8F,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x0E9CCDAC,4]\nRefScale=24\nColumn 0  Width=17\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=25\n\n[Table][0x6B56ACA0,6]\nRefScale=24\nColumn 0  Width=17\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=25\n\n[Table][0x4BAF572F,6]\nRefScale=24\nColumn 0  Width=17\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=25\n\n[Table][0x825A38DB,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xF7FAA00C,6]\nRefScale=24\nColumn 0  Width=17\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=25\n\n[Table][0x945314E0,6]\nRefScale=24\nColumn 0  Width=17\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=25\n\n[Table][0x1EF63477,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x576F3E9A,4]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0xC15B5A81,4]\nRefScale=24\nColumn 0  Width=17\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=25\n\n[Table][0x5490FD10,6]\nRefScale=24\nColumn 0  Width=17\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=25\n\n[Table][0x33D44CF8,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x562096E3,4]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0x8474E325,6]\nRefScale=24\nColumn 0  Width=17\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=25\n\n[Table][0x6BEA63C9,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x6392A3CA,6]\nRefScale=24\nColumn 0  Width=17\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=25\n\n[Table][0xC4D02A9C,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xBF4BFB7A,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x45A5813B,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x2F49FFBC,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x5254EEC1,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x8C8CD663,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xA74728C8,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xE7C9902D,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x04F0F9B5,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xA703DC1E,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x99885AE8,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xE7B717BC,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x5F22EADB,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x0EBB83C7,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x31D8C5C8,4]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0xB3A3B950,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x711A3849,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x26B54475,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xBD5B929C,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xCFB9D00E,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xD03E077D,4]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0x519641C0,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xD77EB12C,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xEA0C5128,4]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0x207DCD37,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x258F7AA9,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xC971594C,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x68E671E0,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x3D70A662,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x81EAE59B,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x7BB5BFD0,4]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0x8720E2FB,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xB7FAA91D,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x6E2C7680,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x43AD4DF2,4]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0xC2981EBA,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xB66460E7,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x2B948AC1,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x4F463F4F,4]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0x1BE5AD1F,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x10014A33,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xF2E93964,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x71A950E7,4]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0x3CD64081,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x0791C79D,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xD5DAD4FA,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xD224298D,4]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0x1268CB4B,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x7C0E52B8,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xFB645F30,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xBAB2E53E,4]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0x7EDC11F2,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xCEDFED4A,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x97D08589,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xC7E67ACD,4]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0xB6E3DA04,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x9A5699A3,6]\nRefScale=24\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Docking][Data]\nDockSpace                                                         ID=0x11111111 Window=0xA87D555D Pos=634,790 Size=1280,690 Split=X\n  DockNode                                                        ID=0x0000004D Parent=0x11111111 SizeRef=360,690 Selected=0xACA4FAE6\n  DockNode                                                        ID=0x0000004E Parent=0x11111111 SizeRef=3478,690 Split=X\n    DockNode                                                      ID=0x0000003A Parent=0x0000004E SizeRef=444,2024 Selected=0xECC1AC1F\n    DockNode                                                      ID=0x0000003C Parent=0x0000004E SizeRef=3394,2024 Split=X\n      DockNode                                                    ID=0x00000038 Parent=0x0000003C SizeRef=316,2024 Selected=0x60242B41\n      DockNode                                                    ID=0x00000039 Parent=0x0000003C SizeRef=1598,2024 Split=X\n        DockNode                                                  ID=0x00000035 Parent=0x00000039 SizeRef=423,2024 Selected=0xD6F83F5C\n        DockNode                                                  ID=0x00000037 Parent=0x00000039 SizeRef=3415,2024 Split=X\n          DockNode                                                ID=0x00000016 Parent=0x00000037 SizeRef=467,690 Selected=0x3760BB01\n          DockNode                                                ID=0x00000027 Parent=0x00000037 SizeRef=3371,690 Split=X\n            DockNode                                              ID=0x0000000C Parent=0x00000027 SizeRef=421,2024 Selected=0xC3CCF5DC\n            DockNode                                              ID=0x00000012 Parent=0x00000027 SizeRef=3417,2024 Split=X\n              DockNode                                            ID=0x00000009 Parent=0x00000012 SizeRef=417,2024 Selected=0xAD9CC569\n              DockNode                                            ID=0x0000000A Parent=0x00000012 SizeRef=3421,2024 Split=X\n                DockNode                                          ID=0x00000034 Parent=0x0000000A SizeRef=427,2054 Selected=0xC3CCF5DC\n                DockNode                                          ID=0x0000003B Parent=0x0000000A SizeRef=3411,2054 Split=X\n                  DockNode                                        ID=0x0000001D Parent=0x0000003B SizeRef=450,2054 Selected=0x31AC9BD0\n                  DockNode                                        ID=0x0000001E Parent=0x0000003B SizeRef=3388,2054 Split=Y\n                    DockNode                                      ID=0x00000025 Parent=0x0000001E SizeRef=3840,82 Selected=0x738351EE\n                    DockNode                                      ID=0x00000026 Parent=0x0000001E SizeRef=3840,1970 Split=X\n                      DockNode                                    ID=0x00000005 Parent=0x00000026 SizeRef=372,691 Split=Y Selected=0xDF1A5BBC\n                        DockNode                                  ID=0x0000001F Parent=0x00000005 SizeRef=337,1571 Split=Y Selected=0xDF1A5BBC\n                          DockNode                                ID=0x0000002B Parent=0x0000001F SizeRef=337,1197 Split=Y Selected=0xDF1A5BBC\n                            DockNode                              ID=0x0000002D Parent=0x0000002B SizeRef=337,832 Split=Y Selected=0xDF1A5BBC\n                              DockNode                            ID=0x0000002F Parent=0x0000002D SizeRef=337,362 Selected=0xDF1A5BBC\n                              DockNode                            ID=0x00000030 Parent=0x0000002D SizeRef=337,599 Split=Y Selected=0xE053C527\n                                DockNode                          ID=0x00000031 Parent=0x00000030 SizeRef=337,393 Selected=0xE053C527\n                                DockNode                          ID=0x00000033 Parent=0x00000030 SizeRef=337,437 Selected=0xA3C63FD9\n                            DockNode                              ID=0x0000002E Parent=0x0000002B SizeRef=337,363 Selected=0x36E662D7\n                          DockNode                                ID=0x0000002C Parent=0x0000001F SizeRef=337,372 Selected=0xEB50ABEC\n                        DockNode                                  ID=0x0000002A Parent=0x00000005 SizeRef=337,481 Selected=0x01029571\n                      DockNode                                    ID=0x0000001C Parent=0x00000026 SizeRef=3466,691 Split=X\n                        DockNode                                  ID=0x00000019 Parent=0x0000001C SizeRef=1717,1244 Split=X\n                          DockNode                                ID=0x00000017 Parent=0x00000019 SizeRef=277,691 Split=Y Selected=0xDF1A5BBC\n                            DockNode                              ID=0x00000013 Parent=0x00000017 SizeRef=261,622 Selected=0xC6F04C7F\n                            DockNode                              ID=0x0000001B Parent=0x00000017 SizeRef=261,620 Selected=0xC9425FD2\n                          DockNode                                ID=0x00000018 Parent=0x00000019 SizeRef=1262,691 Split=X\n                            DockNode                              ID=0x00000001 Parent=0x00000018 SizeRef=459,2025 Split=Y Selected=0xC9425FD2\n                              DockNode                            ID=0x0000000D Parent=0x00000001 SizeRef=970,503 Selected=0x788CE90D\n                              DockNode                            ID=0x00000014 Parent=0x00000001 SizeRef=970,574 Selected=0xCE5FF149\n                            DockNode                              ID=0x00000011 Parent=0x00000018 SizeRef=3379,2025 Split=X\n                              DockNode                            ID=0x00000002 Parent=0x00000011 SizeRef=461,701 Selected=0xC9425FD2\n                              DockNode                            ID=0x00000007 Parent=0x00000011 SizeRef=2691,701 Split=X\n                                DockNode                          ID=0x0000000E Parent=0x00000007 SizeRef=1158,701 Split=X\n                                  DockNode                        ID=0x0000000B Parent=0x0000000E SizeRef=1252,2025 Selected=0x03AF019D\n                                  DockNode                        ID=0x00000015 Parent=0x0000000E SizeRef=1380,2025 Split=X Selected=0x270D7F3A\n                                    DockNode                      ID=0x00000008 Parent=0x00000015 SizeRef=969,1244 Split=X Selected=0xDB1EEB52\n                                      DockNode                    ID=0x00000045 Parent=0x00000008 SizeRef=2839,1657 Split=X Selected=0xDB1EEB52\n                                        DockNode                  ID=0x00000032 Parent=0x00000045 SizeRef=2508,1145 Split=Y Selected=0x270D7F3A\n                                          DockNode                ID=0x00000046 Parent=0x00000032 SizeRef=3840,543 Selected=0x7362BB5E\n                                          DockNode                ID=0x00000047 Parent=0x00000032 SizeRef=3840,1509 Split=X Selected=0x270D7F3A\n                                            DockNode              ID=0x00000041 Parent=0x00000047 SizeRef=1676,1451 Split=Y Selected=0x45B3685A\n                                              DockNode            ID=0x00000028 Parent=0x00000041 SizeRef=3417,1610 Split=X Selected=0xDB1EEB52\n                                                DockNode          ID=0x0000003D Parent=0x00000028 SizeRef=1452,1679 Split=X Selected=0x270D7F3A\n                                                  DockNode        ID=0x00000003 Parent=0x0000003D SizeRef=2644,1640 CentralNode=1 Selected=0x020D8D2D\n                                                  DockNode        ID=0x00000004 Parent=0x0000003D SizeRef=725,1640 Split=Y Selected=0x71477E20\n                                                    DockNode      ID=0x00000043 Parent=0x00000004 SizeRef=725,872 Split=Y Selected=0x71477E20\n                                                      DockNode    ID=0x00000049 Parent=0x00000043 SizeRef=725,872 Split=Y Selected=0x71477E20\n                                                        DockNode  ID=0x0000004B Parent=0x00000049 SizeRef=725,872 Selected=0x71477E20\n                                                        DockNode  ID=0x0000004C Parent=0x00000049 SizeRef=725,870 Selected=0x6B360BD5\n                                                      DockNode    ID=0x0000004A Parent=0x00000043 SizeRef=725,870 Selected=0xC8BA8831\n                                                    DockNode      ID=0x00000044 Parent=0x00000004 SizeRef=725,870 Selected=0x5FA6207C\n                                                DockNode          ID=0x0000003E Parent=0x00000028 SizeRef=683,1679 Split=Y Selected=0xA02B4E45\n                                                  DockNode        ID=0x00000006 Parent=0x0000003E SizeRef=676,872 Split=Y Selected=0xA02B4E45\n                                                    DockNode      ID=0x00000029 Parent=0x00000006 SizeRef=676,872 Selected=0xA02B4E45\n                                                    DockNode      ID=0x00000040 Parent=0x00000006 SizeRef=676,870 Selected=0x4A174F38\n                                                  DockNode        ID=0x00000010 Parent=0x0000003E SizeRef=676,870 Selected=0xAD3A4262\n                                              DockNode            ID=0x00000036 Parent=0x00000041 SizeRef=3417,412 Selected=0x197EBCEF\n                                            DockNode              ID=0x00000042 Parent=0x00000047 SizeRef=617,1451 Selected=0x7595AD12\n                                        DockNode                  ID=0x0000003F Parent=0x00000045 SizeRef=904,1145 Selected=0xA02B4E45\n                                      DockNode                    ID=0x00000048 Parent=0x00000008 SizeRef=580,1657 Selected=0x30E1F455\n                                    DockNode                      ID=0x00000020 Parent=0x00000015 SizeRef=896,1244 Selected=0x86769BE9\n                                DockNode                          ID=0x0000000F Parent=0x00000007 SizeRef=389,701 Selected=0x71477E20\n                        DockNode                                  ID=0x0000001A Parent=0x0000001C SizeRef=521,1244 Selected=0xA02B4E45\nDockSpace                                                         ID=0x193D99E0 Pos=1959,1825 Size=931,554 Split=X\n  DockNode                                                        ID=0x00000023 Parent=0x193D99E0 SizeRef=281,373 Selected=0x82C5531C\n  DockNode                                                        ID=0x00000024 Parent=0x193D99E0 SizeRef=285,373 CentralNode=1 Selected=0xC56529CC\nDockSpace                                                         ID=0xFB09E058 Pos=1003,437 Size=1026,564 Split=Y\n  DockNode                                                        ID=0x00000021 Parent=0xFB09E058 SizeRef=451,159 CentralNode=1\n  DockNode                                                        ID=0x00000022 Parent=0xFB09E058 SizeRef=451,157 Selected=0x7B17B3D3\n\n"
+}
