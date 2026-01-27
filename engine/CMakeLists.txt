@@ -1,3 +1,16 @@
+# Read template files for code generation embedding
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/resources/templates/gctrl.hpp" TEMPLATE_GCTRL_HPP)
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/resources/templates/gctrl_udp_windows.cpp" TEMPLATE_GCTRL_UDP_WINDOWS)
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/resources/templates/gctrl_udp_linux.cpp" TEMPLATE_GCTRL_UDP_LINUX)
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/resources/templates/CMakeLists.txt.in" TEMPLATE_CMAKE_LISTS)
+
+# Generate the templates header with embedded content
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/resources/templates/templates.hpp.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/generated/templates.hpp"
+    @ONLY
+)
+
 # Main application source
 set(ENGINE_SOURCES
     main.cpp
@@ -24,6 +37,7 @@ add_executable(gctrl ${ENGINE_SOURCES})
 
 target_include_directories(gctrl PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}/generated
     ${CMAKE_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/lib
     ${CMAKE_SOURCE_DIR}/lib/nlohmann

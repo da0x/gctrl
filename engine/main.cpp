@@ -34,7 +34,8 @@ void parse_command_line(fs::path& project_path, LPSTR lpCmdLine) {
     if (!cmd_line.empty()) {
         fs::path path(cmd_line);
         if (fs::exists(path) && path.extension() == ".ctrl") {
-            project_path = path;
+            project_path = fs::absolute(path);
+            fs::current_path(project_path.parent_path());
         }
     }
 }
@@ -47,7 +48,8 @@ void parse_command_line(fs::path& project_path, int argc, char* argv[]) {
     if (argc > 1) {
         fs::path path(argv[1]);
         if (fs::exists(path) && path.extension() == ".ctrl") {
-            project_path = path;
+            project_path = fs::absolute(path);
+            fs::current_path(project_path.parent_path());
         }
     }
 }
