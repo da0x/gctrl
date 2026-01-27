@@ -46,6 +46,9 @@
 
 namespace ui {
 
+    inline bool exit_requested = false;
+    inline void request_exit() { exit_requested = true; }
+
     class app {
     public:
         SDL_Window* window;
@@ -87,12 +90,17 @@ namespace ui {
 
             const ImWchar glyph_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
             std::string system_ui_font = platform::font::get_system_ui_font();
+            std::string system_mono_font = platform::font::get_system_monospace_font();
             ui::font::load(ui::font::type::ui, system_ui_font.c_str(), 16.0f);
             ui::font::load_from_resource(ui::font::type::ui, platform::font::FONT_AWESOME, 12.0f, true, glyph_ranges);
             ui::font::load(ui::font::type::ui_large, system_ui_font.c_str(), 28.0f);
-            ui::font::load_from_resource(ui::font::type::code, platform::font::CASCADIA_CODE, 16.0f);
+            if (!ui::font::load_from_resource(ui::font::type::code, platform::font::CASCADIA_CODE, 16.0f)) {
+                ui::font::load(ui::font::type::code, system_mono_font.c_str(), 16.0f);
+            }
             ui::font::load_from_resource(ui::font::type::code, platform::font::FONT_AWESOME, 12.0f, true, glyph_ranges);
-            ui::font::load_from_resource(ui::font::type::console, platform::font::CONSOLA, 16.0f);
+            if (!ui::font::load_from_resource(ui::font::type::console, platform::font::CONSOLA, 16.0f)) {
+                ui::font::load(ui::font::type::console, system_mono_font.c_str(), 16.0f);
+            }
 
             io.Fonts->Build();
             apply_theme();
@@ -112,6 +120,9 @@ namespace ui {
         }
 
         bool frame() {
+            if (exit_requested) {
+                return false;
+            }
             SDL_Event event;
             while (SDL_PollEvent(&event)) {
                 if (event.type == SDL_QUIT || event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_F12) {

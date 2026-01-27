@@ -103,7 +103,7 @@ namespace ui {
             if (ImGui::Button("Copy")) {
                 ImGui::LogToClipboard();
                 for (const auto& [line, stream_color] : terminal_log) {
-                    ImGui::LogText("%s", line.c_str());
+                    ImGui::LogText("%s\n", line.c_str());
                 }
                 ImGui::LogFinish();
             }

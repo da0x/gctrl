@@ -98,7 +98,7 @@ namespace driver {
                 code::declare_variable(socket.prototype_typename(), socket.instance_name());
             }
 
-            code::function_begin(display_name() + "() : listener(\"127.0.0.1\", 8081, registry), sender(\"127.0.0.1\", 8080)");
+            code::function_begin(name + "() : listener(\"127.0.0.1\", 8081, registry), sender(\"127.0.0.1\", 8080)");
             code::line("listener.start();");
             for (auto& plug : plugs) {
                 if (!plug.outgoing.empty()) {
