@@ -44,12 +44,15 @@
 
 namespace controls {
 
+    enum class terminal_operation { none, build, rebuild, clean, run };
+
     class engine {
     public:
         std::filesystem::path engine_file;
         ui::navigation::mode current_mode;
         bool ui_settings_loaded = false;
         bool ne_settings_loaded = false;
+        terminal_operation current_operation = terminal_operation::none;
 
         const signal::object::list signals;
         function::object::list functions;
@@ -321,6 +324,8 @@ namespace controls {
 
                 if (ui::menu::begin("  File  ")) {
                     if (ui::menu::item("Save Engine", "Ctrl+S")) { save_engine(); }
+                    ImGui::Separator();
+                    if (ui::menu::item("Exit", "Alt+F4")) { ui::request_exit(); }
                     ui::menu::end();
                 }
 
@@ -344,23 +349,26 @@ namespace controls {
                     }
 
                     if (ui::menu::item(string(ui::icon::build) + "\tBuild", "F7", !is_building && current_mode == ui::navigation::mode::edit)) {
+                        current_operation = terminal_operation::build;
                         terminal::execute({
-                            "cmake -S . -B build",
+                            "cmake -S gctrl -B build",
                             "cmake --build build"
                             }
                         );
                     }
 
                     if (ui::menu::item(string(ui::icon::rebuild) + "\tRebuild", "Shift+F7", !is_building && current_mode == ui::navigation::mode::edit)) {
+                        current_operation = terminal_operation::rebuild;
                         terminal::execute({
                             "cmake --build build --target clean",
-                            "cmake -S . -B build",
+                            "cmake -S gctrl -B build",
                             "cmake --build build"
                             }
                         );
                     }
 
                     if (ui::menu::item(string(ui::icon::trash) + "\tClean", "Ctrl+Shift+F7", !is_building && current_mode == ui::navigation::mode::edit)) {
+                        current_operation = terminal_operation::clean;
                         terminal::execute({
                             "cmake --build build --target clean"
                             }
@@ -381,18 +389,36 @@ namespace controls {
                 }
 
                 if (terminal::finished()) {
+                    const char* op_name = "Operation";
+                    switch (current_operation) {
+                        case terminal_operation::build: op_name = "Build"; break;
+                        case terminal_operation::rebuild: op_name = "Rebuild"; break;
+                        case terminal_operation::clean: op_name = "Clean"; break;
+                        case terminal_operation::run: op_name = "Run"; break;
+                        default: break;
+                    }
                     if (terminal::success()) {
-                        ui::good << "Build succeeded!" << ui::endl;
+                        ui::good << op_name << " succeeded!" << ui::endl;
                     }
                     else {
-                        ui::cerr << "Build failed!" << ui::endl;
+                        ui::cerr << op_name << " failed!" << ui::endl;
                     }
+                    current_operation = terminal_operation::none;
                 }
 
                 if (ui::menu::begin("  Debug  ")) {
                     ImGui::BeginDisabled(terminal::is_running());
                     if (ui::menu::item(string(ui::icon::play) + "\tStart Debugging", "F5", current_mode == ui::navigation::mode::edit)) {
-                        terminal::execute({ std::filesystem::current_path().string() + "/build/bin/Debug/thermostat.exe" });
+                        if (!machines.empty()) {
+                            current_operation = terminal_operation::run;
+                            std::string exe_name = machines.front().name;
+#if GCTRL_PLATFORM_WINDOWS
+                            std::string exe_path = std::filesystem::current_path().string() + "/build/bin/Debug/" + exe_name + ".exe";
+#else
+                            std::string exe_path = std::filesystem::current_path().string() + "/build/bin/" + exe_name;
+#endif
+                            terminal::execute({ exe_path });
+                        }
                         navigate_to_most_recent(ui::navigation::mode::run);
                     }
                     ImGui::EndDisabled();

@@ -149,6 +149,9 @@ namespace machine {
             code::struct_end();
             code::namespace_end();
             code::commit(file_name());
+
+            // Generate boilerplate files
+            code::generate_boilerplate(name);
         }
 
         std::string variable_name(uint64_t id) const {
