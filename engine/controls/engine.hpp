@@ -360,7 +360,7 @@ namespace controls {
                     if (ui::menu::item(string(ui::icon::rebuild) + "\tRebuild", "Shift+F7", !is_building && current_mode == ui::navigation::mode::edit)) {
                         current_operation = terminal_operation::rebuild;
                         terminal::execute({
-                            "cmake --build build --target clean",
+                            "rm -rf build",
                             "cmake -S gctrl -B build",
                             "cmake --build build"
                             }
@@ -370,7 +370,7 @@ namespace controls {
                     if (ui::menu::item(string(ui::icon::trash) + "\tClean", "Ctrl+Shift+F7", !is_building && current_mode == ui::navigation::mode::edit)) {
                         current_operation = terminal_operation::clean;
                         terminal::execute({
-                            "cmake --build build --target clean"
+                            "rm -rf build"
                             }
                         );
                     }
