@@ -90,6 +90,7 @@ namespace element {
 
             for (const auto& f : functions) code::include(f.prototype_filename());
 
+            code::begin_gctrl_namespace();
             code::namespace_begin(namespace_);
             code::struct_begin(name);
             code::public_();
@@ -129,6 +130,7 @@ namespace element {
 
             code::struct_end();
             code::namespace_end();
+            code::end();
             code::commit(file_name());
         }
 

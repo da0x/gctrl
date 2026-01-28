@@ -68,6 +68,7 @@ namespace port {
                 o.generate();
             }
             code::begin(display_name());
+            code::begin_gctrl_namespace();
             code::namespace_begin(namespace_);
             code::struct_begin(name);
             code::public_();
@@ -86,6 +87,7 @@ namespace port {
 
             code::struct_end();
             code::namespace_end();
+            code::end();
             code::commit(file_name());
         }
 

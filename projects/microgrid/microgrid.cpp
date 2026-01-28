@@ -22,6 +22,8 @@
 #include <gctrl.hpp>
 #include <machine/microgrid.hpp>
 
+using namespace gctrl;
+
 int main() {
     machine::microgrid microgrid;
 

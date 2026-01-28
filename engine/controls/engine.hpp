@@ -350,6 +350,13 @@ namespace controls {
 
                     if (ui::menu::item(string(ui::icon::build) + "\tBuild", "F7", !is_building && current_mode == ui::navigation::mode::edit)) {
                         current_operation = terminal_operation::build;
+                        if (!std::filesystem::exists("gctrl")) {
+                            ui::cout << "Generating code..." << ui::endl;
+                            for (const auto& machine : machines) {
+                                machine.generate();
+                            }
+                            ui::good << "Code generation complete." << ui::endl;
+                        }
                         terminal::execute({
                             "cmake -S gctrl -B build",
                             "cmake --build build"
@@ -359,6 +366,12 @@ namespace controls {
 
                     if (ui::menu::item(string(ui::icon::rebuild) + "\tRebuild", "Shift+F7", !is_building && current_mode == ui::navigation::mode::edit)) {
                         current_operation = terminal_operation::rebuild;
+                        ui::cout << "Generating code..." << ui::endl;
+                        code::delete_gctrl_directory();
+                        for (const auto& machine : machines) {
+                            machine.generate();
+                        }
+                        ui::good << "Code generation complete." << ui::endl;
                         terminal::execute({
                             "rm -rf build",
                             "cmake -S gctrl -B build",

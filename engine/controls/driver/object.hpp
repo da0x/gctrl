@@ -84,6 +84,7 @@ namespace driver {
                 code::include(socket.prototype_filename());
             }
 
+            code::begin_gctrl_namespace();
             code::namespace_begin(namespace_);
             code::struct_begin(name);
             code::private_();
