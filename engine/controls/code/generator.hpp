@@ -78,11 +78,17 @@ namespace code {
             output_stream << "// Contact Information: www.gctrl.org\n";
             output_stream << "//\n\n";
             output_stream << "#pragma once" << "\n";
+            output_stream << "#include <gctrl.hpp>" << "\n";
             return *this;
         }
 
         stream& end() {
-            output_stream << "\n";
+            output_stream << "} // namespace gctrl\n";
+            return *this;
+        }
+
+        stream& begin_gctrl_namespace() {
+            output_stream << "\nnamespace gctrl {\n";
             return *this;
         }
 
@@ -203,6 +209,10 @@ namespace code {
 
     inline void end() {
         code_stream.end();
+    }
+
+    inline void begin_gctrl_namespace() {
+        code_stream.begin_gctrl_namespace();
     }
 
     inline void include(const std::string& path) {

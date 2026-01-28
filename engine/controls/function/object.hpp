@@ -71,6 +71,7 @@ namespace function {
 
         void generate() const override {
             code::begin(display_name());
+            code::begin_gctrl_namespace();
             code::namespace_begin(namespace_);
             code::struct_begin(name);
             code::public_();
@@ -105,7 +106,7 @@ namespace function {
 
             code::struct_end();
             code::namespace_end();
-
+            code::end();
             code::commit(file_name());
         }
     };
