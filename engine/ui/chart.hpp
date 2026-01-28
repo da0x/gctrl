@@ -23,7 +23,7 @@
 
 namespace ui {
     namespace chart {
-        void draw_square_chart_with_ball(float ball_x, float ball_y)
+        inline void draw_square_chart_with_ball(float ball_x, float ball_y)
         {
             return;
             ImDrawList* draw_list = ImGui::GetWindowDrawList();
@@ -43,7 +43,7 @@ namespace ui {
             ImGui::Dummy(ImVec2(square_size, square_size));
         }
 
-        void show_my_window()
+        inline void show_my_window()
         {
             return;
             ImGui::Begin("Square Chart with Ball");

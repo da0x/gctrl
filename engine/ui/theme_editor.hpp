@@ -31,12 +31,12 @@
 namespace ui {
 
     // Helper function to convert ImVec4 to JSON
-    nlohmann::json color_to_json(const ImVec4& color) {
+    inline nlohmann::json color_to_json(const ImVec4& color) {
         return { color.x, color.y, color.z, color.w };
     }
 
     // Helper function to convert JSON to ImVec4
-    ImVec4 json_to_color(const nlohmann::json& j) {
+    inline ImVec4 json_to_color(const nlohmann::json& j) {
         return ImVec4(j[0], j[1], j[2], j[3]);
     }
 
@@ -170,10 +170,10 @@ namespace ui {
     };
 
     // Global instance of the theme editor
-    ThemeEditor g_ThemeEditor;
+    inline ThemeEditor g_ThemeEditor;
 
     // Call this in your main application loop to render the editor
-    void render_theme_editor(bool dark_mode) {
+    inline void render_theme_editor(bool dark_mode) {
         g_ThemeEditor.render(dark_mode);
     }
 }

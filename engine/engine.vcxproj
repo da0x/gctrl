@@ -74,12 +74,16 @@
     <UseStructuredOutput>false</UseStructuredOutput>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PreBuildEvent>
+      <Command>cmake -DSOURCE_DIR="$(ProjectDir)resources\templates" -DOUTPUT_FILE="$(ProjectDir)generated\templates.hpp" -P "$(ProjectDir)resources\templates\generate_templates.cmake"</Command>
+      <Message>Generating templates.hpp...</Message>
+    </PreBuildEvent>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)lib\uuid;$(SolutionDir)lib\imgui;$(SolutionDir)lib\imgui\backends;$(SolutionDir)lib\imgui-node-editor;$(SolutionDir)lib\implot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)generated;$(SolutionDir);$(SolutionDir)lib\uuid;$(SolutionDir)lib\imgui;$(SolutionDir)lib\imgui\backends;$(SolutionDir)lib\imgui-node-editor;$(SolutionDir)lib\implot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -87,6 +91,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PreBuildEvent>
+      <Command>cmake -DSOURCE_DIR="$(ProjectDir)resources\templates" -DOUTPUT_FILE="$(ProjectDir)generated\templates.hpp" -P "$(ProjectDir)resources\templates\generate_templates.cmake"</Command>
+      <Message>Generating templates.hpp...</Message>
+    </PreBuildEvent>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -94,7 +102,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)lib\uuid;$(SolutionDir)lib\imgui;$(SolutionDir)lib\imgui\backends;$(SolutionDir)lib\imgui-node-editor;$(SolutionDir)lib\implot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)generated;$(SolutionDir);$(SolutionDir)lib\uuid;$(SolutionDir)lib\imgui;$(SolutionDir)lib\imgui\backends;$(SolutionDir)lib\imgui-node-editor;$(SolutionDir)lib\implot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -104,12 +112,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PreBuildEvent>
+      <Command>cmake -DSOURCE_DIR="$(ProjectDir)resources\templates" -DOUTPUT_FILE="$(ProjectDir)generated\templates.hpp" -P "$(ProjectDir)resources\templates\generate_templates.cmake"</Command>
+      <Message>Generating templates.hpp...</Message>
+    </PreBuildEvent>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir);$(SolutionDir)lib;$(SolutionDir)lib\uuid;$(SolutionDir)lib\imgui;$(SolutionDir)lib\imgui\backends;$(SolutionDir)lib\imgui-node-editor;$(SolutionDir)lib\implot;$(SolutionDir)lib\imgui-color-text-edit;$(SolutionDir)lib\L2DFileDialog\L2DFileDialog\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)generated;$(SolutionDir);$(SolutionDir)lib;$(SolutionDir)lib\uuid;$(SolutionDir)lib\imgui;$(SolutionDir)lib\imgui\backends;$(SolutionDir)lib\imgui-node-editor;$(SolutionDir)lib\implot;$(SolutionDir)lib\imgui-color-text-edit;$(SolutionDir)lib\L2DFileDialog\L2DFileDialog\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8
  %(AdditionalOptions)</AdditionalOptions>
@@ -124,6 +136,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PreBuildEvent>
+      <Command>cmake -DSOURCE_DIR="$(ProjectDir)resources\templates" -DOUTPUT_FILE="$(ProjectDir)generated\templates.hpp" -P "$(ProjectDir)resources\templates\generate_templates.cmake"</Command>
+      <Message>Generating templates.hpp...</Message>
+    </PreBuildEvent>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -131,7 +147,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir);$(SolutionDir)lib;$(SolutionDir)lib\uuid;$(SolutionDir)lib\imgui;$(SolutionDir)lib\imgui\backends;$(SolutionDir)lib\imgui-node-editor;$(SolutionDir)lib\implot;$(SolutionDir)lib\imgui-color-text-edit;$(SolutionDir)lib\L2DFileDialog\L2DFileDialog\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)generated;$(SolutionDir);$(SolutionDir)lib;$(SolutionDir)lib\uuid;$(SolutionDir)lib\imgui;$(SolutionDir)lib\imgui\backends;$(SolutionDir)lib\imgui-node-editor;$(SolutionDir)lib\implot;$(SolutionDir)lib\imgui-color-text-edit;$(SolutionDir)lib\L2DFileDialog\L2DFileDialog\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -192,6 +208,10 @@
     <ClInclude Include="controls\port\instance.hpp" />
     <ClInclude Include="controls\port\object.hpp" />
     <ClInclude Include="controls\port\editor.hpp" />
+    <ClInclude Include="platform\dpi.hpp" />
+    <ClInclude Include="platform\font.hpp" />
+    <ClInclude Include="platform\platform.hpp" />
+    <ClInclude Include="platform\process.hpp" />
     <ClInclude Include="project.hpp" />
     <ClInclude Include="resources\resource.h" />
     <ClInclude Include="resources\targetver.h" />
@@ -230,6 +250,9 @@
     <ClCompile Include="..\lib\implot\implot_items.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="controls\network\udp_windows.cpp" />
+    <ClCompile Include="platform\windows\dpi.cpp" />
+    <ClCompile Include="platform\windows\font.cpp" />
+    <ClCompile Include="platform\windows\process.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resources\editor.rc" />

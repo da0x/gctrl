@@ -28,9 +28,9 @@
 #include <iostream>
 
 namespace ui {
-    namespace main {
+    namespace main_menu {
 
-        void render() {
+        inline void render() {
             if (ImGui::BeginMainMenuBar()) {
                 if (ImGui::BeginMenu("File")) {
                     if (ImGui::MenuItem("New")) { /* Handle new action */ }

@@ -328,7 +328,7 @@ namespace ui {
             }
         }
 
-        void float_(const char* label, float& value) {
+        inline void float_(const char* label, float& value) {
             std::string eng_str = engineering::to_string(value);
             std::vector<char> buffer(256);
             std::strncpy(buffer.data(), eng_str.c_str(), buffer.size());
@@ -387,10 +387,10 @@ namespace ui {
 
         namespace ed = ax::NodeEditor;
 
-        std::map<uint64_t, std::string> editor_states;
-        uint64_t current_context_id = 0;
+        inline std::map<uint64_t, std::string> editor_states;
+        inline uint64_t current_context_id = 0;
 
-        bool save_settings_callback(const char* data, size_t size, ax::NodeEditor::SaveReasonFlags reason, void* user_pointer) {
+        inline bool save_settings_callback(const char* data, size_t size, ax::NodeEditor::SaveReasonFlags reason, void* user_pointer) {
             if (user_pointer) {
                 std::string* storage = static_cast<std::string*>(user_pointer);
                 storage->assign(data, size);
@@ -399,7 +399,7 @@ namespace ui {
             return false;
         }
 
-        size_t load_settings_callback(char* data, void* user_pointer) {
+        inline size_t load_settings_callback(char* data, void* user_pointer) {
             if (user_pointer) {
                 const std::string* storage = static_cast<const std::string*>(user_pointer);
                 size_t size = storage->size();
@@ -411,7 +411,7 @@ namespace ui {
             return 0;
         }
 
-        void context_begin(uint64_t id) {
+        inline void context_begin(uint64_t id) {
             if (id == current_context_id) return;
 
             if (current_context_id != 0) {
@@ -436,25 +436,25 @@ namespace ui {
             ed::SetCurrentEditor(ed::CreateEditor(&config));
         }
 
-        void context_end() {}
+        inline void context_end() {}
 
-        void begin(const std::string& id) {
+        inline void begin(const std::string& id) {
             ed::Begin(id.c_str());
         }
 
-        void end() {
+        inline void end() {
             ed::End();
         }
 
-        void begin_node(uint64_t id) {
+        inline void begin_node(uint64_t id) {
             ed::BeginNode(ed::NodeId(id));
         }
 
-        void end_node() {
+        inline void end_node() {
             ed::EndNode();
         }
 
-        nlohmann::json settings() {
+        inline nlohmann::json settings() {
             nlohmann::json json_data;
             for (const auto& [key, value] : editor_states) {
                 json_data[std::to_string(key)] = nlohmann::json::parse(value, nullptr, false);
@@ -462,7 +462,7 @@ namespace ui {
             return json_data;
         }
 
-        void settings(const nlohmann::json& ne_data) {
+        inline void settings(const nlohmann::json& ne_data) {
             if (ne_data.is_null()) return;
 
             for (const auto& [key, value] : ne_data.items()) {
@@ -533,16 +533,14 @@ namespace ui {
     }
 
 
-    namespace main {
-        namespace menu {
-            inline bool begin() {
-                return ImGui::BeginMainMenuBar();
-            }
+    namespace main_menu {
+		inline bool begin() {
+			return ImGui::BeginMainMenuBar();
+		}
 
-            inline void end() {
-                ImGui::EndMainMenuBar();
-            }
-        }
+		inline void end() {
+			ImGui::EndMainMenuBar();
+		}
     }
 
     namespace menu {
@@ -593,7 +591,7 @@ namespace ui {
 
 namespace ui {
     namespace local {
-        int64_t id(const std::string& class_name, int64_t unique_number) {
+        inline int64_t id(const std::string& class_name, int64_t unique_number) {
             static std::map<std::pair<std::string, int64_t>, int64_t> id_map;
             std::pair<std::string, int64_t> key = { class_name, unique_number };
             if (id_map.find(key) == id_map.end()) {

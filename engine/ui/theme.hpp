@@ -63,7 +63,7 @@ namespace ui {
             constexpr ImVec4 plug_background = picker_to_vec4(0xCE3187, 255 / 3);
             constexpr ImVec4 socket_background = picker_to_vec4(0x87CE31, 255 / 3);
 
-            void apply() {
+            inline void apply() {
                 ImGuiStyle& style = ImGui::GetStyle();
                 ImVec4* colors = style.Colors;
 

@@ -43,3 +43,6 @@ x64/
 imgui.ini
 machine/include/
 build/
+
+generated/
+

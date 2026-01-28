@@ -42,7 +42,16 @@
       <Filter>lib</Filter>
     </ClCompile>
     <ClCompile Include="controls\network\udp_windows.cpp">
-      <Filter>Controls\network</Filter>
+      <Filter>controls\network</Filter>
+    </ClCompile>
+    <ClCompile Include="platform\windows\dpi.cpp">
+      <Filter>controls\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="platform\windows\font.cpp">
+      <Filter>controls\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="platform\windows\process.cpp">
+      <Filter>controls\platform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -149,106 +158,118 @@
       <Filter>lib</Filter>
     </ClInclude>
     <ClInclude Include="controls\controller\editor.hpp">
-      <Filter>Controls\controller</Filter>
+      <Filter>controls\controller</Filter>
     </ClInclude>
     <ClInclude Include="controls\driver\editor.hpp">
-      <Filter>Controls\driver</Filter>
+      <Filter>controls\driver</Filter>
     </ClInclude>
     <ClInclude Include="controls\element\editor.hpp">
-      <Filter>Controls\element</Filter>
+      <Filter>controls\element</Filter>
     </ClInclude>
     <ClInclude Include="controls\function\editor.hpp">
-      <Filter>Controls\function</Filter>
+      <Filter>controls\function</Filter>
     </ClInclude>
     <ClInclude Include="controls\machine\editor.hpp">
-      <Filter>Controls\machine</Filter>
+      <Filter>controls\machine</Filter>
     </ClInclude>
     <ClInclude Include="controls\port\editor.hpp">
-      <Filter>Controls\port</Filter>
+      <Filter>controls\port</Filter>
     </ClInclude>
     <ClInclude Include="controls\signal\editor.hpp">
-      <Filter>Controls\signal</Filter>
+      <Filter>controls\signal</Filter>
     </ClInclude>
     <ClInclude Include="controls\exec\frequency.hpp">
-      <Filter>Controls\exec</Filter>
+      <Filter>controls\exec</Filter>
     </ClInclude>
     <ClInclude Include="controls\code\generator.hpp">
-      <Filter>Controls\code</Filter>
+      <Filter>controls\code</Filter>
     </ClInclude>
     <ClInclude Include="controls\engine.hpp">
-      <Filter>Controls</Filter>
+      <Filter>controls</Filter>
     </ClInclude>
     <ClInclude Include="controls\machine\instance.hpp">
-      <Filter>Controls\machine</Filter>
+      <Filter>controls\machine</Filter>
     </ClInclude>
     <ClInclude Include="controls\function\instance.hpp">
-      <Filter>Controls\function</Filter>
+      <Filter>controls\function</Filter>
     </ClInclude>
     <ClInclude Include="controls\controller\instance.hpp">
-      <Filter>Controls\controller</Filter>
+      <Filter>controls\controller</Filter>
     </ClInclude>
     <ClInclude Include="controls\element\instance.hpp">
-      <Filter>Controls\element</Filter>
+      <Filter>controls\element</Filter>
     </ClInclude>
     <ClInclude Include="controls\driver\instance.hpp">
-      <Filter>Controls\driver</Filter>
+      <Filter>controls\driver</Filter>
     </ClInclude>
     <ClInclude Include="controls\graph.hpp">
-      <Filter>Controls</Filter>
+      <Filter>controls</Filter>
     </ClInclude>
     <ClInclude Include="controls\instance.hpp">
-      <Filter>Controls</Filter>
+      <Filter>controls</Filter>
     </ClInclude>
     <ClInclude Include="controls\port\instance.hpp">
-      <Filter>Controls\port</Filter>
+      <Filter>controls\port</Filter>
     </ClInclude>
     <ClInclude Include="controls\signal\instance.hpp">
-      <Filter>Controls\signal</Filter>
+      <Filter>controls\signal</Filter>
     </ClInclude>
     <ClInclude Include="controls\json.hpp">
       <Filter>lib</Filter>
     </ClInclude>
     <ClInclude Include="controls\link.hpp">
-      <Filter>Controls</Filter>
+      <Filter>controls</Filter>
     </ClInclude>
     <ClInclude Include="controls\driver\object.hpp">
-      <Filter>Controls\driver</Filter>
+      <Filter>controls\driver</Filter>
     </ClInclude>
     <ClInclude Include="controls\controller\object.hpp">
-      <Filter>Controls\controller</Filter>
+      <Filter>controls\controller</Filter>
     </ClInclude>
     <ClInclude Include="controls\element\object.hpp">
-      <Filter>Controls\element</Filter>
+      <Filter>controls\element</Filter>
     </ClInclude>
     <ClInclude Include="controls\function\object.hpp">
-      <Filter>Controls\function</Filter>
+      <Filter>controls\function</Filter>
     </ClInclude>
     <ClInclude Include="controls\machine\object.hpp">
-      <Filter>Controls\machine</Filter>
+      <Filter>controls\machine</Filter>
     </ClInclude>
     <ClInclude Include="controls\port\object.hpp">
-      <Filter>Controls\port</Filter>
+      <Filter>controls\port</Filter>
     </ClInclude>
     <ClInclude Include="controls\signal\object.hpp">
-      <Filter>Controls\signal</Filter>
+      <Filter>controls\signal</Filter>
     </ClInclude>
     <ClInclude Include="controls\record.hpp">
-      <Filter>Controls</Filter>
+      <Filter>controls</Filter>
     </ClInclude>
     <ClInclude Include="controls\controller\viewer.hpp">
-      <Filter>Controls\controller</Filter>
+      <Filter>controls\controller</Filter>
     </ClInclude>
     <ClInclude Include="controls\list.hpp">
-      <Filter>Controls</Filter>
+      <Filter>controls</Filter>
     </ClInclude>
     <ClInclude Include="controls\network\udp.hpp">
-      <Filter>Controls\network</Filter>
+      <Filter>controls\network</Filter>
     </ClInclude>
     <ClInclude Include="controls\debug\viewer.hpp">
-      <Filter>Controls\debug</Filter>
+      <Filter>controls\debug</Filter>
     </ClInclude>
     <ClInclude Include="controls\debug\thread.hpp">
-      <Filter>Controls\debug</Filter>
+      <Filter>controls\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="platform\dpi.hpp">
+      <Filter>controls\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="platform\font.hpp">
+      <Filter>controls\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="platform\platform.hpp">
+      <Filter>controls\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="platform\process.hpp">
+      <Filter>controls\platform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -306,41 +327,44 @@
     <Filter Include="build">
       <UniqueIdentifier>{5c1f0df8-1d87-4ca2-9896-58b410501ae2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Controls">
+    <Filter Include="controls">
       <UniqueIdentifier>{9abf89d1-03e3-4521-8ffe-d063ea1b6aef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Controls\port">
+    <Filter Include="controls\port">
       <UniqueIdentifier>{2c86d534-1067-43b6-b12f-3cf8b784c472}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Controls\signal">
+    <Filter Include="controls\signal">
       <UniqueIdentifier>{135723e9-fa5b-4937-9e95-00c7e544776d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Controls\machine">
+    <Filter Include="controls\machine">
       <UniqueIdentifier>{5827e65b-00c8-4d8d-a46f-f64c409a4a30}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Controls\function">
+    <Filter Include="controls\function">
       <UniqueIdentifier>{d442da6f-cbcb-4cde-8c9e-face855f0ed6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Controls\exec">
+    <Filter Include="controls\exec">
       <UniqueIdentifier>{7834b706-38ca-4a16-b69b-66b32ff7ee29}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Controls\element">
+    <Filter Include="controls\element">
       <UniqueIdentifier>{97e49057-b44f-46fc-acd3-b0b2f035e0f7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Controls\driver">
+    <Filter Include="controls\driver">
       <UniqueIdentifier>{94d38508-eb14-419d-9dae-ce710dbf706e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Controls\controller">
+    <Filter Include="controls\controller">
       <UniqueIdentifier>{8415654d-e79e-406b-9856-12a336fb45e0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Controls\code">
+    <Filter Include="controls\code">
       <UniqueIdentifier>{76661556-ac1e-422d-bee3-98dd1f862497}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Controls\debug">
+    <Filter Include="controls\debug">
       <UniqueIdentifier>{addbf1e6-78c6-4995-82da-ea8309d263ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Controls\network">
+    <Filter Include="controls\network">
       <UniqueIdentifier>{3a020952-88d7-4b83-b7f2-d6505c0b1a39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="controls\platform">
+      <UniqueIdentifier>{7772f004-d34f-4eb1-85d3-fc866b9c96f4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
