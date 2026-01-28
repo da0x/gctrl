@@ -1,13 +1,16 @@
-# Read template files for code generation embedding
-file(READ "${CMAKE_CURRENT_SOURCE_DIR}/resources/templates/gctrl.hpp" TEMPLATE_GCTRL_HPP)
-file(READ "${CMAKE_CURRENT_SOURCE_DIR}/resources/templates/gctrl_udp_windows.cpp" TEMPLATE_GCTRL_UDP_WINDOWS)
-file(READ "${CMAKE_CURRENT_SOURCE_DIR}/resources/templates/gctrl_udp_linux.cpp" TEMPLATE_GCTRL_UDP_LINUX)
-file(READ "${CMAKE_CURRENT_SOURCE_DIR}/resources/templates/CMakeLists.txt.in" TEMPLATE_CMAKE_LISTS)
+# Template generation paths
+set(TEMPLATES_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/resources/templates")
+set(TEMPLATES_OUTPUT_FILE "${CMAKE_CURRENT_BINARY_DIR}/generated/templates.hpp")
 
-# Generate the templates header with embedded content
+# Generate templates.hpp at configure time (for initial setup)
+file(READ "${TEMPLATES_SOURCE_DIR}/gctrl.hpp" TEMPLATE_GCTRL_HPP)
+file(READ "${TEMPLATES_SOURCE_DIR}/gctrl_udp_windows.cpp" TEMPLATE_GCTRL_UDP_WINDOWS)
+file(READ "${TEMPLATES_SOURCE_DIR}/gctrl_udp_linux.cpp" TEMPLATE_GCTRL_UDP_LINUX)
+file(READ "${TEMPLATES_SOURCE_DIR}/CMakeLists.txt.in" TEMPLATE_CMAKE_LISTS)
+
 configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/resources/templates/templates.hpp.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/generated/templates.hpp"
+    "${TEMPLATES_SOURCE_DIR}/templates.hpp.in"
+    "${TEMPLATES_OUTPUT_FILE}"
     @ONLY
 )
 
@@ -34,6 +37,15 @@ elseif(GCTRL_PLATFORM_LINUX)
 endif()
 
 add_executable(gctrl ${ENGINE_SOURCES})
+
+# Pre-build step to regenerate templates.hpp (ensures it exists even without CMake configure)
+add_custom_command(TARGET gctrl PRE_BUILD
+    COMMAND ${CMAKE_COMMAND}
+        -DSOURCE_DIR=${TEMPLATES_SOURCE_DIR}
+        -DOUTPUT_FILE=${TEMPLATES_OUTPUT_FILE}
+        -P ${TEMPLATES_SOURCE_DIR}/generate_templates.cmake
+    COMMENT "Generating templates.hpp..."
+)
 
 target_include_directories(gctrl PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}

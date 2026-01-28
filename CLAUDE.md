@@ -8,7 +8,9 @@ GCtrl is a C++20 control systems IDE and programming language for control engine
 
 ## Build Commands
 
-**Prerequisites (Linux):**
+### Linux
+
+**Prerequisites:**
 ```bash
 sudo apt-get install libsdl2-dev libglew-dev libglm-dev libgl1-mesa-dev
 ```
@@ -22,6 +24,22 @@ cmake --build build
 **Run:**
 ```bash
 ./build/gctrl [path_to_project.ctrl]
+```
+
+### Windows (Visual Studio)
+
+**Prerequisites:**
+- CMake must be installed and available in PATH (the pre-build step uses it)
+
+**Build:**
+1. Open `gctrl.sln` in Visual Studio
+2. Build > Build Solution (F7)
+
+The pre-build event automatically generates `engine/generated/templates.hpp` using CMake.
+
+**Run:**
+```cmd
+x64\Release\gctrl.exe [path_to_project.ctrl]
 ```
 
 ## Architecture
