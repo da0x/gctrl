@@ -81,6 +81,7 @@ namespace machine {
             for (const auto& drv : drivers) {
                 code::line("#include <" + drv.prototype.file_name() + ">");
             }
+            code::begin_gctrl_namespace();
             code::namespace_begin(namespace_);
             code::struct_begin(name);
             code::public_();
@@ -148,7 +149,11 @@ namespace machine {
 
             code::struct_end();
             code::namespace_end();
+            code::end();
             code::commit(file_name());
+
+            // Generate boilerplate files
+            code::generate_boilerplate(name);
         }
 
         std::string variable_name(uint64_t id) const {

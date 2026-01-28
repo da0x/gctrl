@@ -77,6 +77,7 @@ namespace port {
 
             code::begin(prototype_typename());
             code::include(port.file_name());
+            code::begin_gctrl_namespace();
             code::namespace_begin(port.namespace_);
             code::namespace_begin(type);
             code::struct_begin(port.name);
@@ -86,6 +87,7 @@ namespace port {
             code::struct_end();
             code::namespace_end();
             code::namespace_end();
+            code::end();
             code::commit(prototype_filename());
         }
 

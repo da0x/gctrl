@@ -27,6 +27,8 @@
 #include <system_error>
 #include <fstream>
 #include <set>
+#include <regex>
+#include "templates.hpp"
 
 namespace code {
 
@@ -76,11 +78,17 @@ namespace code {
             output_stream << "// Contact Information: www.gctrl.org\n";
             output_stream << "//\n\n";
             output_stream << "#pragma once" << "\n";
+            output_stream << "#include <gctrl.hpp>" << "\n";
             return *this;
         }
 
         stream& end() {
-            output_stream << "\n";
+            output_stream << "} // namespace gctrl\n";
+            return *this;
+        }
+
+        stream& begin_gctrl_namespace() {
+            output_stream << "\nnamespace gctrl {\n";
             return *this;
         }
 
@@ -203,6 +211,10 @@ namespace code {
         code_stream.end();
     }
 
+    inline void begin_gctrl_namespace() {
+        code_stream.begin_gctrl_namespace();
+    }
+
     inline void include(const std::string& path) {
         code_stream.include(path);
     }
@@ -274,5 +286,48 @@ namespace code {
                 std::cerr << "Unexpected error: " << e.what() << std::endl;
             }
         }
+    }
+
+    inline void generate_gctrl_header() {
+        std::filesystem::create_directories("gctrl");
+        std::ofstream file("gctrl/gctrl.hpp");
+        file << templates::gctrl_hpp;
+        file.close();
+        ui::cout << "gctrl.hpp" << ui::endl;
+    }
+
+    inline void generate_udp_driver_windows() {
+        std::filesystem::create_directories("gctrl");
+        std::ofstream file("gctrl/gctrl_udp_windows.cpp");
+        file << templates::gctrl_udp_windows_cpp;
+        file.close();
+        ui::cout << "gctrl_udp_windows.cpp" << ui::endl;
+    }
+
+    inline void generate_udp_driver_linux() {
+        std::filesystem::create_directories("gctrl");
+        std::ofstream file("gctrl/gctrl_udp_linux.cpp");
+        file << templates::gctrl_udp_linux_cpp;
+        file.close();
+        ui::cout << "gctrl_udp_linux.cpp" << ui::endl;
+    }
+
+    inline void generate_cmake(const std::string& machine_name) {
+        std::string content = templates::cmake_lists_template;
+        // Replace ${MACHINE_NAME} placeholder with actual machine name
+        content = std::regex_replace(content, std::regex(R"(\$\{MACHINE_NAME\})"), machine_name);
+
+        std::filesystem::create_directories("gctrl");
+        std::ofstream file("gctrl/CMakeLists.txt");
+        file << content;
+        file.close();
+        ui::cout << "CMakeLists.txt" << ui::endl;
+    }
+
+    inline void generate_boilerplate(const std::string& machine_name) {
+        generate_gctrl_header();
+        generate_udp_driver_windows();
+        generate_udp_driver_linux();
+        generate_cmake(machine_name);
     }
 }

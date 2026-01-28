@@ -23,6 +23,8 @@
 #include <filesystem>
 #include <fstream>
 #include <cstdlib>
+#include <unistd.h>
+#include <limits.h>
 
 namespace fs = std::filesystem;
 
@@ -111,22 +113,35 @@ namespace font {
         return find_font(candidates);
     }
 
+    static std::string get_executable_dir() {
+        char path[PATH_MAX];
+        ssize_t len = readlink("/proc/self/exe", path, sizeof(path) - 1);
+        if (len != -1) {
+            path[len] = '\0';
+            return fs::path(path).parent_path().string();
+        }
+        return ".";
+    }
+
     std::optional<std::vector<uint8_t>> load_font_resource(resource_id id) {
-        // On Linux, load from bundled font files instead of Windows resources
-        std::string font_path;
+        // On Linux, load from bundled font files relative to executable
+        std::string font_file;
         switch (id) {
             case CASCADIA_CODE:
-                font_path = "fonts/cascadia-code.ttf";
+                font_file = "fonts/cascadia-code.ttf";
                 break;
             case FONT_AWESOME:
-                font_path = "fonts/fa-solid-900.otf";
+                font_file = "fonts/fa-solid-900.otf";
                 break;
             case CONSOLA:
-                font_path = "fonts/consola.ttf";
+                font_file = "fonts/consola.ttf";
                 break;
             default:
                 return std::nullopt;
         }
+
+        std::string exe_dir = get_executable_dir();
+        std::string font_path = exe_dir + "/../" + font_file;
 
         std::ifstream file(font_path, std::ios::binary | std::ios::ate);
         if (!file) return std::nullopt;

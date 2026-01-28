@@ -69,11 +69,12 @@ namespace signal {
             code::begin(display_name());
             if (!include.empty())
                 code::include(include);
+            code::begin_gctrl_namespace();
             code::namespace_begin(namespace_);
             code::line("typedef " + type + " " + name + ";");
             code::namespace_end();
-            code::commit(file_name());
             code::end();
+            code::commit(file_name());
         }
     };
 

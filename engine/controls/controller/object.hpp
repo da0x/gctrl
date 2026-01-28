@@ -92,6 +92,7 @@ namespace controller {
                 code::include(socket.prototype_filename());
             }
 
+            code::begin_gctrl_namespace();
             code::namespace_begin(namespace_);
             code::struct_begin(name);
             code::private_();
@@ -148,6 +149,7 @@ namespace controller {
             }
             code::struct_end();
             code::namespace_end();
+            code::end();
             code::commit(file_name());
         }
 
