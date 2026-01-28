@@ -307,7 +307,7 @@ namespace controls {
         }
 
         void render_menu() {
-            if (ui::main::menu::begin()) {
+            if (ui::main_menu::begin()) {
                 ImGui::BeginDisabled(!ui::navigation::can_go_back());
                 if (ImGui::Button(ICON_FA_CIRCLE_LEFT " Back")) {
                     navigate_back();
@@ -445,7 +445,7 @@ namespace controls {
                     ui::menu::end();
                 }
 
-                ui::main::menu::end();
+                ui::main_menu::end();
 
 
             }

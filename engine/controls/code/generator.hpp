@@ -28,7 +28,7 @@
 #include <fstream>
 #include <set>
 #include <regex>
-#include "templates.hpp"
+#include "generated/templates.hpp"
 
 namespace code {
 

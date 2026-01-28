@@ -208,6 +208,10 @@
     <ClInclude Include="controls\port\instance.hpp" />
     <ClInclude Include="controls\port\object.hpp" />
     <ClInclude Include="controls\port\editor.hpp" />
+    <ClInclude Include="platform\dpi.hpp" />
+    <ClInclude Include="platform\font.hpp" />
+    <ClInclude Include="platform\platform.hpp" />
+    <ClInclude Include="platform\process.hpp" />
     <ClInclude Include="project.hpp" />
     <ClInclude Include="resources\resource.h" />
     <ClInclude Include="resources\targetver.h" />
@@ -246,6 +250,9 @@
     <ClCompile Include="..\lib\implot\implot_items.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="controls\network\udp_windows.cpp" />
+    <ClCompile Include="platform\windows\dpi.cpp" />
+    <ClCompile Include="platform\windows\font.cpp" />
+    <ClCompile Include="platform\windows\process.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resources\editor.rc" />
