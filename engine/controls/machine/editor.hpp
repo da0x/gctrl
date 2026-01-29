@@ -332,6 +332,8 @@ namespace machine {
                 if (multi_node_selected) {
                     for (int i = 0; i < selected_node_count; ++i) {
                         uint64_t node_id = selected_nodes[i].Get();
+                        // Remove associated links before deleting the node
+                        active_machine.remove_links_to_node(node_id);
                         ui::graph::delete_nodes_by_id(node_id,
                             active_machine.controllers,
                             active_machine.drivers);

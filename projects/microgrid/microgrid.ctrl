@@ -1,1010 +1,1010 @@
 {
-    "controllers": [
+  "controllers": [
+    {
+      "description": "controller description",
+      "elements": [
         {
-            "description": "controller description",
-            "elements": [
-                {
-                    "description": "Voltage source phasor simulation",
-                    "direction": "ltr",
-                    "name": "voltage_source",
-                    "prototype_uuid": "ccea1dd1-d6e9-4250-a87d-d834271398c3",
-                    "uuid": "ee34ad52-0d87-4fd6-8676-3db1b7d6d552"
-                },
-                {
-                    "description": "Calculate phasor current flowing in impedance between two voltages",
-                    "direction": "ltr",
-                    "name": "calculate_current",
-                    "prototype_uuid": "f3844667-deb2-473b-aafe-2235dc0d054f",
-                    "uuid": "dd54e6b2-602a-49f0-b633-bc8072d7cc04"
-                },
-                {
-                    "description": "Bus voltage solver (phasor)",
-                    "direction": "rtl",
-                    "name": "voltage_solver",
-                    "prototype_uuid": "c5953a42-ea7f-41c6-b3d7-23b24854be52",
-                    "uuid": "a914aa3b-ffb5-4000-bf3a-86f49ca528bf"
-                },
-                {
-                    "description": "Calculate phasor current flowing in impedance between two voltages",
-                    "direction": "ltr",
-                    "name": "load_sim",
-                    "prototype_uuid": "f3844667-deb2-473b-aafe-2235dc0d054f",
-                    "uuid": "aeaf8334-5cb8-497b-afa5-3c710193c106"
-                },
-                {
-                    "description": "Meter for a phasor simulation",
-                    "direction": "ltr",
-                    "name": "bus_meter",
-                    "prototype_uuid": "4e2d3198-1c58-461e-a2ca-1ea92c406872",
-                    "uuid": "e94213b9-c615-46a5-818b-7f882b4a4f5e"
-                }
-            ],
-            "graph": [
-                {
-                    "end": 208907075059182,
-                    "id": 1,
-                    "start": 70325791880691
-                },
-                {
-                    "end": 281464170082295,
-                    "id": 2,
-                    "start": 219892070444479
-                },
-                {
-                    "end": 280132578700390,
-                    "id": 3,
-                    "start": 202300470933951
-                },
-                {
-                    "end": 280337109737830,
-                    "id": 4,
-                    "start": 228697880002495
-                },
-                {
-                    "end": 219892070444479,
-                    "id": 5,
-                    "start": 208355402184174
-                },
-                {
-                    "end": 219892070444479,
-                    "id": 6,
-                    "start": 281470402547551
-                },
-                {
-                    "end": 280132578700390,
-                    "id": 7,
-                    "start": 140509584187230
-                },
-                {
-                    "end": 68116970667894,
-                    "id": 8,
-                    "start": 189630224743807
-                },
-                {
-                    "end": 67834577092602,
-                    "id": 9,
-                    "start": 207805536005981
-                },
-                {
-                    "end": 281050513100766,
-                    "id": 10,
-                    "start": 253758137137079
-                },
-                {
-                    "end": 280993596399615,
-                    "id": 11,
-                    "start": 202096390157503
-                },
-                {
-                    "end": 281318938111966,
-                    "id": 12,
-                    "start": 209453336214983
-                },
-                {
-                    "end": 140649103609694,
-                    "id": 13,
-                    "start": 210332060743151
-                },
-                {
-                    "end": 140712447995870,
-                    "id": 14,
-                    "start": 270272218758343
-                }
-            ],
-            "name": "battery_sim",
-            "namespace": "controller",
-            "plugs": [
-                {
-                    "description": "Grid sim setpoints",
-                    "direction": "ltr",
-                    "name": "setpoints",
-                    "prototype_uuid": "6b1fe52d-1ae3-4c40-958d-e3d4d729844f",
-                    "uuid": "a3da4c43-9ff2-43f7-b9dc-a0750a272c54"
-                },
-                {
-                    "description": "Debug port",
-                    "direction": "ltr",
-                    "name": "debug",
-                    "prototype_uuid": "803734c2-62a5-4949-a95e-610b531073df",
-                    "uuid": "80f1437e-1e3a-4ee4-8638-a44823033487"
-                }
-            ],
-            "uuid": "796b98e5-a868-4a11-8392-23df40be0c27"
+          "description": "Voltage source phasor simulation",
+          "direction": "ltr",
+          "name": "voltage_source",
+          "prototype_uuid": "ccea1dd1-d6e9-4250-a87d-d834271398c3",
+          "uuid": "ee34ad52-0d87-4fd6-8676-3db1b7d6d552"
         },
         {
-            "description": "controller description",
-            "graph": null,
-            "name": "sister",
-            "namespace": "controller",
-            "sockets": [
-                {
-                    "description": "Carries phasor simulation data (voltage and current)",
-                    "direction": "ltr",
-                    "name": "electrical_phasor",
-                    "prototype_uuid": "1a8c9a00-fd87-4619-9b82-f3d37e0a9d62",
-                    "uuid": "df58a4f6-97af-4d16-8fd5-37aec5ffe75f"
-                }
-            ],
-            "uuid": "c488d7f4-cca2-43eb-bbd6-4f8188c42be7"
+          "description": "Calculate phasor current flowing in impedance between two voltages",
+          "direction": "ltr",
+          "name": "calculate_current",
+          "prototype_uuid": "f3844667-deb2-473b-aafe-2235dc0d054f",
+          "uuid": "dd54e6b2-602a-49f0-b633-bc8072d7cc04"
+        },
+        {
+          "description": "Bus voltage solver (phasor)",
+          "direction": "rtl",
+          "name": "voltage_solver",
+          "prototype_uuid": "c5953a42-ea7f-41c6-b3d7-23b24854be52",
+          "uuid": "a914aa3b-ffb5-4000-bf3a-86f49ca528bf"
+        },
+        {
+          "description": "Calculate phasor current flowing in impedance between two voltages",
+          "direction": "ltr",
+          "name": "load_sim",
+          "prototype_uuid": "f3844667-deb2-473b-aafe-2235dc0d054f",
+          "uuid": "aeaf8334-5cb8-497b-afa5-3c710193c106"
+        },
+        {
+          "description": "Meter for a phasor simulation",
+          "direction": "ltr",
+          "name": "bus_meter",
+          "prototype_uuid": "4e2d3198-1c58-461e-a2ca-1ea92c406872",
+          "uuid": "e94213b9-c615-46a5-818b-7f882b4a4f5e"
         }
-    ],
-    "drivers": [
+      ],
+      "graph": [
         {
-            "description": "driver description",
-            "frequency": 100,
-            "name": "UDP_debug",
-            "namespace": "driver",
-            "sockets": [
-                {
-                    "description": "Debug port",
-                    "direction": "ltr",
-                    "name": "debug",
-                    "prototype_uuid": "803734c2-62a5-4949-a95e-610b531073df",
-                    "uuid": "888db531-7261-48df-993e-639cf6f5bb59"
-                },
-                {
-                    "description": "Grid sim setpoints",
-                    "direction": "ltr",
-                    "name": "gridsim",
-                    "prototype_uuid": "6b1fe52d-1ae3-4c40-958d-e3d4d729844f",
-                    "uuid": "1ffb3dac-79ed-4a31-99e8-c3551e2acba9"
-                }
-            ],
-            "uuid": "f6683049-438e-4d9b-845f-24247f55205b"
+          "end": 208907075059182,
+          "id": 1,
+          "start": 70325791880691
+        },
+        {
+          "end": 281464170082295,
+          "id": 2,
+          "start": 219892070444479
+        },
+        {
+          "end": 280132578700390,
+          "id": 3,
+          "start": 202300470933951
+        },
+        {
+          "end": 280337109737830,
+          "id": 4,
+          "start": 228697880002495
+        },
+        {
+          "end": 219892070444479,
+          "id": 5,
+          "start": 208355402184174
+        },
+        {
+          "end": 219892070444479,
+          "id": 6,
+          "start": 281470402547551
+        },
+        {
+          "end": 280132578700390,
+          "id": 7,
+          "start": 140509584187230
+        },
+        {
+          "end": 68116970667894,
+          "id": 8,
+          "start": 189630224743807
+        },
+        {
+          "end": 67834577092602,
+          "id": 9,
+          "start": 207805536005981
+        },
+        {
+          "end": 281050513100766,
+          "id": 10,
+          "start": 253758137137079
+        },
+        {
+          "end": 280993596399615,
+          "id": 11,
+          "start": 202096390157503
+        },
+        {
+          "end": 281318938111966,
+          "id": 12,
+          "start": 209453336214983
+        },
+        {
+          "end": 140649103609694,
+          "id": 13,
+          "start": 210332060743151
+        },
+        {
+          "end": 140712447995870,
+          "id": 14,
+          "start": 270272218758343
         }
-    ],
-    "elements": [
+      ],
+      "name": "battery_sim",
+      "namespace": "controller",
+      "plugs": [
         {
-            "code_block": "// Add your code here\n",
-            "description": "Voltage and frequency checks to qualify the \"grid\"",
-            "frequency": 1000,
-            "name": "ac_checks",
-            "namespace": "element",
-            "uuid": "7ec4637e-519b-46da-af8a-8317deafcf39"
+          "description": "Grid sim setpoints",
+          "direction": "ltr",
+          "name": "setpoints",
+          "prototype_uuid": "6b1fe52d-1ae3-4c40-958d-e3d4d729844f",
+          "uuid": "a3da4c43-9ff2-43f7-b9dc-a0750a272c54"
         },
         {
-            "code_block": "out.I = (in.Vup - in.Vdown) * in.Y * (in.breaker_open ? 0.0f : 1.0f);\n",
-            "description": "Calculate phasor current flowing in impedance between two voltages",
-            "frequency": 1000,
-            "inputs": [
-                {
-                    "description": "Complex Number",
-                    "direction": "ltr",
-                    "name": "Vup",
-                    "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
-                    "uuid": "35278706-f6f2-4698-a883-9d7f853bf5ee",
-                    "value": "(0e+0f, 0e+0f)"
-                },
-                {
-                    "description": "Complex Number",
-                    "direction": "ltr",
-                    "name": "Vdown",
-                    "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
-                    "uuid": "4a4d38fe-761c-42cf-a34c-c3fd1948e3f7",
-                    "value": "(0e+0f, 0e+0f)"
-                },
-                {
-                    "description": "Complex Number",
-                    "direction": "ltr",
-                    "name": "Y",
-                    "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
-                    "uuid": "53f74ef3-36ec-475b-98a9-a2675d727ecf",
-                    "value": "(0e+0f, 0e+0f)"
-                },
-                {
-                    "description": "Boolean",
-                    "direction": "ltr",
-                    "name": "breaker_open",
-                    "prototype_uuid": "9786c237-804e-4109-b3d8-e8f9bc43f682",
-                    "uuid": "72b41c24-149e-43ae-a8a8-f7c9162c7bfa",
-                    "value": "false"
-                }
-            ],
-            "name": "calculate_current",
-            "namespace": "element",
-            "outputs": [
-                {
-                    "description": "Complex Number",
-                    "direction": "ltr",
-                    "name": "I",
-                    "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
-                    "uuid": "cea10aa0-91ae-4e2d-92a7-e2c710d56066",
-                    "value": "(0e+0f, 0e+0f)"
-                }
-            ],
-            "uuid": "f3844667-deb2-473b-aafe-2235dc0d054f"
-        },
-        {
-            "code_block": "out.V = in.V_pu * in.V_nominal;\nout.I_pu = in.I / fmax(in.I_nominal, 1e-3);\n\n",
-            "description": "Voltage PU->SI and current SI->PU",
-            "frequency": 1000,
-            "inputs": [
-                {
-                    "description": "Complex Number",
-                    "direction": "ltr",
-                    "name": "V_pu",
-                    "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
-                    "uuid": "77d8df2b-4952-4d4b-a52d-5d333e7f2374",
-                    "value": "(0e+0f, 0e+0f)"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "V_nominal",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "4c6ffb41-0c95-4828-bfc5-9375bab8f1a7",
-                    "value": "0e+0f"
-                },
-                {
-                    "description": "Complex Number",
-                    "direction": "ltr",
-                    "name": "I",
-                    "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
-                    "uuid": "ec7ab0f3-b61c-402b-ae71-83cb0bb9a464",
-                    "value": "(0e+0f, 0e+0f)"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "I_nominal",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "ba3ddbed-b04e-414d-b021-5ae388d34d13",
-                    "value": "0e+0f"
-                }
-            ],
-            "name": "electrical_phase_socket_scaling",
-            "namespace": "element",
-            "outputs": [
-                {
-                    "description": "Complex Number",
-                    "direction": "ltr",
-                    "name": "V",
-                    "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
-                    "uuid": "1e9e0027-3ff7-477f-83a8-1718c0ebe0b6",
-                    "value": "(0e+0f, 0e+0f)"
-                },
-                {
-                    "description": "Complex Number",
-                    "direction": "ltr",
-                    "name": "I_pu",
-                    "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
-                    "uuid": "b78ff067-f86e-4b0c-8db2-5e3c11e102d5",
-                    "value": "(0e+0f, 0e+0f)"
-                }
-            ],
-            "uuid": "2295f269-4b2e-439c-bd84-ab7711729a41"
-        },
-        {
-            "code_block": "// load PLL inputs and run it\nPLL_sim.in.ref = in.V;\nPLL_sim.in.freq_nominal = in.freq_nominal;\t// move to init() callback\nPLL_sim();\n\nstd::complex<float> S = in.V * conj(in.I) * (in.reversed_CT ? -1.0f : 1.0f);\n\n// update outputs - outputs are also \"states\"\nout.freq += (PLL_sim.out.frequency - out.freq) * in.lpf_alpha;\n\nout.P += (real(S) - out.P) * in.lpf_alpha;\nout.Q += (imag(S) - out.Q) * in.lpf_alpha;\nout.V_mag += (abs(in.V) - out.V_mag) * in.lpf_alpha;\nout.I_mag += (abs(in.I) - out.I_mag) * in.lpf_alpha;\n",
-            "description": "Meter for a phasor simulation",
-            "frequency": 1000,
-            "functions": [
-                {
-                    "description": "Phase locked loop for a phasor simulation",
-                    "direction": "ltr",
-                    "name": "PLL_sim",
-                    "prototype_uuid": "5686c1aa-1b8f-4b4f-8d10-2d0fb0ee95c6",
-                    "uuid": "34ca7965-5528-4f90-b9a1-09b84a483655"
-                }
-            ],
-            "inputs": [
-                {
-                    "description": "Complex Number",
-                    "direction": "ltr",
-                    "name": "V",
-                    "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
-                    "uuid": "b480268f-5779-4afc-b043-b1f6c711864b",
-                    "value": "(0e+0f, 0e+0f)"
-                },
-                {
-                    "description": "Complex Number",
-                    "direction": "ltr",
-                    "name": "I",
-                    "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
-                    "uuid": "c5125d72-6e1b-4f33-9f6c-6c42cdd05a1e",
-                    "value": "(0e+0f, 0e+0f)"
-                },
-                {
-                    "description": "Boolean",
-                    "direction": "ltr",
-                    "name": "reversed_CT",
-                    "prototype_uuid": "9786c237-804e-4109-b3d8-e8f9bc43f682",
-                    "uuid": "11edded8-9cac-4e58-b35e-41b0d33992d7",
-                    "value": "false"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "freq_nominal",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "3292bd26-b04f-407a-af62-11aab7498004",
-                    "value": "0e+0f"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "lpf_alpha",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "39ade153-968b-4708-aaa7-ad38ac941d2f",
-                    "value": "0e+0f"
-                }
-            ],
-            "name": "meter_sim",
-            "namespace": "element",
-            "outputs": [
-                {
-                    "description": "Complex Number",
-                    "direction": "ltr",
-                    "name": "pll_osc",
-                    "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
-                    "uuid": "3f6b27af-eaa8-4db0-9380-1589334d53d6",
-                    "value": "(0e+0f, 0e+0f)"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "freq",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "84870445-8aa5-4b9d-b352-861503fd0cda",
-                    "value": "0e+0f"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "P",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "dfd2ab15-0f7b-4741-9973-ebdba257e9c2",
-                    "value": "0e+0f"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "Q",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "89f6181d-ca41-4a9a-8ec7-c20fea3d17ab",
-                    "value": "0e+0f"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "V_mag",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "dfc7e3bf-632d-49c3-bb15-09fa2a7028c4",
-                    "value": "0e+0f"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "I_mag",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "e8fd8baf-8ebc-483e-a8dc-34eb43998908",
-                    "value": "0e+0f"
-                }
-            ],
-            "uuid": "4e2d3198-1c58-461e-a2ca-1ea92c406872"
-        },
-        {
-            "code_block": "out.I = (in.disconnect ? 0.0f : 1.0f) * (in.V * in.Y);\n\n",
-            "description": "Load simulator for a passive load: I = Y * V",
-            "frequency": 1000,
-            "inputs": [
-                {
-                    "description": "Complex Number",
-                    "direction": "ltr",
-                    "name": "V",
-                    "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
-                    "uuid": "7c4369a8-f3f6-40b5-a9ab-7446e20788fe",
-                    "value": "(0e+0f, 0e+0f)"
-                },
-                {
-                    "description": "Complex Number",
-                    "direction": "ltr",
-                    "name": "Y",
-                    "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
-                    "uuid": "a3c31718-0daa-4973-b69a-437c380d2a8e",
-                    "value": "(0e+0f, 0e+0f)"
-                },
-                {
-                    "description": "Boolean",
-                    "direction": "ltr",
-                    "name": "disconnect",
-                    "prototype_uuid": "9786c237-804e-4109-b3d8-e8f9bc43f682",
-                    "uuid": "70dd99f2-dafb-4d23-a98a-31b940c59152",
-                    "value": "false"
-                }
-            ],
-            "name": "passive_load_sim",
-            "namespace": "element",
-            "outputs": [
-                {
-                    "description": "Complex Number",
-                    "direction": "ltr",
-                    "name": "I",
-                    "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
-                    "uuid": "41f4f75c-2c2e-411a-b1f9-6954c581ef93",
-                    "value": "(0e+0f, 0e+0f)"
-                }
-            ],
-            "uuid": "c0f08968-c623-425d-a526-3b7fc84c6f9d"
-        },
-        {
-            "code_block": "complex rotation_vector(1.0f, mem.rotation_angle);\ncomplex V_new = in.Z * (in.Iin-in.Iout);\n\nfloat new_angle = -imag(conj(V_new) * out.Vout);\nnew_angle = clamp(new_angle, -in.rotation_limit, in.rotation_limit);\nmem.rotation_angle += (new_angle - mem.rotation_angle) * in.rotation_alpha;\n\nout.Vout = (V_new - out.Vout * rotation_vector) * in.rotation_alpha + (out.Vout*rotation_vector);\n",
-            "description": "Bus voltage solver (phasor)",
-            "frequency": 1000,
-            "inputs": [
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "rotation_limit",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "e98ff505-fbd1-4d6a-b50b-9aee6a2ab268",
-                    "value": "0e+0f"
-                },
-                {
-                    "description": "Complex Number",
-                    "direction": "ltr",
-                    "name": "Iin",
-                    "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
-                    "uuid": "262bbd06-fa08-405e-a49d-b13d3f15111c",
-                    "value": "(0e+0f, 0e+0f)"
-                },
-                {
-                    "description": "Complex Number",
-                    "direction": "ltr",
-                    "name": "Iout",
-                    "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
-                    "uuid": "72749778-3eb4-43b9-8084-cf3bd7e4df1f",
-                    "value": "(0e+0f, 0e+0f)"
-                },
-                {
-                    "description": "Complex Number",
-                    "direction": "ltr",
-                    "name": "Z",
-                    "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
-                    "uuid": "8935ddd9-89d1-47ae-8f0b-c30b2c5fc159",
-                    "value": "(0e+0f, 0e+0f)"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "rotation_alpha",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "6473f4cc-05c4-40a4-a7e1-582cc061f589",
-                    "value": "0e+0f"
-                }
-            ],
-            "memory": [
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "rotation_angle",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "3197b358-be8c-41a1-8f4a-ffb079bdef2f",
-                    "value": "0e+0f"
-                }
-            ],
-            "name": "voltage_solver",
-            "namespace": "element",
-            "outputs": [
-                {
-                    "description": "Complex Number",
-                    "direction": "ltr",
-                    "name": "Vout",
-                    "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
-                    "uuid": "cee6a338-e0d8-4aff-845a-434d9c3e6521",
-                    "value": "(0e+0f, 0e+0f)"
-                }
-            ],
-            "uuid": "c5953a42-ea7f-41c6-b3d7-23b24854be52"
-        },
-        {
-            "code_block": "mem.phase_cycles += timestep * (in.f - in.f_nominal);\nmem.phase_cycles -= floor(mem.phase_cycles);  // remove full cycles\n\nout.V = in.V_mag * complex(cos(2.0f * pi * mem.phase_cycles), sin(2.0f * pi * mem.phase_cycles));\n\n//daher was here.\n",
-            "description": "Voltage source phasor simulation",
-            "frequency": 1000,
-            "inputs": [
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "f",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "167bddb1-acbc-4494-9536-1c10e18c2afa",
-                    "value": "0e+0f"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "f_nominal",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "f74124fd-8f80-4f67-b475-11b88fabc602",
-                    "value": "0e+0f"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "V_mag",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "3eebb89b-68d4-4064-b8e3-2d43a112fb76",
-                    "value": "0e+0f"
-                }
-            ],
-            "memory": [
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "phase_cycles",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "1869ed62-48ae-499d-a6af-0964a57bfb4f",
-                    "value": "0e+0f"
-                }
-            ],
-            "name": "voltage_source",
-            "namespace": "element",
-            "outputs": [
-                {
-                    "description": "Complex Number",
-                    "direction": "ltr",
-                    "name": "V",
-                    "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
-                    "uuid": "24e0e7cf-07cd-4058-8959-06556e5334b1",
-                    "value": "(0e+0f, 0e+0f)"
-                }
-            ],
-            "uuid": "ccea1dd1-d6e9-4250-a87d-d834271398c3"
+          "description": "Debug port",
+          "direction": "ltr",
+          "name": "debug",
+          "prototype_uuid": "803734c2-62a5-4949-a95e-610b531073df",
+          "uuid": "80f1437e-1e3a-4ee4-8638-a44823033487"
         }
-    ],
-    "focus_path": [],
-    "functions": [
-        {
-            "code_block": "float quad_error = imag(in.ref * conj(out.osc));\n// kp_LPF path\nmem.slow_term += clamp(quad_error * in.kp_slow, -in.delta_f, in.delta_f) - mem.slow_term * in.kp_slow_alpha;\n// proportional path\nfloat fast_term = clamp(quad_error * in.kp, -in.delta_f, in.delta_f);\nfloat pll_freq = in.freq_nominal + mem.slow_term + fast_term;\nout.frequency += (pll_freq - out.frequency) * in.freq_lpf_alpha;\n// oscillator\nmem.phase_cycles += in.timestep * (out.frequency - in.freq_nominal);\nmem.phase_cycles -= floor(mem.phase_cycles);  // remove full cycles\nout.osc = complex(cos(2.0f * pi * mem.phase_cycles), sin(2.0f * pi * mem.phase_cycles));\n",
-            "description": "Phase locked loop for a phasor simulation",
-            "inputs": [
-                {
-                    "description": "Complex Number",
-                    "direction": "ltr",
-                    "name": "ref",
-                    "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
-                    "uuid": "9d64b067-467d-41a9-9a0d-40b89d2c10cb",
-                    "value": "(0.0f, 0.0f)"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "kp_slow",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "6d3c3ca3-241d-4dd6-bfdf-aaa2c1e7d3d4",
-                    "value": "5"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "kp",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "66d71524-4885-4cb2-b0c5-d51326c6954f",
-                    "value": "5"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "freq_nominal",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "e74315fa-3757-408a-b34a-2b43efe3b413",
-                    "value": "60"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "delta_f",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "7c7d98af-8232-4dba-ac12-cc054331c435",
-                    "value": "5"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "kp_slow_alpha",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "68d8583c-cb50-4207-90cd-1c38885d3642",
-                    "value": "1e-3f"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "freq_lpf_alpha",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "cfa68ec0-47b3-44e7-ae6e-e3bfc49647a3",
-                    "value": "20e-3f"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "timestep",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "db69db85-4881-41f5-a3dd-49480f7ce478",
-                    "value": "0e+0f"
-                }
-            ],
-            "memory": [
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "slow_term",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "e9d96435-4513-49be-a7f3-0fe33cf696e9",
-                    "value": "0e+0f"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "phase_cycles",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "3809bf9d-8f51-433c-b64a-8a987b7c6fa4",
-                    "value": "0e+0f"
-                }
-            ],
-            "name": "PLL_sim",
-            "namespace": "function",
-            "outputs": [
-                {
-                    "description": "Complex Number",
-                    "direction": "ltr",
-                    "name": "osc",
-                    "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
-                    "uuid": "3162e872-66e0-4472-abe2-17882216eb98",
-                    "value": "(0.0f, 0.0f)"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "frequency",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "929c9cad-6e35-4beb-8ce5-e52cdd8a3e21",
-                    "value": "0e+0f"
-                }
-            ],
-            "uuid": "5686c1aa-1b8f-4b4f-8d10-2d0fb0ee95c6"
-        }
-    ],
-    "ne_settings": {
-        "39441770875943": {
-            "nodes": {
-                "node:140222818570078": {
-                    "location": {
-                        "x": 934,
-                        "y": 34
-                    }
-                },
-                "node:148385158211775": {
-                    "location": {
-                        "x": 400,
-                        "y": 198
-                    }
-                },
-                "node:176424541957204": {
-                    "location": {
-                        "x": -498,
-                        "y": -42
-                    }
-                },
-                "node:180629732013191": {
-                    "location": {
-                        "x": 1318,
-                        "y": 38
-                    }
-                },
-                "node:207259868580868": {
-                    "location": {
-                        "x": 406,
-                        "y": -74
-                    }
-                },
-                "node:66456055431430": {
-                    "location": {
-                        "x": 390,
-                        "y": 454
-                    }
-                },
-                "node:67833502815570": {
-                    "location": {
-                        "x": -16,
-                        "y": -90
-                    }
-                }
-            },
-            "selection": [
-                "node:148385158211775"
-            ],
-            "view": {
-                "scroll": {
-                    "x": -799.6901245117188,
-                    "y": -323.7911682128906
-                },
-                "visible_rect": {
-                    "max": {
-                        "x": 2033.309814453125,
-                        "y": 1182.2088623046875
-                    },
-                    "min": {
-                        "x": -799.6901245117188,
-                        "y": -323.7911682128906
-                    }
-                },
-                "zoom": 1
-            }
-        },
-        "43026387443220": {
-            "nodes": {
-                "node:123950616973983": {
-                    "location": {
-                        "x": 476,
-                        "y": 198
-                    }
-                },
-                "node:2238555583861": {
-                    "location": {
-                        "x": 864,
-                        "y": 220
-                    }
-                }
-            },
-            "selection": [
-                "node:2238555583861"
-            ],
-            "view": {
-                "scroll": {
-                    "x": 369.9925842285156,
-                    "y": -43.00225830078125
-                },
-                "visible_rect": {
-                    "max": {
-                        "x": 1604.0047607421875,
-                        "y": 629.0025634765625
-                    },
-                    "min": {
-                        "x": 369.9953918457031,
-                        "y": -43.002586364746094
-                    }
-                },
-                "zoom": 0.9999923706054688
-            }
-        },
-        "62893965142350": {
-            "nodes": {
-                "node:10021565507828": {
-                    "location": {
-                        "x": 552,
-                        "y": 244
-                    }
-                },
-                "node:221503590594898": {
-                    "location": {
-                        "x": 1058,
-                        "y": 260
-                    }
-                }
-            },
-            "selection": [
-                "node:221503590594898"
-            ],
-            "view": {
-                "scroll": {
-                    "x": -251.54991149902344,
-                    "y": -260.05682373046875
-                },
-                "visible_rect": {
-                    "max": {
-                        "x": 2118.34423828125,
-                        "y": 926.5868530273438
-                    },
-                    "min": {
-                        "x": -187.07342529296875,
-                        "y": -193.39987182617188
-                    }
-                },
-                "zoom": 1.3446587324142456
-            }
-        },
-        "87417763933159": {
-            "nodes": {
-                "node:61223785719647": {
-                    "location": {
-                        "x": 432,
-                        "y": 240
-                    }
-                }
-            },
-            "selection": null,
-            "view": {
-                "scroll": {
-                    "x": -149.95196533203125,
-                    "y": -135.76556396484375
-                },
-                "visible_rect": {
-                    "max": {
-                        "x": 1341.5240478515625,
-                        "y": 740.1171875
-                    },
-                    "min": {
-                        "x": -74.97598266601562,
-                        "y": -67.88278198242188
-                    }
-                },
-                "zoom": 2
-            }
-        }
+      ],
+      "uuid": "796b98e5-a868-4a11-8392-23df40be0c27"
     },
-    "ports": [
+    {
+      "description": "controller description",
+      "graph": null,
+      "name": "sister",
+      "namespace": "controller",
+      "sockets": [
         {
-            "description": "Debug port",
-            "name": "debug_port",
-            "namespace": "port",
-            "plug_data": [
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "V_mag",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "9f52b47f-5fea-4f4a-befd-71cf879748c2",
-                    "value": "0e+0f"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "I_mag",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "1348a53d-d17e-414b-a98d-bf4bbec2f16d",
-                    "value": "0e+0f"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "P",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "7db8f1b3-b571-4bee-a3d8-9a3727b3a9c6",
-                    "value": "0e+0f"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "Q",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "09194f7b-162f-40e0-910c-13ce1888a03f",
-                    "value": "0e+0f"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "freq",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "177858fb-0a94-46c1-afd7-e282a89c6337",
-                    "value": "0e+0f"
-                }
-            ],
-            "socket_data": [
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "voltage",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "31a4b514-bd4f-46fc-86fb-47601b95283e",
-                    "value": "0e+0f"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "frequency",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "3ae4f604-9e60-465e-8e6f-64b651d33cdf",
-                    "value": "0e+0f"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "load_g",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "a976a83c-2f3c-46fd-a405-0ebe1bed0ea3",
-                    "value": "0e+0f"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "debug4",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "302c942c-7bc9-43cd-86a6-16e10ea35c69",
-                    "value": "0e+0f"
-                }
-            ],
-            "uuid": "803734c2-62a5-4949-a95e-610b531073df"
-        },
-        {
-            "description": "Carries phasor simulation data (voltage and current)",
-            "name": "electrical_phasor",
-            "namespace": "port",
-            "uuid": "1a8c9a00-fd87-4619-9b82-f3d37e0a9d62"
-        },
-        {
-            "description": "Grid sim setpoints",
-            "name": "grid_sim_setpoints",
-            "namespace": "port",
-            "socket_data": [
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "voltage",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "aa9d0fd7-6a68-49a7-bd3a-8c52b00c312b",
-                    "value": "0e+0f"
-                },
-                {
-                    "description": "Real Number",
-                    "direction": "ltr",
-                    "name": "frequency",
-                    "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
-                    "uuid": "0c04f7f9-2476-4356-8ebb-3cbe7527cb19",
-                    "value": "0e+0f"
-                }
-            ],
-            "uuid": "6b1fe52d-1ae3-4c40-958d-e3d4d729844f"
+          "description": "Carries phasor simulation data (voltage and current)",
+          "direction": "ltr",
+          "name": "electrical_phasor",
+          "prototype_uuid": "1a8c9a00-fd87-4619-9b82-f3d37e0a9d62",
+          "uuid": "df58a4f6-97af-4d16-8fd5-37aec5ffe75f"
         }
-    ],
-    "ui_settings": "[Window][WindowOverViewport_11111111]\nPos=0,22\nSize=3796,2062\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][Project Manager]\nPos=2,-276\nSize=1017,162\nCollapsed=0\n\n[Window][Select .ctrl Project File]\nPos=-832,-468\nSize=384,284\nCollapsed=0\n\n[Window][Select Folder for New Project]\nViewportPos=1582,936\nViewportId=0x5D052A8D\nSize=440,661\nCollapsed=0\n\n[Window][Dear ImGui Metrics/Debugger]\nViewportPos=2715,734\nViewportId=0x8FC55800\nSize=389,606\nCollapsed=0\n\n[Window][Terminal]\nPos=354,1734\nSize=3442,350\nCollapsed=0\nDockId=0x0000000E,0\n\n[Window][Machines]\nPos=0,30\nSize=338,2024\nCollapsed=0\nDockId=0x00000003,0\n\n[Window][Controllers]\nPos=0,873\nSize=340,1211\nCollapsed=0\nDockId=0x00000001,0\n\n[Window][Drivers]\nPos=0,30\nSize=309,2024\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Functions]\nPos=0,30\nSize=301,2011\nCollapsed=0\nDockId=0x00000007,0\n\n[Window][Elements]\nPos=0,1052\nSize=352,1032\nCollapsed=0\nDockId=0x00000014,0\n\n[Window][Ports]\nPos=0,30\nSize=371,2024\nCollapsed=0\nDockId=0x0000000B,0\n\n[Window][Square Chart with Ball]\nPos=60,60\nSize=216,238\nCollapsed=0\n\n[Window][Machine Properties]\nPos=3472,22\nSize=324,1710\nCollapsed=0\nDockId=0x00000010,0\n\n[Window][Machine Editor]\nPos=354,132\nSize=3116,1600\nCollapsed=0\nDockId=0x00000018,0\n\n[Window][Driver Editor]\nPos=354,22\nSize=3442,1710\nCollapsed=0\nDockId=0x00000018,0\n\n[Window][Port Editor]\nPos=354,22\nSize=3442,1710\nCollapsed=0\nDockId=0x00000018,0\n\n[Window][Controller Properties]\nPos=3205,22\nSize=591,1710\nCollapsed=0\nDockId=0x00000012,0\n\n[Window][Controller Editor]\nPos=354,132\nSize=2849,1600\nCollapsed=0\nDockId=0x00000018,0\n\n[Window][Element Editor]\nPos=354,22\nSize=3442,1710\nCollapsed=0\nDockId=0x00000018,0\n\n[Window][Function Editor]\nPos=303,30\nSize=1613,1750\nCollapsed=0\nDockId=0x00000018,0\n\n[Window][Controller Instance]\nPos=3472,22\nSize=324,1710\nCollapsed=0\nDockId=0x00000010,1\n\n[Window][Plug Properties]\nPos=3205,22\nSize=591,1710\nCollapsed=0\nDockId=0x00000012,1\n\n[Window][Socket Properties]\nPos=239,22\nSize=1326,766\nCollapsed=0\nDockId=0x00000018,1\n\n[Window][Signal Viewer]\nPos=461,22\nSize=3335,1710\nCollapsed=0\nDockId=0x00000018,1\n\n[Window][Element Properties]\nPos=3205,22\nSize=591,1710\nCollapsed=0\nDockId=0x00000012,1\n\n[Window][Driver Instance]\nPos=3472,22\nSize=324,1710\nCollapsed=0\nDockId=0x00000010,1\n\n[Window][Tree View]\nPos=0,22\nSize=459,2062\nCollapsed=0\nDockId=0x00000015,0\n\n[Window][Detail View]\nPos=461,22\nSize=3335,1710\nCollapsed=0\nDockId=0x00000018,0\n\n[Window][Hierarchy]\nPos=0,22\nSize=352,716\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Editor]\nPos=354,22\nSize=3116,108\nCollapsed=0\nDockId=0x00000017,0\n\n[Window][Library]\nPos=0,740\nSize=352,1344\nCollapsed=0\nDockId=0x0000001A,0\n\n[Table][0x0C16652B,4]\nRefScale=16\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=56\n\n[Table][0x31A24D4E,4]\nRefScale=16\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=56\n\n[Table][0xA8122687,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xEE66A6CE,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x411EB2FC,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x1FBEE5A6,6]\nRefScale=16\nColumn 0  Width=11\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=19\n\n[Table][0xA2B81A53,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xF6B271DD,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x7F3FD80D,4]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0x56FCE5AB,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xDC4024EE,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xBFF071D0,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xEF356BAB,4]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0x89793130,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xBB42EBF6,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x6075A54B,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x66F54BD1,4]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0x2AE199DB,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x8C3948AE,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xC3ED0DA0,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x5B4859A4,4]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0x4FCD58E5,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x4D3D79C4,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xA6C1CC9E,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x95841BB7,4]\nRefScale=16\nColumn 0  Width=15\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=19\n\n[Table][0xFAC80E36,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x5252FFFC,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x13C49A4D,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x86C09E36,4]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0xEF779A2F,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x362CE8A8,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x067B0E54,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xDBC4E7DF,4]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0x37DDE7B9,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xD4418636,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x5DC0BAF3,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xCE71D15C,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xBF6A66C7,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xDFB84805,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x43AA8FCC,4]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Docking][Data]\nDockSpace                       ID=0x11111111 Window=0xA87D555D Pos=0,22 Size=3796,2062 Split=X\n  DockNode                      ID=0x00000015 Parent=0x11111111 SizeRef=459,2011 Selected=0xACA4FAE6\n  DockNode                      ID=0x00000016 Parent=0x11111111 SizeRef=1455,2011 Split=X\n    DockNode                    ID=0x0000000B Parent=0x00000016 SizeRef=371,698 Selected=0x60242B41\n    DockNode                    ID=0x0000000C Parent=0x00000016 SizeRef=3467,698 Split=X\n      DockNode                  ID=0x00000009 Parent=0x0000000C SizeRef=352,698 Split=Y Selected=0xD6F83F5C\n        DockNode                ID=0x00000013 Parent=0x00000009 SizeRef=544,1028 Split=Y Selected=0x29EABFBD\n          DockNode              ID=0x00000019 Parent=0x00000013 SizeRef=352,716 Selected=0x29EABFBD\n          DockNode              ID=0x0000001A Parent=0x00000013 SizeRef=352,1344 Selected=0x31AC9BD0\n        DockNode                ID=0x00000014 Parent=0x00000009 SizeRef=544,1032 Selected=0xD6F83F5C\n      DockNode                  ID=0x0000000A Parent=0x0000000C SizeRef=3442,698 Split=X\n        DockNode                ID=0x00000007 Parent=0x0000000A SizeRef=301,698 Selected=0xAD9CC569\n        DockNode                ID=0x00000008 Parent=0x0000000A SizeRef=1944,698 Split=X\n          DockNode              ID=0x00000005 Parent=0x00000008 SizeRef=309,698 Selected=0xECC1AC1F\n          DockNode              ID=0x00000006 Parent=0x00000008 SizeRef=3529,698 Split=X\n            DockNode            ID=0x00000001 Parent=0x00000006 SizeRef=340,698 Selected=0x3760BB01\n            DockNode            ID=0x00000002 Parent=0x00000006 SizeRef=1574,698 Split=X\n              DockNode          ID=0x00000003 Parent=0x00000002 SizeRef=338,698 Selected=0xC3CCF5DC\n              DockNode          ID=0x00000004 Parent=0x00000002 SizeRef=3500,698 Split=Y\n                DockNode        ID=0x0000000D Parent=0x00000004 SizeRef=1030,1710 Split=X Selected=0xDB1EEB52\n                  DockNode      ID=0x0000000F Parent=0x0000000D SizeRef=614,816 Split=X Selected=0x270D7F3A\n                    DockNode    ID=0x00000011 Parent=0x0000000F SizeRef=2849,705 Split=Y Selected=0x270D7F3A\n                      DockNode  ID=0x00000017 Parent=0x00000011 SizeRef=2861,108 Selected=0x9F27EDF6\n                      DockNode  ID=0x00000018 Parent=0x00000011 SizeRef=2861,1600 CentralNode=1 Selected=0xB81AF3F2\n                    DockNode    ID=0x00000012 Parent=0x0000000F SizeRef=591,705 Selected=0x5FA6207C\n                  DockNode      ID=0x00000010 Parent=0x0000000D SizeRef=324,816 Selected=0x4A174F38\n                DockNode        ID=0x0000000E Parent=0x00000004 SizeRef=1030,350 Selected=0x197EBCEF\n\n",
-    "network": {
-        "machines": [
-            {
-                "controllers": [
-                    {
-                        "description": "controller description",
-                        "direction": "ltr",
-                        "name": "battery_simulation",
-                        "prototype_uuid": "796b98e5-a868-4a11-8392-23df40be0c27",
-                        "uuid": "ac7e8c15-3aff-45dd-8a00-091d53da28f4"
-                    }
-                ],
-                "description": "",
-                "drivers": [
-                    {
-                        "description": "driver description",
-                        "direction": "ltr",
-                        "name": "udp_driver",
-                        "prototype_uuid": "f6683049-438e-4d9b-845f-24247f55205b",
-                        "uuid": "19e7ddef-00c8-4217-ac93-c974d2d57952"
-                    }
-                ],
-                "graph": [
-                    {
-                        "end": 190616887311607,
-                        "id": 1,
-                        "start": 259471707601755
-                    },
-                    {
-                        "end": 186355879455988,
-                        "id": 2,
-                        "start": 223707112930299
-                    }
-                ],
-                "name": "microgrid",
-                "namespace": "machine",
-                "uuid": "1ccddb54-dc32-4899-80e9-3933a473694e"
-            }
-        ]
+      ],
+      "uuid": "c488d7f4-cca2-43eb-bbd6-4f8188c42be7"
     }
+  ],
+  "drivers": [
+    {
+      "description": "driver description",
+      "frequency": 100,
+      "name": "UDP_debug",
+      "namespace": "driver",
+      "sockets": [
+        {
+          "description": "Debug port",
+          "direction": "ltr",
+          "name": "debug",
+          "prototype_uuid": "803734c2-62a5-4949-a95e-610b531073df",
+          "uuid": "888db531-7261-48df-993e-639cf6f5bb59"
+        },
+        {
+          "description": "Grid sim setpoints",
+          "direction": "ltr",
+          "name": "gridsim",
+          "prototype_uuid": "6b1fe52d-1ae3-4c40-958d-e3d4d729844f",
+          "uuid": "1ffb3dac-79ed-4a31-99e8-c3551e2acba9"
+        }
+      ],
+      "uuid": "f6683049-438e-4d9b-845f-24247f55205b"
+    }
+  ],
+  "elements": [
+    {
+      "code_block": "// Add your code here\n",
+      "description": "Voltage and frequency checks to qualify the \"grid\"",
+      "frequency": 1000,
+      "name": "ac_checks",
+      "namespace": "element",
+      "uuid": "7ec4637e-519b-46da-af8a-8317deafcf39"
+    },
+    {
+      "code_block": "out.I = (in.Vup - in.Vdown) * in.Y * (in.breaker_open ? 0.0f : 1.0f);\n",
+      "description": "Calculate phasor current flowing in impedance between two voltages",
+      "frequency": 1000,
+      "inputs": [
+        {
+          "description": "Complex Number",
+          "direction": "ltr",
+          "name": "Vup",
+          "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
+          "uuid": "35278706-f6f2-4698-a883-9d7f853bf5ee",
+          "value": "(0e+0f, 0e+0f)"
+        },
+        {
+          "description": "Complex Number",
+          "direction": "ltr",
+          "name": "Vdown",
+          "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
+          "uuid": "4a4d38fe-761c-42cf-a34c-c3fd1948e3f7",
+          "value": "(0e+0f, 0e+0f)"
+        },
+        {
+          "description": "Complex Number",
+          "direction": "ltr",
+          "name": "Y",
+          "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
+          "uuid": "53f74ef3-36ec-475b-98a9-a2675d727ecf",
+          "value": "(0e+0f, 0e+0f)"
+        },
+        {
+          "description": "Boolean",
+          "direction": "ltr",
+          "name": "breaker_open",
+          "prototype_uuid": "9786c237-804e-4109-b3d8-e8f9bc43f682",
+          "uuid": "72b41c24-149e-43ae-a8a8-f7c9162c7bfa",
+          "value": "false"
+        }
+      ],
+      "name": "calculate_current",
+      "namespace": "element",
+      "outputs": [
+        {
+          "description": "Complex Number",
+          "direction": "ltr",
+          "name": "I",
+          "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
+          "uuid": "cea10aa0-91ae-4e2d-92a7-e2c710d56066",
+          "value": "(0e+0f, 0e+0f)"
+        }
+      ],
+      "uuid": "f3844667-deb2-473b-aafe-2235dc0d054f"
+    },
+    {
+      "code_block": "out.V = in.V_pu * in.V_nominal;\nout.I_pu = in.I / fmax(in.I_nominal, 1e-3);\n\n",
+      "description": "Voltage PU->SI and current SI->PU",
+      "frequency": 1000,
+      "inputs": [
+        {
+          "description": "Complex Number",
+          "direction": "ltr",
+          "name": "V_pu",
+          "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
+          "uuid": "77d8df2b-4952-4d4b-a52d-5d333e7f2374",
+          "value": "(0e+0f, 0e+0f)"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "V_nominal",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "4c6ffb41-0c95-4828-bfc5-9375bab8f1a7",
+          "value": "0e+0f"
+        },
+        {
+          "description": "Complex Number",
+          "direction": "ltr",
+          "name": "I",
+          "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
+          "uuid": "ec7ab0f3-b61c-402b-ae71-83cb0bb9a464",
+          "value": "(0e+0f, 0e+0f)"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "I_nominal",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "ba3ddbed-b04e-414d-b021-5ae388d34d13",
+          "value": "0e+0f"
+        }
+      ],
+      "name": "electrical_phase_socket_scaling",
+      "namespace": "element",
+      "outputs": [
+        {
+          "description": "Complex Number",
+          "direction": "ltr",
+          "name": "V",
+          "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
+          "uuid": "1e9e0027-3ff7-477f-83a8-1718c0ebe0b6",
+          "value": "(0e+0f, 0e+0f)"
+        },
+        {
+          "description": "Complex Number",
+          "direction": "ltr",
+          "name": "I_pu",
+          "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
+          "uuid": "b78ff067-f86e-4b0c-8db2-5e3c11e102d5",
+          "value": "(0e+0f, 0e+0f)"
+        }
+      ],
+      "uuid": "2295f269-4b2e-439c-bd84-ab7711729a41"
+    },
+    {
+      "code_block": "// load PLL inputs and run it\nPLL_sim.in.ref = in.V;\nPLL_sim.in.freq_nominal = in.freq_nominal;\t// move to init() callback\nPLL_sim();\n\nstd::complex<float> S = in.V * conj(in.I) * (in.reversed_CT ? -1.0f : 1.0f);\n\n// update outputs - outputs are also \"states\"\nout.freq += (PLL_sim.out.frequency - out.freq) * in.lpf_alpha;\n\nout.P += (real(S) - out.P) * in.lpf_alpha;\nout.Q += (imag(S) - out.Q) * in.lpf_alpha;\nout.V_mag += (abs(in.V) - out.V_mag) * in.lpf_alpha;\nout.I_mag += (abs(in.I) - out.I_mag) * in.lpf_alpha;\n",
+      "description": "Meter for a phasor simulation",
+      "frequency": 1000,
+      "functions": [
+        {
+          "description": "Phase locked loop for a phasor simulation",
+          "direction": "ltr",
+          "name": "PLL_sim",
+          "prototype_uuid": "5686c1aa-1b8f-4b4f-8d10-2d0fb0ee95c6",
+          "uuid": "34ca7965-5528-4f90-b9a1-09b84a483655"
+        }
+      ],
+      "inputs": [
+        {
+          "description": "Complex Number",
+          "direction": "ltr",
+          "name": "V",
+          "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
+          "uuid": "b480268f-5779-4afc-b043-b1f6c711864b",
+          "value": "(0e+0f, 0e+0f)"
+        },
+        {
+          "description": "Complex Number",
+          "direction": "ltr",
+          "name": "I",
+          "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
+          "uuid": "c5125d72-6e1b-4f33-9f6c-6c42cdd05a1e",
+          "value": "(0e+0f, 0e+0f)"
+        },
+        {
+          "description": "Boolean",
+          "direction": "ltr",
+          "name": "reversed_CT",
+          "prototype_uuid": "9786c237-804e-4109-b3d8-e8f9bc43f682",
+          "uuid": "11edded8-9cac-4e58-b35e-41b0d33992d7",
+          "value": "false"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "freq_nominal",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "3292bd26-b04f-407a-af62-11aab7498004",
+          "value": "0e+0f"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "lpf_alpha",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "39ade153-968b-4708-aaa7-ad38ac941d2f",
+          "value": "0e+0f"
+        }
+      ],
+      "name": "meter_sim",
+      "namespace": "element",
+      "outputs": [
+        {
+          "description": "Complex Number",
+          "direction": "ltr",
+          "name": "pll_osc",
+          "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
+          "uuid": "3f6b27af-eaa8-4db0-9380-1589334d53d6",
+          "value": "(0e+0f, 0e+0f)"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "freq",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "84870445-8aa5-4b9d-b352-861503fd0cda",
+          "value": "0e+0f"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "P",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "dfd2ab15-0f7b-4741-9973-ebdba257e9c2",
+          "value": "0e+0f"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "Q",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "89f6181d-ca41-4a9a-8ec7-c20fea3d17ab",
+          "value": "0e+0f"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "V_mag",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "dfc7e3bf-632d-49c3-bb15-09fa2a7028c4",
+          "value": "0e+0f"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "I_mag",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "e8fd8baf-8ebc-483e-a8dc-34eb43998908",
+          "value": "0e+0f"
+        }
+      ],
+      "uuid": "4e2d3198-1c58-461e-a2ca-1ea92c406872"
+    },
+    {
+      "code_block": "out.I = (in.disconnect ? 0.0f : 1.0f) * (in.V * in.Y);\n\n",
+      "description": "Load simulator for a passive load: I = Y * V",
+      "frequency": 1000,
+      "inputs": [
+        {
+          "description": "Complex Number",
+          "direction": "ltr",
+          "name": "V",
+          "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
+          "uuid": "7c4369a8-f3f6-40b5-a9ab-7446e20788fe",
+          "value": "(0e+0f, 0e+0f)"
+        },
+        {
+          "description": "Complex Number",
+          "direction": "ltr",
+          "name": "Y",
+          "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
+          "uuid": "a3c31718-0daa-4973-b69a-437c380d2a8e",
+          "value": "(0e+0f, 0e+0f)"
+        },
+        {
+          "description": "Boolean",
+          "direction": "ltr",
+          "name": "disconnect",
+          "prototype_uuid": "9786c237-804e-4109-b3d8-e8f9bc43f682",
+          "uuid": "70dd99f2-dafb-4d23-a98a-31b940c59152",
+          "value": "false"
+        }
+      ],
+      "name": "passive_load_sim",
+      "namespace": "element",
+      "outputs": [
+        {
+          "description": "Complex Number",
+          "direction": "ltr",
+          "name": "I",
+          "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
+          "uuid": "41f4f75c-2c2e-411a-b1f9-6954c581ef93",
+          "value": "(0e+0f, 0e+0f)"
+        }
+      ],
+      "uuid": "c0f08968-c623-425d-a526-3b7fc84c6f9d"
+    },
+    {
+      "code_block": "complex rotation_vector(1.0f, mem.rotation_angle);\ncomplex V_new = in.Z * (in.Iin-in.Iout);\n\nfloat new_angle = -imag(conj(V_new) * out.Vout);\nnew_angle = clamp(new_angle, -in.rotation_limit, in.rotation_limit);\nmem.rotation_angle += (new_angle - mem.rotation_angle) * in.rotation_alpha;\n\nout.Vout = (V_new - out.Vout * rotation_vector) * in.rotation_alpha + (out.Vout*rotation_vector);\n",
+      "description": "Bus voltage solver (phasor)",
+      "frequency": 1000,
+      "inputs": [
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "rotation_limit",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "e98ff505-fbd1-4d6a-b50b-9aee6a2ab268",
+          "value": "0e+0f"
+        },
+        {
+          "description": "Complex Number",
+          "direction": "ltr",
+          "name": "Iin",
+          "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
+          "uuid": "262bbd06-fa08-405e-a49d-b13d3f15111c",
+          "value": "(0e+0f, 0e+0f)"
+        },
+        {
+          "description": "Complex Number",
+          "direction": "ltr",
+          "name": "Iout",
+          "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
+          "uuid": "72749778-3eb4-43b9-8084-cf3bd7e4df1f",
+          "value": "(0e+0f, 0e+0f)"
+        },
+        {
+          "description": "Complex Number",
+          "direction": "ltr",
+          "name": "Z",
+          "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
+          "uuid": "8935ddd9-89d1-47ae-8f0b-c30b2c5fc159",
+          "value": "(0e+0f, 0e+0f)"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "rotation_alpha",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "6473f4cc-05c4-40a4-a7e1-582cc061f589",
+          "value": "0e+0f"
+        }
+      ],
+      "memory": [
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "rotation_angle",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "3197b358-be8c-41a1-8f4a-ffb079bdef2f",
+          "value": "0e+0f"
+        }
+      ],
+      "name": "voltage_solver",
+      "namespace": "element",
+      "outputs": [
+        {
+          "description": "Complex Number",
+          "direction": "ltr",
+          "name": "Vout",
+          "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
+          "uuid": "cee6a338-e0d8-4aff-845a-434d9c3e6521",
+          "value": "(0e+0f, 0e+0f)"
+        }
+      ],
+      "uuid": "c5953a42-ea7f-41c6-b3d7-23b24854be52"
+    },
+    {
+      "code_block": "mem.phase_cycles += timestep * (in.f - in.f_nominal);\nmem.phase_cycles -= floor(mem.phase_cycles);  // remove full cycles\n\nout.V = in.V_mag * complex(cos(2.0f * pi * mem.phase_cycles), sin(2.0f * pi * mem.phase_cycles));\n\n//daher was here.\n",
+      "description": "Voltage source phasor simulation",
+      "frequency": 1000,
+      "inputs": [
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "f",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "167bddb1-acbc-4494-9536-1c10e18c2afa",
+          "value": "0e+0f"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "f_nominal",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "f74124fd-8f80-4f67-b475-11b88fabc602",
+          "value": "0e+0f"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "V_mag",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "3eebb89b-68d4-4064-b8e3-2d43a112fb76",
+          "value": "0e+0f"
+        }
+      ],
+      "memory": [
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "phase_cycles",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "1869ed62-48ae-499d-a6af-0964a57bfb4f",
+          "value": "0e+0f"
+        }
+      ],
+      "name": "voltage_source",
+      "namespace": "element",
+      "outputs": [
+        {
+          "description": "Complex Number",
+          "direction": "ltr",
+          "name": "V",
+          "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
+          "uuid": "24e0e7cf-07cd-4058-8959-06556e5334b1",
+          "value": "(0e+0f, 0e+0f)"
+        }
+      ],
+      "uuid": "ccea1dd1-d6e9-4250-a87d-d834271398c3"
+    }
+  ],
+  "focus_path": [],
+  "functions": [
+    {
+      "code_block": "float quad_error = imag(in.ref * conj(out.osc));\n// kp_LPF path\nmem.slow_term += clamp(quad_error * in.kp_slow, -in.delta_f, in.delta_f) - mem.slow_term * in.kp_slow_alpha;\n// proportional path\nfloat fast_term = clamp(quad_error * in.kp, -in.delta_f, in.delta_f);\nfloat pll_freq = in.freq_nominal + mem.slow_term + fast_term;\nout.frequency += (pll_freq - out.frequency) * in.freq_lpf_alpha;\n// oscillator\nmem.phase_cycles += in.timestep * (out.frequency - in.freq_nominal);\nmem.phase_cycles -= floor(mem.phase_cycles);  // remove full cycles\nout.osc = complex(cos(2.0f * pi * mem.phase_cycles), sin(2.0f * pi * mem.phase_cycles));\n",
+      "description": "Phase locked loop for a phasor simulation",
+      "inputs": [
+        {
+          "description": "Complex Number",
+          "direction": "ltr",
+          "name": "ref",
+          "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
+          "uuid": "9d64b067-467d-41a9-9a0d-40b89d2c10cb",
+          "value": "(0.0f, 0.0f)"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "kp_slow",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "6d3c3ca3-241d-4dd6-bfdf-aaa2c1e7d3d4",
+          "value": "5"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "kp",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "66d71524-4885-4cb2-b0c5-d51326c6954f",
+          "value": "5"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "freq_nominal",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "e74315fa-3757-408a-b34a-2b43efe3b413",
+          "value": "60"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "delta_f",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "7c7d98af-8232-4dba-ac12-cc054331c435",
+          "value": "5"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "kp_slow_alpha",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "68d8583c-cb50-4207-90cd-1c38885d3642",
+          "value": "1e-3f"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "freq_lpf_alpha",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "cfa68ec0-47b3-44e7-ae6e-e3bfc49647a3",
+          "value": "20e-3f"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "timestep",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "db69db85-4881-41f5-a3dd-49480f7ce478",
+          "value": "0e+0f"
+        }
+      ],
+      "memory": [
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "slow_term",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "e9d96435-4513-49be-a7f3-0fe33cf696e9",
+          "value": "0e+0f"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "phase_cycles",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "3809bf9d-8f51-433c-b64a-8a987b7c6fa4",
+          "value": "0e+0f"
+        }
+      ],
+      "name": "PLL_sim",
+      "namespace": "function",
+      "outputs": [
+        {
+          "description": "Complex Number",
+          "direction": "ltr",
+          "name": "osc",
+          "prototype_uuid": "3a87cbc2-b213-4e5e-8c5a-720dadb19f91",
+          "uuid": "3162e872-66e0-4472-abe2-17882216eb98",
+          "value": "(0.0f, 0.0f)"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "frequency",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "929c9cad-6e35-4beb-8ce5-e52cdd8a3e21",
+          "value": "0e+0f"
+        }
+      ],
+      "uuid": "5686c1aa-1b8f-4b4f-8d10-2d0fb0ee95c6"
+    }
+  ],
+  "ne_settings": {
+    "39441770875943": {
+      "nodes": {
+        "node:140222818570078": {
+          "location": {
+            "x": 934,
+            "y": 34
+          }
+        },
+        "node:148385158211775": {
+          "location": {
+            "x": 400,
+            "y": 198
+          }
+        },
+        "node:176424541957204": {
+          "location": {
+            "x": -498,
+            "y": -42
+          }
+        },
+        "node:180629732013191": {
+          "location": {
+            "x": 1318,
+            "y": 38
+          }
+        },
+        "node:207259868580868": {
+          "location": {
+            "x": 406,
+            "y": -74
+          }
+        },
+        "node:66456055431430": {
+          "location": {
+            "x": 390,
+            "y": 454
+          }
+        },
+        "node:67833502815570": {
+          "location": {
+            "x": -16,
+            "y": -90
+          }
+        }
+      },
+      "selection": [
+        "node:148385158211775"
+      ],
+      "view": {
+        "scroll": {
+          "x": -799.6901245117188,
+          "y": -323.7911682128906
+        },
+        "visible_rect": {
+          "max": {
+            "x": 2033.309814453125,
+            "y": 1182.2088623046875
+          },
+          "min": {
+            "x": -799.6901245117188,
+            "y": -323.7911682128906
+          }
+        },
+        "zoom": 1
+      }
+    },
+    "43026387443220": {
+      "nodes": {
+        "node:123950616973983": {
+          "location": {
+            "x": 476,
+            "y": 198
+          }
+        },
+        "node:2238555583861": {
+          "location": {
+            "x": 864,
+            "y": 220
+          }
+        }
+      },
+      "selection": [
+        "node:2238555583861"
+      ],
+      "view": {
+        "scroll": {
+          "x": 369.9925842285156,
+          "y": -43.00225830078125
+        },
+        "visible_rect": {
+          "max": {
+            "x": 1604.0047607421875,
+            "y": 629.0025634765625
+          },
+          "min": {
+            "x": 369.9953918457031,
+            "y": -43.002586364746094
+          }
+        },
+        "zoom": 0.9999923706054688
+      }
+    },
+    "62893965142350": {
+      "nodes": {
+        "node:10021565507828": {
+          "location": {
+            "x": 552,
+            "y": 244
+          }
+        },
+        "node:221503590594898": {
+          "location": {
+            "x": 1058,
+            "y": 260
+          }
+        }
+      },
+      "selection": [
+        "node:221503590594898"
+      ],
+      "view": {
+        "scroll": {
+          "x": -251.54991149902344,
+          "y": -260.05682373046875
+        },
+        "visible_rect": {
+          "max": {
+            "x": 2118.34423828125,
+            "y": 926.5868530273438
+          },
+          "min": {
+            "x": -187.07342529296875,
+            "y": -193.39987182617188
+          }
+        },
+        "zoom": 1.3446587324142456
+      }
+    },
+    "87417763933159": {
+      "nodes": {
+        "node:61223785719647": {
+          "location": {
+            "x": 432,
+            "y": 240
+          }
+        }
+      },
+      "selection": null,
+      "view": {
+        "scroll": {
+          "x": -149.95196533203125,
+          "y": -135.76556396484375
+        },
+        "visible_rect": {
+          "max": {
+            "x": 1341.5240478515625,
+            "y": 740.1171875
+          },
+          "min": {
+            "x": -74.97598266601562,
+            "y": -67.88278198242188
+          }
+        },
+        "zoom": 2
+      }
+    }
+  },
+  "ports": [
+    {
+      "description": "Debug port",
+      "name": "debug_port",
+      "namespace": "port",
+      "plug_data": [
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "V_mag",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "9f52b47f-5fea-4f4a-befd-71cf879748c2",
+          "value": "0e+0f"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "I_mag",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "1348a53d-d17e-414b-a98d-bf4bbec2f16d",
+          "value": "0e+0f"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "P",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "7db8f1b3-b571-4bee-a3d8-9a3727b3a9c6",
+          "value": "0e+0f"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "Q",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "09194f7b-162f-40e0-910c-13ce1888a03f",
+          "value": "0e+0f"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "freq",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "177858fb-0a94-46c1-afd7-e282a89c6337",
+          "value": "0e+0f"
+        }
+      ],
+      "socket_data": [
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "voltage",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "31a4b514-bd4f-46fc-86fb-47601b95283e",
+          "value": "0e+0f"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "frequency",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "3ae4f604-9e60-465e-8e6f-64b651d33cdf",
+          "value": "0e+0f"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "load_g",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "a976a83c-2f3c-46fd-a405-0ebe1bed0ea3",
+          "value": "0e+0f"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "debug4",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "302c942c-7bc9-43cd-86a6-16e10ea35c69",
+          "value": "0e+0f"
+        }
+      ],
+      "uuid": "803734c2-62a5-4949-a95e-610b531073df"
+    },
+    {
+      "description": "Carries phasor simulation data (voltage and current)",
+      "name": "electrical_phasor",
+      "namespace": "port",
+      "uuid": "1a8c9a00-fd87-4619-9b82-f3d37e0a9d62"
+    },
+    {
+      "description": "Grid sim setpoints",
+      "name": "grid_sim_setpoints",
+      "namespace": "port",
+      "socket_data": [
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "voltage",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "aa9d0fd7-6a68-49a7-bd3a-8c52b00c312b",
+          "value": "0e+0f"
+        },
+        {
+          "description": "Real Number",
+          "direction": "ltr",
+          "name": "frequency",
+          "prototype_uuid": "12270a17-e1f4-4473-91c3-f698d303e093",
+          "uuid": "0c04f7f9-2476-4356-8ebb-3cbe7527cb19",
+          "value": "0e+0f"
+        }
+      ],
+      "uuid": "6b1fe52d-1ae3-4c40-958d-e3d4d729844f"
+    }
+  ],
+  "ui_settings": "[Window][WindowOverViewport_11111111]\nPos=0,22\nSize=3796,2062\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][Project Manager]\nPos=2,-276\nSize=1017,162\nCollapsed=0\n\n[Window][Select .ctrl Project File]\nPos=-832,-468\nSize=384,284\nCollapsed=0\n\n[Window][Select Folder for New Project]\nViewportPos=1582,936\nViewportId=0x5D052A8D\nSize=440,661\nCollapsed=0\n\n[Window][Dear ImGui Metrics/Debugger]\nViewportPos=2715,734\nViewportId=0x8FC55800\nSize=389,606\nCollapsed=0\n\n[Window][Terminal]\nPos=354,1734\nSize=3442,350\nCollapsed=0\nDockId=0x0000000E,0\n\n[Window][Machines]\nPos=0,30\nSize=338,2024\nCollapsed=0\nDockId=0x00000003,0\n\n[Window][Controllers]\nPos=0,873\nSize=340,1211\nCollapsed=0\nDockId=0x00000001,0\n\n[Window][Drivers]\nPos=0,30\nSize=309,2024\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Functions]\nPos=0,30\nSize=301,2011\nCollapsed=0\nDockId=0x00000007,0\n\n[Window][Elements]\nPos=0,1052\nSize=352,1032\nCollapsed=0\nDockId=0x00000014,0\n\n[Window][Ports]\nPos=0,30\nSize=371,2024\nCollapsed=0\nDockId=0x0000000B,0\n\n[Window][Square Chart with Ball]\nPos=60,60\nSize=216,238\nCollapsed=0\n\n[Window][Machine Properties]\nPos=3472,22\nSize=324,1710\nCollapsed=0\nDockId=0x00000010,0\n\n[Window][Machine Editor]\nPos=354,132\nSize=3116,1600\nCollapsed=0\nDockId=0x00000018,0\n\n[Window][Driver Editor]\nPos=354,22\nSize=3442,1710\nCollapsed=0\nDockId=0x00000018,0\n\n[Window][Port Editor]\nPos=354,22\nSize=3442,1710\nCollapsed=0\nDockId=0x00000018,0\n\n[Window][Controller Properties]\nPos=3205,22\nSize=591,1710\nCollapsed=0\nDockId=0x00000012,0\n\n[Window][Controller Editor]\nPos=354,132\nSize=2849,1600\nCollapsed=0\nDockId=0x00000018,0\n\n[Window][Element Editor]\nPos=354,22\nSize=3442,1710\nCollapsed=0\nDockId=0x00000018,0\n\n[Window][Function Editor]\nPos=303,30\nSize=1613,1750\nCollapsed=0\nDockId=0x00000018,0\n\n[Window][Controller Instance]\nPos=3472,22\nSize=324,1710\nCollapsed=0\nDockId=0x00000010,1\n\n[Window][Plug Properties]\nPos=3205,22\nSize=591,1710\nCollapsed=0\nDockId=0x00000012,1\n\n[Window][Socket Properties]\nPos=239,22\nSize=1326,766\nCollapsed=0\nDockId=0x00000018,1\n\n[Window][Signal Viewer]\nPos=461,22\nSize=3335,1710\nCollapsed=0\nDockId=0x00000018,1\n\n[Window][Element Properties]\nPos=3205,22\nSize=591,1710\nCollapsed=0\nDockId=0x00000012,1\n\n[Window][Driver Instance]\nPos=3472,22\nSize=324,1710\nCollapsed=0\nDockId=0x00000010,1\n\n[Window][Tree View]\nPos=0,22\nSize=459,2062\nCollapsed=0\nDockId=0x00000015,0\n\n[Window][Detail View]\nPos=461,22\nSize=3335,1710\nCollapsed=0\nDockId=0x00000018,0\n\n[Window][Hierarchy]\nPos=0,22\nSize=352,716\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Editor]\nPos=354,22\nSize=3116,108\nCollapsed=0\nDockId=0x00000017,0\n\n[Window][Library]\nPos=0,740\nSize=352,1344\nCollapsed=0\nDockId=0x0000001A,0\n\n[Table][0x0C16652B,4]\nRefScale=16\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=56\n\n[Table][0x31A24D4E,4]\nRefScale=16\nColumn 0  Weight=1.0000\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=56\n\n[Table][0xA8122687,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xEE66A6CE,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x411EB2FC,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x1FBEE5A6,6]\nRefScale=16\nColumn 0  Width=11\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=19\n\n[Table][0xA2B81A53,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xF6B271DD,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x7F3FD80D,4]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0x56FCE5AB,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xDC4024EE,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xBFF071D0,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xEF356BAB,4]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0x89793130,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xBB42EBF6,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x6075A54B,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x66F54BD1,4]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0x2AE199DB,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x8C3948AE,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xC3ED0DA0,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x5B4859A4,4]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0x4FCD58E5,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x4D3D79C4,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xA6C1CC9E,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x95841BB7,4]\nRefScale=16\nColumn 0  Width=15\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=19\n\n[Table][0xFAC80E36,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x5252FFFC,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x13C49A4D,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x86C09E36,4]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0xEF779A2F,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x362CE8A8,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x067B0E54,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xDBC4E7DF,4]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Table][0x37DDE7B9,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xD4418636,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x5DC0BAF3,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xCE71D15C,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xBF6A66C7,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0xDFB84805,6]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Weight=1.0000\nColumn 4  Weight=1.0000\nColumn 5  Width=4\n\n[Table][0x43AA8FCC,4]\nRefScale=16\nColumn 0  Width=4\nColumn 1  Weight=1.0000\nColumn 2  Weight=1.0000\nColumn 3  Width=4\n\n[Docking][Data]\nDockSpace                       ID=0x11111111 Window=0xA87D555D Pos=0,22 Size=3796,2062 Split=X\n  DockNode                      ID=0x00000015 Parent=0x11111111 SizeRef=459,2011 Selected=0xACA4FAE6\n  DockNode                      ID=0x00000016 Parent=0x11111111 SizeRef=1455,2011 Split=X\n    DockNode                    ID=0x0000000B Parent=0x00000016 SizeRef=371,698 Selected=0x60242B41\n    DockNode                    ID=0x0000000C Parent=0x00000016 SizeRef=3467,698 Split=X\n      DockNode                  ID=0x00000009 Parent=0x0000000C SizeRef=352,698 Split=Y Selected=0xD6F83F5C\n        DockNode                ID=0x00000013 Parent=0x00000009 SizeRef=544,1028 Split=Y Selected=0x29EABFBD\n          DockNode              ID=0x00000019 Parent=0x00000013 SizeRef=352,716 Selected=0x29EABFBD\n          DockNode              ID=0x0000001A Parent=0x00000013 SizeRef=352,1344 Selected=0x31AC9BD0\n        DockNode                ID=0x00000014 Parent=0x00000009 SizeRef=544,1032 Selected=0xD6F83F5C\n      DockNode                  ID=0x0000000A Parent=0x0000000C SizeRef=3442,698 Split=X\n        DockNode                ID=0x00000007 Parent=0x0000000A SizeRef=301,698 Selected=0xAD9CC569\n        DockNode                ID=0x00000008 Parent=0x0000000A SizeRef=1944,698 Split=X\n          DockNode              ID=0x00000005 Parent=0x00000008 SizeRef=309,698 Selected=0xECC1AC1F\n          DockNode              ID=0x00000006 Parent=0x00000008 SizeRef=3529,698 Split=X\n            DockNode            ID=0x00000001 Parent=0x00000006 SizeRef=340,698 Selected=0x3760BB01\n            DockNode            ID=0x00000002 Parent=0x00000006 SizeRef=1574,698 Split=X\n              DockNode          ID=0x00000003 Parent=0x00000002 SizeRef=338,698 Selected=0xC3CCF5DC\n              DockNode          ID=0x00000004 Parent=0x00000002 SizeRef=3500,698 Split=Y\n                DockNode        ID=0x0000000D Parent=0x00000004 SizeRef=1030,1710 Split=X Selected=0xDB1EEB52\n                  DockNode      ID=0x0000000F Parent=0x0000000D SizeRef=614,816 Split=X Selected=0x270D7F3A\n                    DockNode    ID=0x00000011 Parent=0x0000000F SizeRef=2849,705 Split=Y Selected=0x270D7F3A\n                      DockNode  ID=0x00000017 Parent=0x00000011 SizeRef=2861,108 Selected=0x9F27EDF6\n                      DockNode  ID=0x00000018 Parent=0x00000011 SizeRef=2861,1600 CentralNode=1 Selected=0xB81AF3F2\n                    DockNode    ID=0x00000012 Parent=0x0000000F SizeRef=591,705 Selected=0x5FA6207C\n                  DockNode      ID=0x00000010 Parent=0x0000000D SizeRef=324,816 Selected=0x4A174F38\n                DockNode        ID=0x0000000E Parent=0x00000004 SizeRef=1030,350 Selected=0x197EBCEF\n\n",
+  "network": {
+    "machines": [
+      {
+        "controllers": [
+          {
+            "description": "controller description",
+            "direction": "ltr",
+            "name": "battery_simulation",
+            "prototype_uuid": "796b98e5-a868-4a11-8392-23df40be0c27",
+            "uuid": "ac7e8c15-3aff-45dd-8a00-091d53da28f4"
+          }
+        ],
+        "description": "",
+        "drivers": [
+          {
+            "description": "driver description",
+            "direction": "ltr",
+            "name": "udp_driver",
+            "prototype_uuid": "f6683049-438e-4d9b-845f-24247f55205b",
+            "uuid": "19e7ddef-00c8-4217-ac93-c974d2d57952"
+          }
+        ],
+        "graph": [
+          {
+            "end": 190616887311607,
+            "id": 1,
+            "start": 259471707601755
+          },
+          {
+            "end": 186355879455988,
+            "id": 2,
+            "start": 223707112930299
+          }
+        ],
+        "name": "microgrid",
+        "namespace": "machine",
+        "uuid": "1ccddb54-dc32-4899-80e9-3933a473694e"
+      }
+    ]
+  }
 }

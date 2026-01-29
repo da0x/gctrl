@@ -94,12 +94,10 @@ namespace runtime {
         runtime.set_status(machine_id, status::building);
         ui::cout << "Building machine: " << machine.name << ui::endl;
 
-        // Generate code for this machine
-        if (!std::filesystem::exists("gctrl")) {
-            ui::cout << "Generating code..." << ui::endl;
-            machine.generate();
-            ui::good << "Code generation complete." << ui::endl;
-        }
+        // Always regenerate code before building
+        ui::cout << "Generating code..." << ui::endl;
+        machine.generate();
+        ui::good << "Code generation complete." << ui::endl;
 
         // Use terminal to build (this is synchronous with the global process queue)
         terminal::execute({
@@ -157,12 +155,10 @@ namespace runtime {
         runtime.set_status(machine_id, status::building);
         ui::cout << "Building machine: " << machine.name << ui::endl;
 
-        // Generate code
-        if (!std::filesystem::exists("gctrl")) {
-            ui::cout << "Generating code..." << ui::endl;
-            machine.generate();
-            ui::good << "Code generation complete." << ui::endl;
-        }
+        // Always regenerate code before building
+        ui::cout << "Generating code..." << ui::endl;
+        machine.generate();
+        ui::good << "Code generation complete." << ui::endl;
 
         std::string exe_path = get_executable_path(machine);
 
