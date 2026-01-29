@@ -24,12 +24,14 @@
 #include "ui/ui.hpp"
 #include "ui/graph.hpp"
 #include "ui/theme.hpp"
+#include "ui/focus.hpp"
 #include "controls/machine/object.hpp"
 #include "controls/driver/object.hpp"
 #include "controls/driver/editor.hpp"
 #include "controls/controller/editor.hpp"
 #include <numbers>
 #include <algorithm>
+#include <functional>
 
 #undef max
 
@@ -41,6 +43,9 @@ namespace machine {
         controller::instance* controller = nullptr;
         driver::instance* driver = nullptr;
     };
+
+    using drill_down_callback = std::function<void(const ui::focus::focus_entry&)>;
+    inline drill_down_callback on_drill_down;
 
     void render_machine_properties(machine::object& active_machine, machine::selectable& selected) {
         ui::begin("Machine Properties");
@@ -311,6 +316,35 @@ namespace machine {
                 if (driver_instance.id() == selected_node_id) {
                     selected.driver = &driver_instance;
                     break;
+                }
+            }
+        }
+
+        // Handle double-click drill-down
+        if (ImGui::IsMouseDoubleClicked(0) && on_drill_down) {
+            ed::NodeId double_clicked_nodes[1];
+            int count = ed::GetSelectedNodes(double_clicked_nodes, 1);
+            if (count > 0) {
+                uint64_t double_clicked_id = double_clicked_nodes[0].Get();
+                for (auto& ctrl : active_machine.controllers) {
+                    if (ctrl.id() == double_clicked_id) {
+                        on_drill_down({
+                            ui::focus::level::controller,
+                            ctrl.prototype.uuid,
+                            ctrl.instance_name()
+                        });
+                        break;
+                    }
+                }
+                for (auto& drv : active_machine.drivers) {
+                    if (drv.id() == double_clicked_id) {
+                        on_drill_down({
+                            ui::focus::level::driver,
+                            drv.prototype.uuid,
+                            drv.instance_name()
+                        });
+                        break;
+                    }
                 }
             }
         }

@@ -39,6 +39,9 @@
 #include "ui/ui.hpp"
 #include "ui/icons.hpp"
 #include "ui/navigation.hpp"
+#include "ui/focus.hpp"
+#include "ui/hierarchy.hpp"
+#include "ui/breadcrumb.hpp"
 #include <imgui.h>
 
 
@@ -61,6 +64,8 @@ namespace controls {
         driver::object::list drivers;
         controller::object::list controllers;
         machine::object::list machines;
+
+        ui::focus::path focus_path;
 
         engine(const std::filesystem::path& engine_path)
             : engine_file(engine_path),
@@ -97,6 +102,7 @@ namespace controls {
             engine_data["machines"] = serialize(machines);
             engine_data["ui_settings"] = ui::settings();
             engine_data["ne_settings"] = ui::node::settings();
+            engine_data["focus_path"] = focus_path.serialize();
 
             std::ofstream out_file(engine_file);
             out_file << engine_data.dump(4);
@@ -128,6 +134,9 @@ namespace controls {
                 if (engine_data.contains("ne_settings") && !ne_settings_loaded) {
                     ui::node::settings(engine_data["ne_settings"]);
                     ne_settings_loaded = true;
+                }
+                if (engine_data.contains("focus_path")) {
+                    focus_path.deserialize(engine_data["focus_path"]);
                 }
             }
             else {
@@ -184,7 +193,40 @@ namespace controls {
             return false;
         }
 
+        void focus_on(const ui::focus::focus_entry& entry) {
+            focus_path.push(entry);
+        }
+
+        void focus_up() {
+            if (!focus_path.empty()) {
+                focus_path.pop();
+            }
+        }
+
+        void focus_to_depth(size_t depth) {
+            focus_path.pop_to_depth(depth);
+        }
+
+        void handle_keyboard_navigation() {
+            if (ImGui::IsKeyPressed(ImGuiKey_Escape) && !focus_path.empty()) {
+                focus_up();
+            }
+            if (ImGui::IsKeyPressed(ImGuiKey_Backspace) && !focus_path.empty() && !ImGui::GetIO().WantTextInput) {
+                focus_up();
+            }
+        }
+
         void render() {
+            handle_keyboard_navigation();
+
+            // Set up drill-down callbacks for node editors
+            machine::on_drill_down = [this](const ui::focus::focus_entry& entry) {
+                focus_on(entry);
+            };
+            controller::on_drill_down = [this](const ui::focus::focus_entry& entry) {
+                focus_on(entry);
+            };
+
             render_menu();
             if (current_mode == ui::navigation::mode::edit) {
                 render_edit_mode();
@@ -265,29 +307,146 @@ namespace controls {
             }
         }
 
+        void render_hierarchy_panel() {
+            ui::hierarchy::callbacks cbs;
+            cbs.on_select = [this](const ui::focus::focus_entry& entry) {
+                // Selection updates property panels (handled by existing code)
+            };
+            cbs.on_drill_down = [this](const ui::focus::focus_entry& entry) {
+                focus_on(entry);
+            };
+            ui::hierarchy::render(machines, cbs);
+        }
+
+        void render_breadcrumb() {
+            if (!focus_path.empty()) {
+                int clicked = ui::breadcrumb::render(focus_path);
+                if (clicked > 0) {
+                    focus_to_depth(static_cast<size_t>(clicked));
+                }
+            }
+        }
+
+        machine::object* find_machine_by_uuid(const std::string& uuid) {
+            for (auto& m : machines) {
+                if (m.uuid == uuid) return &m;
+            }
+            return nullptr;
+        }
+
+        controller::object* find_controller_by_uuid(const std::string& uuid) {
+            for (auto& c : controllers) {
+                if (c.uuid == uuid) return &c;
+            }
+            return nullptr;
+        }
+
+        driver::object* find_driver_by_uuid(const std::string& uuid) {
+            for (auto& d : drivers) {
+                if (d.uuid == uuid) return &d;
+            }
+            return nullptr;
+        }
+
+        element::object* find_element_by_uuid(const std::string& uuid) {
+            for (auto& e : elements) {
+                if (e.uuid == uuid) return &e;
+            }
+            return nullptr;
+        }
+
+        port::object* find_port_by_uuid(const std::string& uuid) {
+            for (auto& p : ports) {
+                if (p.uuid == uuid) return &p;
+            }
+            return nullptr;
+        }
+
+        void render_focused_content() {
+            if (focus_path.empty()) return;
+
+            auto& current = focus_path.current();
+            switch (current.type) {
+                case ui::focus::level::machine: {
+                    auto* mach = find_machine_by_uuid(current.uuid);
+                    if (mach) {
+                        machine::render_editor(*mach, drivers, controllers, elements, ports, functions);
+                    }
+                    break;
+                }
+                case ui::focus::level::controller: {
+                    auto* ctrl = find_controller_by_uuid(current.uuid);
+                    if (ctrl) {
+                        controller::render_editor(*ctrl, elements, ports);
+                    }
+                    break;
+                }
+                case ui::focus::level::driver: {
+                    auto* drv = find_driver_by_uuid(current.uuid);
+                    if (drv) {
+                        driver::render_editor(*drv, ports);
+                    }
+                    break;
+                }
+                case ui::focus::level::element: {
+                    auto* elem = find_element_by_uuid(current.uuid);
+                    if (elem) {
+                        element::render_editor(*elem, functions, signals);
+                    }
+                    break;
+                }
+                case ui::focus::level::plug:
+                case ui::focus::level::socket: {
+                    auto* p = find_port_by_uuid(current.uuid);
+                    if (p) {
+                        port::render_editor(*p, signals);
+                    }
+                    break;
+                }
+            }
+        }
+
         void render_edit_mode() {
+            // Render unified hierarchy panel
+            render_hierarchy_panel();
+
+            // Keep the existing library panel for object definitions
             list_library(machines, controllers, drivers, functions, elements, ports);
-            auto entry = ui::navigation::current_entry();
-            if (entry.index >= 0) {
-                switch (static_cast<ui::navigation::type>(entry.type)) {
-                case ui::navigation::type::machine:
-                    machine::render_editor(*std::next(machines.begin(), entry.index), drivers, controllers, elements, ports, functions);
-                    break;
-                case ui::navigation::type::controller:
-                    controller::render_editor(*std::next(controllers.begin(), entry.index), elements, ports);
-                    break;
-                case ui::navigation::type::driver:
-                    driver::render_editor(*std::next(drivers.begin(), entry.index), ports);
-                    break;
-                case ui::navigation::type::function:
-                    function::render_editor(*std::next(functions.begin(), entry.index), functions, signals);
-                    break;
-                case ui::navigation::type::element:
-                    element::render_editor(*std::next(elements.begin(), entry.index), functions, signals);
-                    break;
-                case ui::navigation::type::port:
-                    port::render_editor(*std::next(ports.begin(), entry.index), signals);
-                    break;
+
+            // Render breadcrumb navigation if we have a focus path
+            if (!focus_path.empty()) {
+                ui::begin("Editor");
+                render_breadcrumb();
+                ui::separator();
+                ui::end();
+            }
+
+            // Render based on focus path if available, otherwise use legacy navigation
+            if (!focus_path.empty()) {
+                render_focused_content();
+            } else {
+                auto entry = ui::navigation::current_entry();
+                if (entry.index >= 0) {
+                    switch (static_cast<ui::navigation::type>(entry.type)) {
+                    case ui::navigation::type::machine:
+                        machine::render_editor(*std::next(machines.begin(), entry.index), drivers, controllers, elements, ports, functions);
+                        break;
+                    case ui::navigation::type::controller:
+                        controller::render_editor(*std::next(controllers.begin(), entry.index), elements, ports);
+                        break;
+                    case ui::navigation::type::driver:
+                        driver::render_editor(*std::next(drivers.begin(), entry.index), ports);
+                        break;
+                    case ui::navigation::type::function:
+                        function::render_editor(*std::next(functions.begin(), entry.index), functions, signals);
+                        break;
+                    case ui::navigation::type::element:
+                        element::render_editor(*std::next(elements.begin(), entry.index), functions, signals);
+                        break;
+                    case ui::navigation::type::port:
+                        port::render_editor(*std::next(ports.begin(), entry.index), signals);
+                        break;
+                    }
                 }
             }
 

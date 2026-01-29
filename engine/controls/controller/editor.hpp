@@ -27,14 +27,19 @@
 
 #include "ui/ui.hpp"
 #include "ui/graph.hpp"
+#include "ui/focus.hpp"
 #include <nlohmann/json.hpp>
 #include <list>
 #include <string>
 #include <cstdint>
+#include <functional>
 
 namespace ed = ax::NodeEditor;
 
 namespace controller {
+
+    using drill_down_callback = std::function<void(const ui::focus::focus_entry&)>;
+    inline drill_down_callback on_drill_down;
 
     struct selectable {
         element::instance* element = nullptr;
@@ -231,6 +236,45 @@ namespace controller {
                 if (socket_instance.id() == selected_node_id) {
                     selected.socket = &socket_instance;
                     break;
+                }
+            }
+        }
+
+        // Handle double-click drill-down for elements
+        if (ImGui::IsMouseDoubleClicked(0) && on_drill_down) {
+            ed::NodeId double_clicked_nodes[1];
+            int count = ed::GetSelectedNodes(double_clicked_nodes, 1);
+            if (count > 0) {
+                uint64_t double_clicked_id = double_clicked_nodes[0].Get();
+                for (auto& elem : active_controller.elements) {
+                    if (elem.id() == double_clicked_id) {
+                        on_drill_down({
+                            ui::focus::level::element,
+                            elem.prototype.uuid,
+                            elem.instance_name()
+                        });
+                        break;
+                    }
+                }
+                for (auto& plug : active_controller.plugs) {
+                    if (plug.id() == double_clicked_id) {
+                        on_drill_down({
+                            ui::focus::level::plug,
+                            plug.get_prototype_uuid(),
+                            plug.instance_name()
+                        });
+                        break;
+                    }
+                }
+                for (auto& socket : active_controller.sockets) {
+                    if (socket.id() == double_clicked_id) {
+                        on_drill_down({
+                            ui::focus::level::socket,
+                            socket.get_prototype_uuid(),
+                            socket.instance_name()
+                        });
+                        break;
+                    }
                 }
             }
         }

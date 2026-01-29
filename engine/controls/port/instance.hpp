@@ -58,6 +58,7 @@ namespace port {
         using controls::instance::name;
         using controls::instance::instance_name;
         using controls::instance::prototype_id;
+        using controls::instance::get_prototype_uuid;
         using controls::instance::direction;
         using controls::instance::list;
 
