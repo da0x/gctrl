@@ -28,7 +28,7 @@
 #include "controls/machine/editor.hpp"
 #include "controls/controller/object.hpp"
 #include "controls/controller/editor.hpp"
-#include "controls/driver/object.hpp"
+#include "controls/driver/instance.hpp"
 #include "controls/driver/editor.hpp"
 #include "controls/function/editor.hpp"
 #include "controls/element/editor.hpp"
@@ -36,6 +36,10 @@
 #include "controls/debug/viewer.hpp"
 #include "controls/build/build.hpp"
 #include "controls/list.hpp"
+#include "controls/network/object.hpp"
+#include "controls/network/editor.hpp"
+#include "controls/runtime/state.hpp"
+#include "controls/runtime/build.hpp"
 #include "ui/ui.hpp"
 #include "ui/icons.hpp"
 #include "ui/navigation.hpp"
@@ -62,11 +66,14 @@ namespace controls {
         function::object::list functions;
         element::object::list elements;
         port::object::list ports;
-        driver::object::list drivers;
         controller::object::list controllers;
-        machine::object::list machines;
+        network::object network;
+        runtime::tracker runtime;
 
         ui::focus::path focus_path;
+
+        // Active machine for build/run operations (the machine currently being worked on)
+        uint64_t active_machine_id = 0;
 
         engine(const std::filesystem::path& engine_path)
             : engine_file(engine_path),
@@ -98,9 +105,8 @@ namespace controls {
             engine_data["functions"] = serialize(functions);
             engine_data["elements"] = serialize(elements);
             engine_data["ports"] = serialize(ports);
-            engine_data["drivers"] = serialize(drivers);
             engine_data["controllers"] = serialize(controllers);
-            engine_data["machines"] = serialize(machines);
+            engine_data["network"] = network.serialize();
             engine_data["ui_settings"] = ui::settings();
             engine_data["ne_settings"] = ui::node::settings();
             engine_data["focus_path"] = focus_path.serialize();
@@ -124,9 +130,11 @@ namespace controls {
                 functions = deserialize<function::object>(engine_data["functions"], signals);
                 elements = deserialize<element::object>(engine_data["elements"], functions, signals);
                 ports = deserialize<port::object>(engine_data["ports"], signals);
-                drivers = deserialize<driver::object>(engine_data["drivers"], ports);
                 controllers = deserialize<controller::object>(engine_data["controllers"], elements, ports);
-                machines = deserialize<machine::object>(engine_data["machines"], controllers, drivers);
+
+                if (engine_data.contains("network")) {
+                    network = network::object(engine_data["network"], controllers, ports);
+                }
 
                 if (engine_data.contains("ui_settings") && !ui_settings_loaded) {
                     ui::settings(engine_data["ui_settings"]);
@@ -220,20 +228,52 @@ namespace controls {
         void render() {
             handle_keyboard_navigation();
 
+            // Set up drill-down callback for network editor (machines can be drilled into)
+            network::on_drill_down = [this](const ui::focus::focus_entry& entry) {
+                focus_on(entry);
+                // Track active machine for build operations
+                if (entry.type == ui::focus::level::machine) {
+                    for (const auto& mach : network.machines) {
+                        if (mach.uuid == entry.uuid) {
+                            active_machine_id = mach.id();
+                            break;
+                        }
+                    }
+                }
+            };
+
             // Set up drill-down callback for machine editor (controllers can be drilled into)
             machine::on_drill_down = [this](const ui::focus::focus_entry& entry) {
                 focus_on(entry);
             };
 
-            render_menu();
-            if (current_mode == ui::navigation::mode::edit) {
-                render_edit_mode();
+            // Set up drill-down callback for controller editor (elements can be drilled into)
+            controller::on_drill_down = [this](const ui::focus::focus_entry& entry) {
+                focus_on(entry);
+            };
+
+            // Update runtime state for all machines that might be building/running
+            for (auto& machine : network.machines) {
+                runtime::update_machine_state(machine.id(), runtime);
             }
-            else if (current_mode == ui::navigation::mode::run) {
-                render_run_mode();
+
+            render_menu();
+
+            // Unified mode - always render edit mode, it now includes runtime overlays
+            render_edit_mode();
+
+            // Render debug viewer when any machine is running
+            if (runtime.is_any_running()) {
+                render_debug_viewer();
             }
 
             ui::terminal::render();
+        }
+
+        void render_debug_viewer() {
+            auto& state = debug::get_state();
+            std::lock_guard<std::mutex> lock(state.data_mutex);
+            debug::viewer::render(network.machines, state.signal_data);
         }
 
     private:
@@ -280,8 +320,17 @@ namespace controls {
             };
             cbs.on_drill_down = [this](const ui::focus::focus_entry& entry) {
                 focus_on(entry);
+                // Track active machine for build/run operations
+                if (entry.type == ui::focus::level::machine) {
+                    for (const auto& mach : network.machines) {
+                        if (mach.uuid == entry.uuid) {
+                            active_machine_id = mach.id();
+                            break;
+                        }
+                    }
+                }
             };
-            ui::hierarchy::render(machines, cbs);
+            ui::hierarchy::render(network.machines, runtime, cbs);
         }
 
         void render_breadcrumb() {
@@ -301,15 +350,52 @@ namespace controls {
             return nullptr;
         }
 
+        driver::instance* find_driver_by_uuid(const std::string& uuid) {
+            for (auto& mach : network.machines) {
+                for (auto& drv : mach.drivers) {
+                    if (drv.uuid == uuid) return &drv;
+                }
+            }
+            return nullptr;
+        }
+
+        machine::object* find_machine_by_uuid(const std::string& uuid) {
+            for (auto& mach : network.machines) {
+                if (mach.uuid == uuid) return &mach;
+            }
+            return nullptr;
+        }
+
+        machine::object* find_machine_by_id(uint64_t id) {
+            for (auto& mach : network.machines) {
+                if (mach.id() == id) return &mach;
+            }
+            return nullptr;
+        }
+
+        machine::object* get_active_machine() {
+            if (active_machine_id == 0 && !network.machines.empty()) {
+                active_machine_id = network.machines.front().id();
+            }
+            return find_machine_by_id(active_machine_id);
+        }
+
         void render_focused_content() {
-            if (focus_path.empty()) return;
+            // Network view when focus path is empty
+            if (focus_path.empty()) {
+                network::render_editor(network, runtime);
+                return;
+            }
 
             auto& current = focus_path.current();
             switch (current.type) {
+                case ui::focus::level::network:
+                    network::render_editor(network, runtime);
+                    break;
                 case ui::focus::level::machine: {
-                    auto* mach = find_by_uuid(machines, current.uuid);
+                    auto* mach = find_machine_by_uuid(current.uuid);
                     if (mach) {
-                        machine::render_editor(*mach, drivers, controllers, elements, ports, functions);
+                        machine::render_editor(*mach, controllers, elements, ports, functions, runtime);
                     }
                     break;
                 }
@@ -321,9 +407,11 @@ namespace controls {
                     break;
                 }
                 case ui::focus::level::driver: {
-                    auto* drv = find_by_uuid(drivers, current.uuid);
+                    auto* drv = find_driver_by_uuid(current.uuid);
                     if (drv) {
+                        ui::begin("Driver Editor");
                         driver::render_editor(*drv, ports);
+                        ui::end();
                     }
                     break;
                 }
@@ -354,8 +442,8 @@ namespace controls {
                 focus_path.clear();
             };
 
-            // Render library panel with all object definitions
-            ui::library::render(machines, controllers, drivers, elements, functions, ports);
+            // Render library panel with all object definitions (drivers removed)
+            ui::library::render(network.machines, controllers, elements, functions, ports);
 
             // Render breadcrumb navigation if we have a focus path
             if (!focus_path.empty()) {
@@ -365,42 +453,10 @@ namespace controls {
                 ui::end();
             }
 
-            // Render based on focus path if available, otherwise use legacy navigation
-            if (!focus_path.empty()) {
-                render_focused_content();
-            } else {
-                auto entry = ui::navigation::current_entry();
-                if (entry.index >= 0) {
-                    switch (static_cast<ui::navigation::type>(entry.type)) {
-                    case ui::navigation::type::machine:
-                        machine::render_editor(*std::next(machines.begin(), entry.index), drivers, controllers, elements, ports, functions);
-                        break;
-                    case ui::navigation::type::controller:
-                        controller::render_editor(*std::next(controllers.begin(), entry.index), elements, ports);
-                        break;
-                    case ui::navigation::type::driver:
-                        driver::render_editor(*std::next(drivers.begin(), entry.index), ports);
-                        break;
-                    case ui::navigation::type::function:
-                        function::render_editor(*std::next(functions.begin(), entry.index), functions, signals);
-                        break;
-                    case ui::navigation::type::element:
-                        element::render_editor(*std::next(elements.begin(), entry.index), functions, signals);
-                        break;
-                    case ui::navigation::type::port:
-                        port::render_editor(*std::next(ports.begin(), entry.index), signals);
-                        break;
-                    }
-                }
-            }
+            // Render focused content (network view when empty, specific view when focused)
+            render_focused_content();
 
             ui::chart::show_my_window();
-        }
-
-        void render_run_mode() {
-            auto& state = debug::get_state();
-            std::lock_guard<std::mutex> lock(state.data_mutex);
-            debug::viewer::render(machines, state.signal_data);
         }
 
         void render_menu() {
@@ -439,7 +495,7 @@ namespace controls {
                         current_operation = terminal_operation::build;
                         if (!std::filesystem::exists("gctrl")) {
                             ui::cout << "Generating code..." << ui::endl;
-                            for (const auto& machine : machines) {
+                            for (const auto& machine : network.machines) {
                                 machine.generate();
                             }
                             ui::good << "Code generation complete." << ui::endl;
@@ -455,7 +511,7 @@ namespace controls {
                         current_operation = terminal_operation::rebuild;
                         ui::cout << "Generating code..." << ui::endl;
                         code::delete_gctrl_directory();
-                        for (const auto& machine : machines) {
+                        for (const auto& machine : network.machines) {
                             machine.generate();
                         }
                         ui::good << "Code generation complete." << ui::endl;
@@ -488,44 +544,22 @@ namespace controls {
                     ui::menu::end();
                 }
 
-                if (terminal::finished()) {
-                    const char* op_name = "Operation";
-                    switch (current_operation) {
-                        case terminal_operation::build: op_name = "Build"; break;
-                        case terminal_operation::rebuild: op_name = "Rebuild"; break;
-                        case terminal_operation::clean: op_name = "Clean"; break;
-                        case terminal_operation::run: op_name = "Run"; break;
-                        default: break;
-                    }
-                    if (terminal::success()) {
-                        ui::good << op_name << " succeeded!" << ui::endl;
-                    }
-                    else {
-                        ui::cerr << op_name << " failed!" << ui::endl;
-                    }
-                    current_operation = terminal_operation::none;
-                }
-
                 if (ui::menu::begin("  Debug  ")) {
                     ImGui::BeginDisabled(terminal::is_running());
                     if (ui::menu::item(string(ui::icon::play) + "\tStart Debugging", "F5", current_mode == ui::navigation::mode::edit)) {
-                        if (!machines.empty()) {
+                        auto* mach = get_active_machine();
+                        if (mach) {
                             current_operation = terminal_operation::run;
-                            std::string exe_name = machines.front().name;
-#if GCTRL_PLATFORM_WINDOWS
-                            std::string exe_path = std::filesystem::current_path().string() + "/build/bin/Debug/" + exe_name + ".exe";
-#else
-                            std::string exe_path = std::filesystem::current_path().string() + "/build/bin/" + exe_name;
-#endif
-                            terminal::execute({ exe_path });
+                            runtime::run_machine(*mach, runtime);
                         }
                         navigate_to_most_recent(ui::navigation::mode::run);
                     }
                     ImGui::EndDisabled();
 
                     if (ui::menu::item(string(ui::icon::stop) + "\tStop Debugging", "Shift+F5", terminal::is_running() || current_mode == ui::navigation::mode::run)) {
-                        if (terminal::is_running()) {
-                            terminal::cancel();
+                        auto* mach = get_active_machine();
+                        if (mach && terminal::is_running()) {
+                            runtime::stop_machine(*mach, runtime);
                         }
                         navigate_to_most_recent(ui::navigation::mode::edit);
                     }
@@ -533,8 +567,25 @@ namespace controls {
                 }
 
                 ui::main_menu::end();
+            }
 
-
+            // Check terminal completion OUTSIDE menu block so it runs every frame
+            if (terminal::finished() && current_operation != terminal_operation::none) {
+                const char* op_name = "Operation";
+                switch (current_operation) {
+                    case terminal_operation::build: op_name = "Build"; break;
+                    case terminal_operation::rebuild: op_name = "Rebuild"; break;
+                    case terminal_operation::clean: op_name = "Clean"; break;
+                    case terminal_operation::run: op_name = "Run"; break;
+                    default: break;
+                }
+                if (terminal::success()) {
+                    ui::good << op_name << " succeeded!" << ui::endl;
+                }
+                else {
+                    ui::cerr << op_name << " failed!" << ui::endl;
+                }
+                current_operation = terminal_operation::none;
             }
         }
     };

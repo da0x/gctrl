@@ -31,6 +31,7 @@ namespace breadcrumb {
 
     inline const char* icon_for_level(focus::level level) {
         switch (level) {
+            case focus::level::network: return ui::icon::network;
             case focus::level::machine: return ui::icon::machine;
             case focus::level::controller: return ui::icon::controller;
             case focus::level::driver: return ui::icon::driver;

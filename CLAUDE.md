@@ -23,7 +23,7 @@ cmake --build build
 
 **Run:**
 ```bash
-./build/gctrl [path_to_project.ctrl]
+./build/engine/gctrl [path_to_project.ctrl]
 ```
 
 ### Windows (Visual Studio)
@@ -48,13 +48,24 @@ x64\Release\gctrl.exe [path_to_project.ctrl]
 
 The core domain model follows this hierarchy (top to bottom):
 
-1. **Machine** (`engine/controls/machine/`) - Top-level system containing multiple controllers
-2. **Controller** (`engine/controls/controller/`) - Subsystem containing element instances and connections
-3. **Element** (`engine/controls/element/`) - Reusable computational unit with inputs, outputs, memory, and code blocks
-4. **Function** (`engine/controls/function/`) - Pure computational functions (no state)
-5. **Port** (`engine/controls/port/`) - Interface connectors (sockets=input, plugs=output)
-6. **Signal** (`engine/controls/signal/`) - Data type definitions with C++ type mappings
-7. **Driver** (`engine/controls/driver/`) - Hardware interface components
+1. **Network** (`engine/controls/network/`) - Top-level container holding multiple machines
+2. **Machine** (`engine/controls/machine/`) - System containing controllers and drivers
+3. **Controller** (`engine/controls/controller/`) - Subsystem containing element instances and connections
+4. **Element** (`engine/controls/element/`) - Reusable computational unit with inputs, outputs, memory, and code blocks
+5. **Function** (`engine/controls/function/`) - Pure computational functions (no state)
+6. **Port** (`engine/controls/port/`) - Interface connectors (sockets=input, plugs=output)
+7. **Signal** (`engine/controls/signal/`) - Data type definitions with C++ type mappings
+8. **Driver** (`engine/controls/driver/`) - Hardware interface components (UDP, Config)
+
+### Runtime System
+
+Per-machine runtime state tracking in `engine/controls/runtime/`:
+- **state.hpp** - Runtime status enum (stopped, building, running, error) and tracker
+- **build.hpp** - Build/run/stop functions for machines
+
+GCtrl auto-detects UDP ports from machine drivers for debug communication:
+- Listens on machine's `send_port` (receives what machine sends)
+- Sends to machine's `listen_port` (where machine listens)
 
 ### Key Patterns
 

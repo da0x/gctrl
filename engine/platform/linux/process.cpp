@@ -185,11 +185,7 @@ namespace process {
     }
 
     bool finished() {
-        if (global_state.finished_flag) {
-            global_state.finished_flag = false;
-            return true;
-        }
-        return false;
+        return global_state.finished_flag;
     }
 
 } // namespace process

@@ -29,6 +29,7 @@ namespace ui {
 namespace focus {
 
     enum class level {
+        network,    // Top level - network view showing all machines
         machine,
         controller,
         driver,

@@ -121,10 +121,15 @@ namespace project {
             });
 
         if (it != recent_projects.end()) {
-            it->update_last_opened();
+            // Move existing project to front
+            recent_project proj = *it;
+            proj.update_last_opened();
+            recent_projects.erase(it);
+            recent_projects.insert(recent_projects.begin(), proj);
         }
         else {
-            recent_projects.emplace_back(new_project_path);
+            // Insert new project at front
+            recent_projects.insert(recent_projects.begin(), recent_project(new_project_path));
         }
 
         if (recent_projects.size() > 10) {

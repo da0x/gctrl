@@ -26,7 +26,6 @@
 #include "ui/navigation.hpp"
 #include "controls/machine/object.hpp"
 #include "controls/controller/object.hpp"
-#include "controls/driver/object.hpp"
 #include "controls/element/object.hpp"
 #include "controls/function/object.hpp"
 #include "controls/port/object.hpp"
@@ -112,7 +111,6 @@ namespace library {
     inline void render(
         machine::object::list& machines,
         controller::object::list& controllers,
-        driver::object::list& drivers,
         element::object::list& elements,
         function::object::list& functions,
         port::object::list& ports
@@ -142,8 +140,7 @@ namespace library {
         apply_tree_action();
         render_category(ui::icon::controller, "Controllers", "Add Controller", controllers, ui::navigation::type::controller);
 
-        apply_tree_action();
-        render_category(ui::icon::driver, "Drivers", "Add Driver", drivers, ui::navigation::type::driver);
+        // Drivers removed - they are now added directly to machines via Insert > Driver menu
 
         apply_tree_action();
         render_category(ui::icon::element, "Elements", "Add Element", elements, ui::navigation::type::element);

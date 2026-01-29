@@ -37,15 +37,21 @@ namespace machine {
     public:
         using list = std::list<object>;
         controller::instance::list controllers;
-        driver::instance::list drivers;
+        driver::instance::list drivers;  // Now stores driver::object directly
 
         object() : controls::record("machine") {}
 
-        object(const nlohmann::json& j, const controller::object::list& controllers, const driver::object::list& drivers)
+        object(const nlohmann::json& j, const controller::object::list& controllers, const port::object::list& ports)
             : controls::record("machine", j) {
             load_instances(j, "controllers", this->controllers, controllers);
-            load_instances(j, "drivers", this->drivers, drivers);
-            
+
+            // Load drivers directly as objects (not instances)
+            if (j.contains("drivers")) {
+                for (const auto& drv_json : j["drivers"]) {
+                    this->drivers.emplace_back(drv_json, ports);
+                }
+            }
+
             if (j.contains("graph")) {
                 this->graph::deserialize(j["graph"]);
             }
@@ -72,14 +78,14 @@ namespace machine {
                 controller.prototype.generate();
             }
             for (const auto& driver : drivers) {
-                driver.prototype.generate();
+                driver.generate();
             }
             code::begin(display_name());
             for (const auto& ctrl : controllers) {
                 code::line("#include <" + ctrl.prototype.file_name() + ">");
             }
             for (const auto& drv : drivers) {
-                code::line("#include <" + drv.prototype.file_name() + ">");
+                code::line("#include <" + drv.file_name() + ">");
             }
             code::begin_gctrl_namespace();
             code::namespace_begin(namespace_);
@@ -89,7 +95,7 @@ namespace machine {
                 code::declare_variable(ctrl.prototype_typename(), ctrl.name);
             }
             for (const auto& drv : drivers) {
-                code::declare_variable(drv.prototype_typename(), drv.name);
+                code::declare_variable(drv.display_name(), drv.name);
             }
 
             for (auto frequency : exec::frequencies) {
@@ -104,7 +110,7 @@ namespace machine {
                             catch (...) {}
                         }
                     }
-                    
+
                     for (auto& o : e.outputs()) { // plugs
                         auto id = e.id() | o.id();
                         if (is_connected(id)) {
@@ -119,7 +125,7 @@ namespace machine {
                 }
 
                 for (auto& e : drivers) {
-                    if (e.prototype_frequency() == frequency) {
+                    if (e.get_frequency() == frequency) {
                         for (auto& i : e.inputs()) { // sockets
                             auto id = e.id() | i.id();
                             if (is_connected(id)) {
@@ -129,7 +135,7 @@ namespace machine {
                                 catch (...) {}
                             }
                         }
-                        
+
                         for (auto& o : e.outputs()) { // plugs
                             auto id = e.id() | o.id();
                             if (is_connected(id)) {

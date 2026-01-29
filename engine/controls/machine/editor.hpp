@@ -26,9 +26,12 @@
 #include "ui/theme.hpp"
 #include "ui/focus.hpp"
 #include "controls/machine/object.hpp"
-#include "controls/driver/object.hpp"
+#include "controls/driver/instance.hpp"
+#include "controls/driver/type.hpp"
 #include "controls/driver/editor.hpp"
 #include "controls/controller/editor.hpp"
+#include "controls/runtime/state.hpp"
+#include "controls/runtime/build.hpp"
 #include <numbers>
 #include <algorithm>
 #include <functional>
@@ -191,24 +194,99 @@ namespace machine {
         ed::PopStyleColor(2);
     }
 
-    void render_driver_node(driver::instance& driver_instance, machine::object& active_machine) {
+    void render_driver_node(driver::instance& driver_obj, machine::object& active_machine) {
         ed::PushStyleColor(ed::StyleColor_NodeBg, ui::theme::vs2022::frame_background);
         ed::PushStyleColor(ed::StyleColor_NodeBorder, ui::theme::vs2022::code_keyword);
-        auto& prototype = *dynamic_cast<const driver::object*>(&driver_instance.prototype);
-        if (driver_instance.direction == ui::direction::ltr) {
-            ui::graph::render_node(ui::icon::driver, driver_instance, driver_instance.inputs(), driver_instance.outputs(), active_machine, ui::connector::shape::circle);
+        if (driver_obj.direction == ui::direction::ltr) {
+            ui::graph::render_node(driver::type_to_icon(driver_obj.backend_type), driver_obj, driver_obj.inputs(), driver_obj.outputs(), active_machine, ui::connector::shape::circle);
         }
         else {
-
-            ui::graph::render_node(ui::icon::driver, driver_instance, driver_instance.outputs(), driver_instance.inputs(), active_machine, ui::connector::shape::circle);
+            ui::graph::render_node(driver::type_to_icon(driver_obj.backend_type), driver_obj, driver_obj.outputs(), driver_obj.inputs(), active_machine, ui::connector::shape::circle);
         }
         ed::PopStyleColor(2);
     }
 
-    void render_node_editor(machine::object& active_machine, machine::selectable& selected, const driver::object::list& driver_db, const controller::object::list& controller_db) {
+    void render_runtime_toolbar(machine::object& machine, runtime::tracker& runtime_tracker) {
+        auto& state = runtime_tracker.get_state(machine.id());
+
+        // Status indicator
+        ImVec4 status_color;
+        const char* status_icon;
+        const char* status_text;
+
+        switch (state.current_status) {
+            case runtime::status::stopped:
+                status_color = ImVec4(0.5f, 0.5f, 0.5f, 1.0f);
+                status_icon = ICON_FA_STOP;
+                status_text = "Stopped";
+                break;
+            case runtime::status::building:
+                status_color = ImVec4(1.0f, 0.7f, 0.0f, 1.0f);
+                status_icon = ICON_FA_HAMMER;
+                status_text = "Building...";
+                break;
+            case runtime::status::running:
+                status_color = ImVec4(0.0f, 0.8f, 0.0f, 1.0f);
+                status_icon = ICON_FA_PLAY;
+                status_text = "Running";
+                break;
+            case runtime::status::error:
+                status_color = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
+                status_icon = ICON_FA_TRIANGLE_EXCLAMATION;
+                status_text = "Error";
+                break;
+        }
+
+        ImGui::PushStyleColor(ImGuiCol_Text, status_color);
+        ImGui::Text("%s %s", status_icon, status_text);
+        ImGui::PopStyleColor();
+
+        if (state.has_error() && ImGui::IsItemHovered()) {
+            ImGui::BeginTooltip();
+            ImGui::TextUnformatted(state.error_message.c_str());
+            ImGui::EndTooltip();
+        }
+
+        ui::same_line();
+
+        // Build button
+        ImGui::BeginDisabled(state.is_building() || state.is_running());
+        if (ui::button(ICON_FA_HAMMER " Build")) {
+            runtime::build_machine(machine, runtime_tracker);
+        }
+        ImGui::EndDisabled();
+
+        ui::same_line();
+
+        // Run/Stop button
+        if (state.is_stopped() || state.has_error()) {
+            if (ui::button(ICON_FA_PLAY " Run")) {
+                runtime::run_machine(machine, runtime_tracker);
+            }
+        } else if (state.is_running()) {
+            if (ui::button(ICON_FA_STOP " Stop")) {
+                runtime::stop_machine(machine, runtime_tracker);
+            }
+        } else if (state.is_building()) {
+            ImGui::BeginDisabled(true);
+            ui::button(ICON_FA_PLAY " Run");
+            ImGui::EndDisabled();
+        }
+    }
+
+    void render_node_editor(machine::object& active_machine, machine::selectable& selected, const controller::object::list& controller_db, const port::object::list& port_db, runtime::tracker& runtime_tracker) {
         ui::begin("Machine Editor", 0);
         ui::node::context_begin(active_machine.id());
+
+        // Runtime and Toolbar side by side
         ui::columns(2);
+
+        // Left column: Runtime
+        ui::separator("Runtime");
+        render_runtime_toolbar(active_machine, runtime_tracker);
+
+        // Right column: Toolbar
+        ui::next_column();
         ui::separator("Toolbar");
         if (ui::button("Insert")) {
             ui::popup::open("InsertMenu");
@@ -223,10 +301,15 @@ namespace machine {
                 ui::menu::end();
             }
             if (ui::menu::begin("Driver")) {
-                for (const auto& object : driver_db) {
-                    if (ui::menu::item(object.display_name())) {
-                        active_machine.drivers.push_back(driver::instance(object));
-                    }
+                if (ui::menu::item(std::string(ICON_FA_NETWORK_WIRED) + " UDP")) {
+                    driver::instance new_driver(driver::type::udp);
+                    new_driver.name = "udp_driver";
+                    active_machine.drivers.push_back(new_driver);
+                }
+                if (ui::menu::item(std::string(ICON_FA_FILE_LINES) + " Config")) {
+                    driver::instance new_driver(driver::type::config);
+                    new_driver.name = "config_driver";
+                    active_machine.drivers.push_back(new_driver);
                 }
                 ImGui::EndMenu();
             }
@@ -270,12 +353,6 @@ namespace machine {
             ui::disabled::end();
         }
 
-        ui::next_column();
-        ui::separator("Compiler");
-        if (ui::button("Generate Code")) {
-            code::delete_gctrl_directory();
-            active_machine.generate();
-        }
         ui::separator();
         ui::columns(1);
 
@@ -291,8 +368,8 @@ namespace machine {
         for (auto& controller_instance : active_machine.controllers) {
             render_controller_node(controller_instance, active_machine);
         }
-        for (auto& driver_instance : active_machine.drivers) {
-            render_driver_node(driver_instance, active_machine);
+        for (auto& driver_obj : active_machine.drivers) {
+            render_driver_node(driver_obj, active_machine);
         }
         ui::graph::handle_link_creation(active_machine);
         ui::graph::render_existing_links(active_machine);
@@ -315,23 +392,20 @@ namespace machine {
         }
 
         // Handle double-click drill-down (only for controllers - they have a canvas to navigate into)
-        if (ImGui::IsMouseDoubleClicked(0) && on_drill_down) {
-            ed::NodeId double_clicked_nodes[1];
-            int count = ed::GetSelectedNodes(double_clicked_nodes, 1);
-            if (count > 0) {
-                uint64_t id = double_clicked_nodes[0].Get();
-                ui::graph::try_drilldown_prototype(active_machine.controllers, id, ui::focus::level::controller, on_drill_down);
-            }
+        ed::NodeId double_clicked_node = ed::GetDoubleClickedNode();
+        if (double_clicked_node && on_drill_down) {
+            uint64_t id = double_clicked_node.Get();
+            ui::graph::try_drilldown_prototype(active_machine.controllers, id, ui::focus::level::controller, on_drill_down);
         }
 
         ui::node::context_end();
         ui::end();
     }
 
-    void render_editor(machine::object& active_machine, const driver::object::list& driver_db, const controller::object::list& controller_db, const element::object::list& element_db, const port::object::list& port_db, const function::object::list& function_db) {
+    void render_editor(machine::object& active_machine, const controller::object::list& controller_db, const element::object::list& element_db, const port::object::list& port_db, const function::object::list& function_db, runtime::tracker& runtime_tracker) {
         machine::selectable selected;
         render_machine_properties(active_machine, selected);
-        render_node_editor(active_machine, selected, driver_db, controller_db);
+        render_node_editor(active_machine, selected, controller_db, port_db, runtime_tracker);
 
         if (selected.controller != nullptr) {
             ui::begin("Controller Instance");
@@ -342,10 +416,8 @@ namespace machine {
             ui::end();
         }
         if (selected.driver != nullptr) {
-            ui::begin("Driver Instance");
-            selected.driver->editor();
-            ui::graph::render_list(ui::icon::plug, "Inputs", selected.driver->inputs());
-            ui::graph::render_list(ui::icon::socket, "Outputs", selected.driver->outputs());
+            ui::begin("Driver");
+            driver::render_editor(*selected.driver, port_db);
             ui::end();
         }
     }

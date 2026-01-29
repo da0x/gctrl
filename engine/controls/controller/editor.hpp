@@ -39,6 +39,9 @@ namespace ed = ax::NodeEditor;
 
 namespace controller {
 
+    using drill_down_callback = std::function<void(const ui::focus::focus_entry&)>;
+    inline drill_down_callback on_drill_down;
+
     struct selectable {
         element::instance* element = nullptr;
         port::plug::instance* plug = nullptr;
@@ -219,6 +222,13 @@ namespace controller {
             selected.element = ui::graph::find_selected_in(active_controller.elements, selected_node_id);
             selected.plug = ui::graph::find_selected_in(active_controller.plugs, selected_node_id);
             selected.socket = ui::graph::find_selected_in(active_controller.sockets, selected_node_id);
+        }
+
+        // Handle double-click drill-down (elements can be edited)
+        ed::NodeId double_clicked_node = ed::GetDoubleClickedNode();
+        if (double_clicked_node && on_drill_down) {
+            uint64_t id = double_clicked_node.Get();
+            ui::graph::try_drilldown_prototype(active_controller.elements, id, ui::focus::level::element, on_drill_down);
         }
 
         ui::node::context_end();

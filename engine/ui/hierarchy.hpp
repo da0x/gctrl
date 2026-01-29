@@ -26,9 +26,11 @@
 #include "ui/focus.hpp"
 #include "controls/machine/object.hpp"
 #include "controls/controller/object.hpp"
-#include "controls/driver/object.hpp"
+#include "controls/driver/instance.hpp"
+#include "controls/driver/type.hpp"
 #include "controls/element/object.hpp"
 #include "controls/port/object.hpp"
+#include "controls/runtime/state.hpp"
 
 namespace ui {
 namespace hierarchy {
@@ -139,20 +141,71 @@ namespace hierarchy {
             });
     }
 
-    inline void render_driver_instance(const driver::instance& drv) {
-        render_parent(drv, ui::icon::driver, focus::level::driver,
-            [](const auto& d) { return d.prototype.uuid; },
-            [&]() {
-                const auto& proto = dynamic_cast<const driver::object&>(drv.prototype);
-                for (const auto& plug : proto.plugs) render_port_instance(plug);
-                for (const auto& socket : proto.sockets) render_socket_instance(socket);
-            });
+    inline void render_driver_object(const driver::instance& drv) {
+        bool is_canvas_selected = (canvas_selected_node_id == drv.id());
+
+        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
+        if (is_canvas_selected) {
+            flags |= ImGuiTreeNodeFlags_Selected;
+        }
+
+        // Use backend-specific icon
+        const char* icon = driver::type_to_icon(drv.backend_type);
+        bool open = ImGui::TreeNodeEx(reinterpret_cast<void*>(drv.id()), flags, "%s %s", icon, drv.display_name().c_str());
+
+        if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen()) {
+            request_select_node(drv.id());
+            if (current_callbacks.on_select) {
+                current_callbacks.on_select({focus::level::driver, drv.uuid, drv.display_name()});
+            }
+        }
+
+        if (ImGui::IsItemClicked() && ImGui::IsMouseDoubleClicked(0) && current_callbacks.on_drill_down) {
+            current_callbacks.on_drill_down({focus::level::driver, drv.uuid, drv.display_name()});
+        }
+
+        if (open) {
+            for (const auto& plug : drv.plugs) render_port_instance(plug);
+            for (const auto& socket : drv.sockets) render_socket_instance(socket);
+            ImGui::TreePop();
+        }
     }
+
+    inline runtime::tracker* current_runtime_tracker = nullptr;
 
     inline void render_machine(machine::object& mach) {
         ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
 
-        bool open = ImGui::TreeNodeEx(reinterpret_cast<void*>(mach.id()), flags, "%s %s", ui::icon::machine, mach.display_name().c_str());
+        // Get runtime status for visual indicator
+        const char* status_indicator = "";
+        ImVec4 status_color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+
+        if (current_runtime_tracker) {
+            auto status = current_runtime_tracker->get_status(mach.id());
+            switch (status) {
+                case runtime::status::running:
+                    status_indicator = ICON_FA_PLAY " ";
+                    status_color = ImVec4(0.0f, 0.8f, 0.0f, 1.0f);
+                    break;
+                case runtime::status::building:
+                    status_indicator = ICON_FA_HAMMER " ";
+                    status_color = ImVec4(1.0f, 0.7f, 0.0f, 1.0f);
+                    break;
+                case runtime::status::error:
+                    status_indicator = ICON_FA_TRIANGLE_EXCLAMATION " ";
+                    status_color = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // Build display string with status indicator
+        std::string display_text = std::string(status_indicator) + ui::icon::machine + " " + mach.display_name();
+
+        ImGui::PushStyleColor(ImGuiCol_Text, status_color);
+        bool open = ImGui::TreeNodeEx(reinterpret_cast<void*>(mach.id()), flags, "%s", display_text.c_str());
+        ImGui::PopStyleColor();
 
         // Single click on machine drills down to show machine view
         if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen()) {
@@ -163,26 +216,37 @@ namespace hierarchy {
 
         if (open) {
             for (const auto& ctrl : mach.controllers) render_controller_instance(ctrl);
-            for (const auto& drv : mach.drivers) render_driver_instance(drv);
+            for (const auto& drv : mach.drivers) render_driver_object(drv);
             ImGui::TreePop();
         }
     }
 
     inline void render(
         machine::object::list& machines,
+        runtime::tracker& runtime_tracker,
         const callbacks& cbs = {}
     ) {
         current_callbacks = cbs;
+        current_runtime_tracker = &runtime_tracker;
 
         ui::begin("Hierarchy");
         ui::tree::context::begin("hierarchy_panel");
 
-        for (auto& mach : machines) {
-            render_machine(mach);
+        // Network root node
+        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_OpenOnArrow;
+        bool open = ImGui::TreeNodeEx("network_root", flags, "%s Network", ui::icon::network);
+
+        if (open) {
+            for (auto& mach : machines) {
+                render_machine(mach);
+            }
+            ImGui::TreePop();
         }
 
         ui::tree::context::end();
         ui::end();
+
+        current_runtime_tracker = nullptr;
     }
 
 } // namespace hierarchy
