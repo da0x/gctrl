@@ -40,110 +40,131 @@ namespace hierarchy {
 
     inline callbacks current_callbacks;
 
-    inline void render_port_instance(const port::plug::instance& plug) {
-        ui::tree::leaf(plug.id(), [&]() {
-            ui::text(std::string(ui::icon::plug) + " " + plug.instance_name());
-        });
-        if (ui::tree::is_selected(plug.id()) && current_callbacks.on_select) {
-            current_callbacks.on_select({focus::level::plug, plug.get_prototype_uuid(), plug.instance_name()});
+    // Pending node selection - set by hierarchy, consumed by node editor
+    inline uint64_t pending_select_node_id = 0;
+    // Currently selected node in canvas - set by node editor, used by hierarchy for highlighting
+    inline uint64_t canvas_selected_node_id = 0;
+
+    inline void request_select_node(uint64_t id) {
+        pending_select_node_id = id;
+    }
+
+    inline uint64_t consume_pending_selection() {
+        uint64_t id = pending_select_node_id;
+        pending_select_node_id = 0;
+        return id;
+    }
+
+    inline void set_canvas_selection(uint64_t id) {
+        canvas_selected_node_id = id;
+    }
+
+    inline uint64_t get_canvas_selection() {
+        return canvas_selected_node_id;
+    }
+
+    // Template for leaf nodes (no children, no drill-down)
+    template<typename Instance, typename UuidGetter>
+    void render_leaf(const Instance& item, const char* icon, focus::level level, UuidGetter&& get_uuid) {
+        bool is_canvas_selected = (canvas_selected_node_id == item.id());
+
+        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
+        if (is_canvas_selected) {
+            flags |= ImGuiTreeNodeFlags_Selected;
         }
+
+        ImGui::TreeNodeEx(reinterpret_cast<void*>(item.id()), flags, "%s %s", icon, item.instance_name().c_str());
+
+        if (ImGui::IsItemClicked()) {
+            request_select_node(item.id());
+            if (current_callbacks.on_select) {
+                current_callbacks.on_select({level, get_uuid(item), item.instance_name()});
+            }
+        }
+    }
+
+    // Template for parent nodes (has children and drill-down)
+    template<typename Instance, typename UuidGetter, typename ChildRenderer>
+    void render_parent(const Instance& item, const char* icon, focus::level level,
+                       UuidGetter&& get_uuid, ChildRenderer&& render_children) {
+        bool is_canvas_selected = (canvas_selected_node_id == item.id());
+
+        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
+        if (is_canvas_selected) {
+            flags |= ImGuiTreeNodeFlags_Selected;
+        }
+
+        bool open = ImGui::TreeNodeEx(reinterpret_cast<void*>(item.id()), flags, "%s %s", icon, item.instance_name().c_str());
+
+        if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen()) {
+            request_select_node(item.id());
+            if (current_callbacks.on_select) {
+                current_callbacks.on_select({level, get_uuid(item), item.instance_name()});
+            }
+        }
+
+        if (ImGui::IsItemClicked() && ImGui::IsMouseDoubleClicked(0) && current_callbacks.on_drill_down) {
+            current_callbacks.on_drill_down({level, get_uuid(item), item.instance_name()});
+        }
+
+        if (open) {
+            render_children();
+            ImGui::TreePop();
+        }
+    }
+
+    inline void render_port_instance(const port::plug::instance& plug) {
+        render_leaf(plug, ui::icon::plug, focus::level::plug,
+            [](const auto& p) { return p.get_prototype_uuid(); });
     }
 
     inline void render_socket_instance(const port::socket::instance& socket) {
-        ui::tree::leaf(socket.id(), [&]() {
-            ui::text(std::string(ui::icon::socket) + " " + socket.instance_name());
-        });
-        if (ui::tree::is_selected(socket.id()) && current_callbacks.on_select) {
-            current_callbacks.on_select({focus::level::socket, socket.get_prototype_uuid(), socket.instance_name()});
-        }
+        render_leaf(socket, ui::icon::socket, focus::level::socket,
+            [](const auto& s) { return s.get_prototype_uuid(); });
     }
 
     inline void render_element_instance(const element::instance& elem) {
-        ui::tree::leaf(elem.id(), [&]() {
-            ui::text(std::string(ui::icon::element) + " " + elem.instance_name());
-        });
-        if (ui::tree::is_selected(elem.id()) && current_callbacks.on_select) {
-            current_callbacks.on_select({focus::level::element, elem.prototype.uuid, elem.instance_name()});
-        }
+        render_leaf(elem, ui::icon::element, focus::level::element,
+            [](const auto& e) { return e.prototype.uuid; });
     }
 
     inline void render_controller_instance(const controller::instance& ctrl) {
-        bool open = ui::tree::child(ctrl.id(), [&]() {
-            ui::text(std::string(ui::icon::controller) + " " + ctrl.instance_name());
-        });
-
-        if (ui::tree::is_selected(ctrl.id())) {
-            if (current_callbacks.on_select) {
-                current_callbacks.on_select({focus::level::controller, ctrl.prototype.uuid, ctrl.instance_name()});
-            }
-            if (ImGui::IsMouseDoubleClicked(0) && current_callbacks.on_drill_down) {
-                current_callbacks.on_drill_down({focus::level::controller, ctrl.prototype.uuid, ctrl.instance_name()});
-            }
-        }
-
-        if (open) {
-            const auto& proto = dynamic_cast<const controller::object&>(ctrl.prototype);
-            for (const auto& elem : proto.elements) {
-                render_element_instance(elem);
-            }
-            for (const auto& plug : proto.plugs) {
-                render_port_instance(plug);
-            }
-            for (const auto& socket : proto.sockets) {
-                render_socket_instance(socket);
-            }
-            ui::tree::child_end();
-        }
+        render_parent(ctrl, ui::icon::controller, focus::level::controller,
+            [](const auto& c) { return c.prototype.uuid; },
+            [&]() {
+                const auto& proto = dynamic_cast<const controller::object&>(ctrl.prototype);
+                for (const auto& elem : proto.elements) render_element_instance(elem);
+                for (const auto& plug : proto.plugs) render_port_instance(plug);
+                for (const auto& socket : proto.sockets) render_socket_instance(socket);
+            });
     }
 
     inline void render_driver_instance(const driver::instance& drv) {
-        bool open = ui::tree::child(drv.id(), [&]() {
-            ui::text(std::string(ui::icon::driver) + " " + drv.instance_name());
-        });
-
-        if (ui::tree::is_selected(drv.id())) {
-            if (current_callbacks.on_select) {
-                current_callbacks.on_select({focus::level::driver, drv.prototype.uuid, drv.instance_name()});
-            }
-            if (ImGui::IsMouseDoubleClicked(0) && current_callbacks.on_drill_down) {
-                current_callbacks.on_drill_down({focus::level::driver, drv.prototype.uuid, drv.instance_name()});
-            }
-        }
-
-        if (open) {
-            const auto& proto = dynamic_cast<const driver::object&>(drv.prototype);
-            for (const auto& plug : proto.plugs) {
-                render_port_instance(plug);
-            }
-            for (const auto& socket : proto.sockets) {
-                render_socket_instance(socket);
-            }
-            ui::tree::child_end();
-        }
+        render_parent(drv, ui::icon::driver, focus::level::driver,
+            [](const auto& d) { return d.prototype.uuid; },
+            [&]() {
+                const auto& proto = dynamic_cast<const driver::object&>(drv.prototype);
+                for (const auto& plug : proto.plugs) render_port_instance(plug);
+                for (const auto& socket : proto.sockets) render_socket_instance(socket);
+            });
     }
 
     inline void render_machine(machine::object& mach) {
-        bool open = ui::tree::child(mach.id(), [&]() {
-            ui::text(std::string(ui::icon::machine) + " " + mach.display_name());
-        });
+        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
 
-        if (ui::tree::is_selected(mach.id())) {
-            if (current_callbacks.on_select) {
-                current_callbacks.on_select({focus::level::machine, mach.uuid, mach.display_name()});
-            }
-            if (ImGui::IsMouseDoubleClicked(0) && current_callbacks.on_drill_down) {
+        bool open = ImGui::TreeNodeEx(reinterpret_cast<void*>(mach.id()), flags, "%s %s", ui::icon::machine, mach.display_name().c_str());
+
+        // Single click on machine drills down to show machine view
+        if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen()) {
+            if (current_callbacks.on_drill_down) {
                 current_callbacks.on_drill_down({focus::level::machine, mach.uuid, mach.display_name()});
             }
         }
 
         if (open) {
-            for (const auto& ctrl : mach.controllers) {
-                render_controller_instance(ctrl);
-            }
-            for (const auto& drv : mach.drivers) {
-                render_driver_instance(drv);
-            }
-            ui::tree::child_end();
+            for (const auto& ctrl : mach.controllers) render_controller_instance(ctrl);
+            for (const auto& drv : mach.drivers) render_driver_instance(drv);
+            ImGui::TreePop();
         }
     }
 

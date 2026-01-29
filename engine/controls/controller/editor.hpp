@@ -28,6 +28,7 @@
 #include "ui/ui.hpp"
 #include "ui/graph.hpp"
 #include "ui/focus.hpp"
+#include "ui/hierarchy.hpp"
 #include <nlohmann/json.hpp>
 #include <list>
 #include <string>
@@ -37,9 +38,6 @@
 namespace ed = ax::NodeEditor;
 
 namespace controller {
-
-    using drill_down_callback = std::function<void(const ui::focus::focus_entry&)>;
-    inline drill_down_callback on_drill_down;
 
     struct selectable {
         element::instance* element = nullptr;
@@ -147,24 +145,11 @@ namespace controller {
             if (ui::button(ICON_FA_TRASH " Delete")) {
                 if (multi_node_selected) {
                     for (int i = 0; i < selected_node_count; ++i) {
-                        uint64_t selected_node_id = selected_nodes[i].Get();
-
-                        active_controller.elements.remove_if(
-                            [selected_node_id](const element::instance& elem) {
-                                return elem.id() == selected_node_id;
-                            }
-                        );
-
-                        active_controller.plugs.remove_if(
-                            [selected_node_id](const port::plug::instance& plug) {
-                                return plug.id() == selected_node_id;
-                            }
-                        );
-                        active_controller.sockets.remove_if(
-                            [selected_node_id](const port::socket::instance& socket) {
-                                return socket.id() == selected_node_id;
-                            }
-                        );
+                        uint64_t node_id = selected_nodes[i].Get();
+                        ui::graph::delete_nodes_by_id(node_id,
+                            active_controller.elements,
+                            active_controller.plugs,
+                            active_controller.sockets);
                     }
                     selected.element = nullptr;
                     selected.plug = nullptr;
@@ -198,6 +183,13 @@ namespace controller {
         ui::columns(1);
 
         ui::node::begin(active_controller.uuid);
+
+        // Apply pending selection from hierarchy
+        if (uint64_t pending_id = ui::hierarchy::consume_pending_selection()) {
+            ed::SelectNode(pending_id, false);
+            ed::NavigateToSelection();
+        }
+
         ui::font::push(ui::font::type::code);
         for (auto& element_instance : active_controller.elements) {
             render_element_node(element_instance, active_controller);
@@ -213,70 +205,20 @@ namespace controller {
         ui::font::pop();
         ui::node::end();
 
-        uint64_t selected_node_id = query_selected_node();
-
-        if (selected_node_id != 0) {
-            selected.element = nullptr;
-            selected.plug = nullptr;
-            selected.socket = nullptr;
-
-            for (auto& element_instance : active_controller.elements) {
-                if (element_instance.id() == selected_node_id) {
-                    selected.element = &element_instance;
-                    break;
-                }
-            }
-            for (auto& plug_instance : active_controller.plugs) {
-                if (plug_instance.id() == selected_node_id) {
-                    selected.plug = &plug_instance;
-                    break;
-                }
-            }
-            for (auto& socket_instance : active_controller.sockets) {
-                if (socket_instance.id() == selected_node_id) {
-                    selected.socket = &socket_instance;
-                    break;
-                }
-            }
+        // Handle click on empty canvas to deselect
+        if (ed::GetBackgroundClickButtonIndex() == 0) {
+            ed::ClearSelection();
         }
 
-        // Handle double-click drill-down for elements
-        if (ImGui::IsMouseDoubleClicked(0) && on_drill_down) {
-            ed::NodeId double_clicked_nodes[1];
-            int count = ed::GetSelectedNodes(double_clicked_nodes, 1);
-            if (count > 0) {
-                uint64_t double_clicked_id = double_clicked_nodes[0].Get();
-                for (auto& elem : active_controller.elements) {
-                    if (elem.id() == double_clicked_id) {
-                        on_drill_down({
-                            ui::focus::level::element,
-                            elem.prototype.uuid,
-                            elem.instance_name()
-                        });
-                        break;
-                    }
-                }
-                for (auto& plug : active_controller.plugs) {
-                    if (plug.id() == double_clicked_id) {
-                        on_drill_down({
-                            ui::focus::level::plug,
-                            plug.get_prototype_uuid(),
-                            plug.instance_name()
-                        });
-                        break;
-                    }
-                }
-                for (auto& socket : active_controller.sockets) {
-                    if (socket.id() == double_clicked_id) {
-                        on_drill_down({
-                            ui::focus::level::socket,
-                            socket.get_prototype_uuid(),
-                            socket.instance_name()
-                        });
-                        break;
-                    }
-                }
-            }
+        uint64_t selected_node_id = query_selected_node();
+
+        // Update hierarchy with current canvas selection
+        ui::hierarchy::set_canvas_selection(selected_node_id);
+
+        if (selected_node_id != 0) {
+            selected.element = ui::graph::find_selected_in(active_controller.elements, selected_node_id);
+            selected.plug = ui::graph::find_selected_in(active_controller.plugs, selected_node_id);
+            selected.socket = ui::graph::find_selected_in(active_controller.sockets, selected_node_id);
         }
 
         ui::node::context_end();

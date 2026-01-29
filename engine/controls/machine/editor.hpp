@@ -248,23 +248,13 @@ namespace machine {
             if (ui::button(ICON_FA_TRASH " Delete")) {
                 if (multi_node_selected) {
                     for (int i = 0; i < selected_node_count; ++i) {
-                        uint64_t selected_node_id = selected_nodes[i].Get();
-
-                        active_machine.controllers.remove_if(
-                            [selected_node_id](const controller::instance& elem) {
-                                return elem.id() == selected_node_id;
-                            }
-                        );
-
-                        active_machine.drivers.remove_if(
-                            [selected_node_id](const driver::instance& driver) {
-                                return driver.id() == selected_node_id;
-                            }
-                        );
+                        uint64_t node_id = selected_nodes[i].Get();
+                        ui::graph::delete_nodes_by_id(node_id,
+                            active_machine.controllers,
+                            active_machine.drivers);
                     }
-                    selected.element = nullptr;
-                    selected.plug = nullptr;
-                    selected.socket = nullptr;
+                    selected.controller = nullptr;
+                    selected.driver = nullptr;
                 }
 
                 if (link_selected) {
@@ -290,6 +280,13 @@ namespace machine {
         ui::columns(1);
 
         ui::node::begin(active_machine.uuid);
+
+        // Apply pending selection from hierarchy
+        if (uint64_t pending_id = ui::hierarchy::consume_pending_selection()) {
+            ed::SelectNode(pending_id, false);
+            ed::NavigateToSelection();
+        }
+
         ui::font::push(ui::font::type::code);
         for (auto& controller_instance : active_machine.controllers) {
             render_controller_node(controller_instance, active_machine);
@@ -302,50 +299,28 @@ namespace machine {
         ui::font::pop();
         ui::node::end();
 
-        uint64_t selected_node_id = controller::query_selected_node();
-        if (selected_node_id != 0) {
-            selected.controller = nullptr;
-            selected.driver = nullptr;
-            for (auto& controller_instance : active_machine.controllers) {
-                if (controller_instance.id() == selected_node_id) {
-                    selected.controller = &controller_instance;
-                    break;
-                }
-            }
-            for (auto& driver_instance : active_machine.drivers) {
-                if (driver_instance.id() == selected_node_id) {
-                    selected.driver = &driver_instance;
-                    break;
-                }
-            }
+        // Handle click on empty canvas to deselect
+        if (ed::GetBackgroundClickButtonIndex() == 0) {
+            ed::ClearSelection();
         }
 
-        // Handle double-click drill-down
+        uint64_t selected_node_id = controller::query_selected_node();
+
+        // Update hierarchy with current canvas selection
+        ui::hierarchy::set_canvas_selection(selected_node_id);
+
+        if (selected_node_id != 0) {
+            selected.controller = ui::graph::find_selected_in(active_machine.controllers, selected_node_id);
+            selected.driver = ui::graph::find_selected_in(active_machine.drivers, selected_node_id);
+        }
+
+        // Handle double-click drill-down (only for controllers - they have a canvas to navigate into)
         if (ImGui::IsMouseDoubleClicked(0) && on_drill_down) {
             ed::NodeId double_clicked_nodes[1];
             int count = ed::GetSelectedNodes(double_clicked_nodes, 1);
             if (count > 0) {
-                uint64_t double_clicked_id = double_clicked_nodes[0].Get();
-                for (auto& ctrl : active_machine.controllers) {
-                    if (ctrl.id() == double_clicked_id) {
-                        on_drill_down({
-                            ui::focus::level::controller,
-                            ctrl.prototype.uuid,
-                            ctrl.instance_name()
-                        });
-                        break;
-                    }
-                }
-                for (auto& drv : active_machine.drivers) {
-                    if (drv.id() == double_clicked_id) {
-                        on_drill_down({
-                            ui::focus::level::driver,
-                            drv.prototype.uuid,
-                            drv.instance_name()
-                        });
-                        break;
-                    }
-                }
+                uint64_t id = double_clicked_nodes[0].Get();
+                ui::graph::try_drilldown_prototype(active_machine.controllers, id, ui::focus::level::controller, on_drill_down);
             }
         }
 

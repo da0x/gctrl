@@ -42,6 +42,7 @@
 #include "ui/focus.hpp"
 #include "ui/hierarchy.hpp"
 #include "ui/breadcrumb.hpp"
+#include "ui/library.hpp"
 #include <imgui.h>
 
 
@@ -219,11 +220,8 @@ namespace controls {
         void render() {
             handle_keyboard_navigation();
 
-            // Set up drill-down callbacks for node editors
+            // Set up drill-down callback for machine editor (controllers can be drilled into)
             machine::on_drill_down = [this](const ui::focus::focus_entry& entry) {
-                focus_on(entry);
-            };
-            controller::on_drill_down = [this](const ui::focus::focus_entry& entry) {
                 focus_on(entry);
             };
 
@@ -275,38 +273,6 @@ namespace controls {
             return result;
         }
 
-        void list_library(
-            machine::object::list& machine_db,
-            controller::object::list& controller_db,
-            driver::object::list& driver_db,
-            function::object::list& function_db,
-            element::object::list& element_db,
-            port::object::list& port_db) {
-            auto entry = ui::navigation::current_entry();
-            switch (static_cast<ui::navigation::type>(entry.type)) {
-            case ui::navigation::type::machine:
-                render_list(ui::icon::machine, "Machines", "+ Add Machine", machine_db, ui::navigation::type::machine);
-                break;
-            case ui::navigation::type::controller:
-                render_list(ui::icon::controller, "Controllers", "+ Add Controller", controller_db, ui::navigation::type::controller);
-                break;
-            case ui::navigation::type::driver:
-                render_list(ui::icon::driver, "Drivers", "+ Add Driver", driver_db, ui::navigation::type::driver);
-                break;
-            case ui::navigation::type::function:
-                render_list(ui::icon::function, "Functions", "+ Add Function", function_db, ui::navigation::type::function);
-                break;
-            case ui::navigation::type::element:
-                render_list(ui::icon::element, "Elements", "+ Add Element", element_db, ui::navigation::type::element);
-                break;
-            case ui::navigation::type::port:
-                render_list(ui::icon::plug, "Ports", "+ Add Port", port_db, ui::navigation::type::port);
-                break;
-            default:
-                break;
-            }
-        }
-
         void render_hierarchy_panel() {
             ui::hierarchy::callbacks cbs;
             cbs.on_select = [this](const ui::focus::focus_entry& entry) {
@@ -327,37 +293,10 @@ namespace controls {
             }
         }
 
-        machine::object* find_machine_by_uuid(const std::string& uuid) {
-            for (auto& m : machines) {
-                if (m.uuid == uuid) return &m;
-            }
-            return nullptr;
-        }
-
-        controller::object* find_controller_by_uuid(const std::string& uuid) {
-            for (auto& c : controllers) {
-                if (c.uuid == uuid) return &c;
-            }
-            return nullptr;
-        }
-
-        driver::object* find_driver_by_uuid(const std::string& uuid) {
-            for (auto& d : drivers) {
-                if (d.uuid == uuid) return &d;
-            }
-            return nullptr;
-        }
-
-        element::object* find_element_by_uuid(const std::string& uuid) {
-            for (auto& e : elements) {
-                if (e.uuid == uuid) return &e;
-            }
-            return nullptr;
-        }
-
-        port::object* find_port_by_uuid(const std::string& uuid) {
-            for (auto& p : ports) {
-                if (p.uuid == uuid) return &p;
+        template<typename T>
+        T* find_by_uuid(std::list<T>& collection, const std::string& uuid) {
+            for (auto& item : collection) {
+                if (item.uuid == uuid) return &item;
             }
             return nullptr;
         }
@@ -368,28 +307,28 @@ namespace controls {
             auto& current = focus_path.current();
             switch (current.type) {
                 case ui::focus::level::machine: {
-                    auto* mach = find_machine_by_uuid(current.uuid);
+                    auto* mach = find_by_uuid(machines, current.uuid);
                     if (mach) {
                         machine::render_editor(*mach, drivers, controllers, elements, ports, functions);
                     }
                     break;
                 }
                 case ui::focus::level::controller: {
-                    auto* ctrl = find_controller_by_uuid(current.uuid);
+                    auto* ctrl = find_by_uuid(controllers, current.uuid);
                     if (ctrl) {
                         controller::render_editor(*ctrl, elements, ports);
                     }
                     break;
                 }
                 case ui::focus::level::driver: {
-                    auto* drv = find_driver_by_uuid(current.uuid);
+                    auto* drv = find_by_uuid(drivers, current.uuid);
                     if (drv) {
                         driver::render_editor(*drv, ports);
                     }
                     break;
                 }
                 case ui::focus::level::element: {
-                    auto* elem = find_element_by_uuid(current.uuid);
+                    auto* elem = find_by_uuid(elements, current.uuid);
                     if (elem) {
                         element::render_editor(*elem, functions, signals);
                     }
@@ -397,7 +336,7 @@ namespace controls {
                 }
                 case ui::focus::level::plug:
                 case ui::focus::level::socket: {
-                    auto* p = find_port_by_uuid(current.uuid);
+                    auto* p = find_by_uuid(ports, current.uuid);
                     if (p) {
                         port::render_editor(*p, signals);
                     }
@@ -410,8 +349,13 @@ namespace controls {
             // Render unified hierarchy panel
             render_hierarchy_panel();
 
-            // Keep the existing library panel for object definitions
-            list_library(machines, controllers, drivers, functions, elements, ports);
+            // Set up library callback to clear focus path when item selected
+            ui::library::on_item_selected = [this]() {
+                focus_path.clear();
+            };
+
+            // Render library panel with all object definitions
+            ui::library::render(machines, controllers, drivers, elements, functions, ports);
 
             // Render breadcrumb navigation if we have a focus path
             if (!focus_path.empty()) {
@@ -459,12 +403,6 @@ namespace controls {
             debug::viewer::render(machines, state.signal_data);
         }
 
-        void view_menu(const std::string& label, const std::string& shortcut, ui::navigation::type navigation_type) {
-            if (ui::menu::item(label, shortcut, current_mode == ui::navigation::mode::edit)) {
-                navigate_to_most_recent(navigation_type);
-            }
-        }
-
         void render_menu() {
             if (ui::main_menu::begin()) {
                 ImGui::BeginDisabled(!ui::navigation::can_go_back());
@@ -485,16 +423,6 @@ namespace controls {
                     if (ui::menu::item("Save Engine", "Ctrl+S")) { save_engine(); }
                     ImGui::Separator();
                     if (ui::menu::item("Exit", "Alt+F4")) { ui::request_exit(); }
-                    ui::menu::end();
-                }
-
-                if (ui::menu::begin("  View  ")) {
-                    view_menu(string(ui::icon::machine) + "\tMachines", "Ctrl+F1", ui::navigation::type::machine);
-                    view_menu(string(ui::icon::controller) + "\tControllers", "Ctrl+F2", ui::navigation::type::controller);
-                    view_menu(string(ui::icon::driver) + "\tDrivers", "Ctrl+F3", ui::navigation::type::driver);
-                    view_menu(string(ui::icon::plug) + "\tPorts", "Ctrl+F4", ui::navigation::type::port);
-                    view_menu(string(ui::icon::element) + "\tElements", "Ctrl+F5", ui::navigation::type::element);
-                    view_menu(string(ui::icon::function) + "\tFunctions", "Ctrl+F6", ui::navigation::type::function);
                     ui::menu::end();
                 }
 

@@ -63,7 +63,22 @@ namespace focus {
         std::vector<focus_entry> entries;
 
     public:
+        // Navigate to an entry - if it exists in path, pop to it; otherwise push
         void push(const focus_entry& entry) {
+            // Check if already at this item
+            if (!entries.empty() && entries.back().uuid == entry.uuid) {
+                return;
+            }
+
+            // Check if this item already exists in the path - if so, pop to it
+            for (size_t i = 0; i < entries.size(); ++i) {
+                if (entries[i].uuid == entry.uuid) {
+                    pop_to_depth(i + 1);
+                    return;
+                }
+            }
+
+            // Otherwise, push the new entry
             entries.push_back(entry);
         }
 
