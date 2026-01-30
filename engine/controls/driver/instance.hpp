@@ -83,7 +83,7 @@ namespace driver {
         }
 
         std::string prototype_typename() const {
-            return type_to_display_name(backend_type) + " Driver";
+            return type_to_typename(backend_type);
         }
 
         std::string icon() const {

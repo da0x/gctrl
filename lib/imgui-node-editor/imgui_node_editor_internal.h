@@ -1450,6 +1450,9 @@ struct EditorContext
     NodeId GetHoveredNode()            const { return m_HoveredNode;             }
     PinId  GetHoveredPin()             const { return m_HoveredPin;              }
     LinkId GetHoveredLink()            const { return m_HoveredLink;             }
+    NodeId GetClickedNode()            const { return m_ClickedNode;             }
+    PinId  GetClickedPin()             const { return m_ClickedPin;              }
+    LinkId GetClickedLink()            const { return m_ClickedLink;             }
     NodeId GetDoubleClickedNode()      const { return m_DoubleClickedNode;       }
     PinId  GetDoubleClickedPin()       const { return m_DoubleClickedPin;        }
     LinkId GetDoubleClickedLink()      const { return m_DoubleClickedLink;       }
@@ -1531,6 +1534,9 @@ private:
     NodeId              m_HoveredNode;
     PinId               m_HoveredPin;
     LinkId              m_HoveredLink;
+    NodeId              m_ClickedNode;
+    PinId               m_ClickedPin;
+    LinkId              m_ClickedLink;
     NodeId              m_DoubleClickedNode;
     PinId               m_DoubleClickedPin;
     LinkId              m_DoubleClickedLink;

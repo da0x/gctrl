@@ -34,6 +34,8 @@ namespace focus {
         controller,
         driver,
         element,
+        function,
+        port,
         plug,
         socket
     };
@@ -64,7 +66,7 @@ namespace focus {
         std::vector<focus_entry> entries;
 
     public:
-        // Navigate to an entry - if it exists in path, pop to it; otherwise push
+        // Navigate to an entry - handles same-level replacement and hierarchy navigation
         void push(const focus_entry& entry) {
             // Check if already at this item
             if (!entries.empty() && entries.back().uuid == entry.uuid) {
@@ -77,6 +79,13 @@ namespace focus {
                     pop_to_depth(i + 1);
                     return;
                 }
+            }
+
+            // Check if navigating to same level - replace instead of push
+            // This handles cases like controller A -> controller B (should replace, not stack)
+            if (!entries.empty() && entries.back().type == entry.type) {
+                entries.back() = entry;
+                return;
             }
 
             // Otherwise, push the new entry

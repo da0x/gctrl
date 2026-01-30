@@ -682,6 +682,21 @@ ax::NodeEditor::LinkId ax::NodeEditor::GetHoveredLink()
     return s_Editor->GetHoveredLink();
 }
 
+ax::NodeEditor::NodeId ax::NodeEditor::GetClickedNode()
+{
+    return s_Editor->GetClickedNode();
+}
+
+ax::NodeEditor::PinId ax::NodeEditor::GetClickedPin()
+{
+    return s_Editor->GetClickedPin();
+}
+
+ax::NodeEditor::LinkId ax::NodeEditor::GetClickedLink()
+{
+    return s_Editor->GetClickedLink();
+}
+
 ax::NodeEditor::NodeId ax::NodeEditor::GetDoubleClickedNode()
 {
     return s_Editor->GetDoubleClickedNode();

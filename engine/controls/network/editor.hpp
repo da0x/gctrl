@@ -25,6 +25,9 @@
 #include "ui/icons.hpp"
 #include "ui/theme.hpp"
 #include "ui/focus.hpp"
+#include "ui/selection.hpp"
+#include "ui/graph.hpp"
+#include <da0x/uuid.hpp>
 #include "controls/network/object.hpp"
 #include "controls/machine/object.hpp"
 #include "controls/machine/editor.hpp"
@@ -36,28 +39,18 @@ namespace network {
 
     using drill_down_callback = std::function<void(const ui::focus::focus_entry&)>;
     inline drill_down_callback on_drill_down;
-    inline machine::object* selected_machine = nullptr;
 
     // Unique context ID for network editor (using a large value to avoid collision)
     inline constexpr uint64_t network_context_id = 0xFFFFFFFF00000001;
 
-    inline uint64_t query_selected_node() {
-        ed::NodeId selected_nodes[1];
-        int count = ed::GetSelectedNodes(selected_nodes, 1);
-        if (count > 0) {
-            return selected_nodes[0].Get();
-        }
-        return 0;
-    }
-
-    inline machine::object* find_machine_by_node_id(machine::object::list& machines, uint64_t node_id) {
+    inline machine::instance* find_machine_by_node_id(machine::instance::list& machines, uint64_t node_id) {
         for (auto& mach : machines) {
             if (mach.id() == node_id) return &mach;
         }
         return nullptr;
     }
 
-    inline void render_machine_node(machine::object& mach, runtime::tracker& runtime_tracker) {
+    inline void render_machine_node(machine::instance& mach, runtime::tracker& runtime_tracker) {
         auto status = runtime_tracker.get_status(mach.id());
 
         // Set node colors based on status
@@ -86,9 +79,9 @@ namespace network {
 
         // Icon and type
         float padding = 40.0f;
-        std::string type_text = "Machine";
+        std::string type_text = mach.prototype_typename();
         float type_width = ui::text_size(type_text).x;
-        float name_width = ui::text_size(mach.display_name()).x;
+        float name_width = ui::text_size(mach.instance_name()).x;
         float total_width = std::max(type_width, name_width) + 2 * padding;
         float type_padding = (total_width - type_width) * 0.5f;
         float name_padding = (total_width - name_width) * 0.5f;
@@ -104,14 +97,14 @@ namespace network {
         ui::dummy(name_padding, 0.0f);
         ui::same_line();
         ui::style::color::push(ui::colors::text, ui::theme::vs2022::code_instance);
-        ui::text(mach.display_name());
+        ui::text(mach.instance_name());
         ui::style::color::pop();
 
         ui::dummy(0.0f, 10.0f);
 
         // Summary info
-        size_t controller_count = mach.controllers.size();
-        size_t driver_count = mach.drivers.size();
+        size_t controller_count = mach.controllers().size();
+        size_t driver_count = mach.drivers().size();
         std::string summary = std::to_string(controller_count) + " controller" + (controller_count != 1 ? "s" : "") +
                               ", " + std::to_string(driver_count) + " driver" + (driver_count != 1 ? "s" : "");
         float summary_width = ui::text_size(summary).x;
@@ -167,23 +160,45 @@ namespace network {
         ed::PopStyleColor(2);
     }
 
-    inline void render_editor(network::object& net, runtime::tracker& runtime_tracker) {
+    inline void render_editor(network::object& net, const machine::object::list& machine_db, runtime::tracker& runtime_tracker, ui::selection& sel) {
         ui::begin("Network Editor", 0);
         ui::node::context_begin(network_context_id);
 
-        // Toolbar - show controls for selected machine
+        // Find currently selected machine from shared selection
+        machine::instance* selected_machine = find_machine_by_node_id(net.machines, sel.selected_id);
+
+        // Horizontal split: Runtime and Toolbar side by side
+        ui::columns(2);
+
+        // Left column: Runtime controls
         ui::separator("Runtime");
         if (selected_machine) {
-            machine::render_runtime_toolbar(*selected_machine, runtime_tracker);
+            // Runtime toolbar works with the machine prototype (definition)
+            machine::render_runtime_toolbar(const_cast<machine::object&>(selected_machine->machine_prototype()), runtime_tracker);
         } else {
             ImGui::TextDisabled("Select a machine to control");
         }
 
+        // Right column: Toolbar controls
+        ui::next_column();
         ui::separator("Toolbar");
-        if (ui::button("Insert Machine")) {
-            machine::object new_machine;
-            new_machine.name = "new_machine";
-            net.machines.push_back(new_machine);
+        if (ui::button("Insert")) {
+            ui::popup::open("InsertMachineMenu");
+        }
+        if (ui::popup::begin("InsertMachineMenu")) {
+            if (ui::menu::begin("Machine")) {
+                for (const auto& mach : machine_db) {
+                    if (ui::menu::item(mach.display_name())) {
+                        // Create an instance of the machine with a default name
+                        machine::instance new_instance(mach);
+                        new_instance.name = mach.name + "_instance";
+                        net.machines.push_back(new_instance);
+                        ui::cout << "Added machine instance: " << new_instance.name << " (prototype: " << mach.display_name() << ")" << ui::endl;
+                    }
+                }
+                ui::menu::end();
+            }
+            ui::popup::end();
         }
 
         ui::same_line();
@@ -195,19 +210,34 @@ namespace network {
         }
         if (ui::button(ICON_FA_TRASH " Delete")) {
             if (selected_machine) {
-                net.machines.remove_if([](const machine::object& m) {
-                    return &m == selected_machine;
+                uint64_t id_to_remove = selected_machine->id();
+                net.machines.remove_if([id_to_remove](const machine::instance& m) {
+                    return m.id() == id_to_remove;
                 });
-                selected_machine = nullptr;
+                sel.clear();
             }
         }
         if (!has_selection) {
             ui::disabled::end();
         }
 
+        // Reset to single column for the node editor canvas
+        ui::columns(1);
         ui::separator();
 
         ui::node::begin(std::string("network_") + std::to_string(network_context_id));
+
+        // Sync node editor with shared selection - selection is the single source of truth
+        if (sel.has_selection()) {
+            auto* mach = find_machine_by_node_id(net.machines, sel.selected_id);
+            if (mach) {
+                ed::SelectNode(ed::NodeId(sel.selected_id), false);
+            } else {
+                ed::ClearSelection();
+            }
+        } else {
+            ed::ClearSelection();
+        }
 
         ui::font::push(ui::font::type::code);
         for (auto& mach : net.machines) {
@@ -215,32 +245,74 @@ namespace network {
         }
         ui::font::pop();
 
-        ui::node::end();
+        // Debug: Show machine count in toolbar area
+        if (net.machines.empty()) {
+            ImGui::TextDisabled("No machines in network");
+        }
 
         // Handle click on empty canvas to deselect
         if (ed::GetBackgroundClickButtonIndex() == 0) {
-            ed::ClearSelection();
-            selected_machine = nullptr;
-        }
-
-        // Handle selection
-        uint64_t selected_id = query_selected_node();
-        if (selected_id != 0) {
-            selected_machine = find_machine_by_node_id(net.machines, selected_id);
+            sel.clear();
         }
 
         // Handle double-click drill-down
+        // Clear selection when drilling down to a new container
         ed::NodeId double_clicked_node = ed::GetDoubleClickedNode();
         if (double_clicked_node && on_drill_down) {
             uint64_t id = double_clicked_node.Get();
             auto* mach = find_machine_by_node_id(net.machines, id);
             if (mach) {
-                on_drill_down({ui::focus::level::machine, mach->uuid, mach->display_name()});
+                sel.clear();
+                on_drill_down({ui::focus::level::machine, mach->uuid, mach->instance_name()});
             }
         }
 
+        // Handle single click on node - update shared selection
+        // Only update if user clicked (not just reading stale state)
+        ed::NodeId clicked_node = ed::GetClickedNode();
+        if (clicked_node) {
+            uint64_t node_id = clicked_node.Get();
+            sel.select(node_id);
+        }
+
+        ui::node::end();
         ui::node::context_end();
         ui::end();
+
+        // Refresh selected_machine after potential selection changes
+        selected_machine = find_machine_by_node_id(net.machines, sel.selected_id);
+
+        // Instance window - show Network when nothing selected, Machine when selected
+        if (selected_machine) {
+            ui::begin("Machine Instance");
+            selected_machine->editor();
+            ui::graph::render_list(ui::icon::controller, "Controllers", selected_machine->controllers());
+            ui::graph::render_list(ui::icon::driver, "Drivers", selected_machine->drivers());
+            ui::end();
+        } else {
+            ui::begin("Network Instance");
+            ui::font::push(ui::font::type::code);
+            ui::style::color::push(ui::colors::text, ui::theme::vs2022::code_typename);
+            ui::separator("Network");
+            ui::style::color::pop();
+            ui::font::pop();
+
+            ui::separator("Machines");
+            for (auto& mach : net.machines) {
+                ui::text(std::string(ui::icon::machine) + " ");
+                ui::same_line();
+                ui::style::color::push(ui::colors::text, ui::theme::vs2022::code_typename);
+                ui::text(mach.prototype_typename());
+                ui::style::color::pop();
+                ui::same_line();
+                ui::text(" ");
+                ui::same_line();
+                ui::style::color::push(ui::colors::text, ui::theme::vs2022::code_instance);
+                ui::text(mach.instance_name());
+                ui::style::color::pop();
+            }
+            ui::end();
+        }
     }
 
 } // namespace network

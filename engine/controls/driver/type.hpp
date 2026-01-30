@@ -68,4 +68,12 @@ namespace driver {
         }
     }
 
+    inline std::string type_to_typename(type t) {
+        switch (t) {
+            case type::udp:    return "driver::network::udp";
+            case type::config: return "driver::filesystem::config";
+            default:           return "driver::network::udp";
+        }
+    }
+
 } // namespace driver

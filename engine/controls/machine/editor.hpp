@@ -25,6 +25,7 @@
 #include "ui/graph.hpp"
 #include "ui/theme.hpp"
 #include "ui/focus.hpp"
+#include "ui/selection.hpp"
 #include "controls/machine/object.hpp"
 #include "controls/driver/instance.hpp"
 #include "controls/driver/type.hpp"
@@ -42,19 +43,34 @@
 namespace machine {
     namespace ed = ax::NodeEditor;
 
-    struct selectable : public controller::selectable {
-        controller::instance* controller = nullptr;
-        driver::instance* driver = nullptr;
-    };
-
     using drill_down_callback = std::function<void(const ui::focus::focus_entry&)>;
     inline drill_down_callback on_drill_down;
 
-    void render_machine_properties(machine::object& active_machine, machine::selectable& selected) {
+    // Find selected controller/driver from shared selection
+    inline controller::instance* find_selected_controller(machine::object& machine, ui::selection& sel) {
+        if (!sel.has_selection()) return nullptr;
+        for (auto& ctrl : machine.controllers) {
+            if (ctrl.id() == sel.selected_id) return &ctrl;
+        }
+        return nullptr;
+    }
+
+    inline driver::instance* find_selected_driver(machine::object& machine, ui::selection& sel) {
+        if (!sel.has_selection()) return nullptr;
+        for (auto& drv : machine.drivers) {
+            if (drv.id() == sel.selected_id) return &drv;
+        }
+        return nullptr;
+    }
+
+    void render_machine_properties(machine::object& active_machine, ui::selection& selection) {
+        controller::instance* selected_controller = find_selected_controller(active_machine, selection);
+        driver::instance* selected_driver = find_selected_driver(active_machine, selection);
+
         ui::begin("Machine Properties");
         active_machine.editor();
-        ui::graph::render_list(ui::icon::controller, "Controllers", active_machine.controllers, selected.controller);
-        ui::graph::render_list(ui::icon::driver, "Drivers", active_machine.drivers, selected.driver);
+        ui::graph::render_list(ui::icon::controller, "Controllers", active_machine.controllers, selected_controller);
+        ui::graph::render_list(ui::icon::driver, "Drivers", active_machine.drivers, selected_driver);
         ui::end();
     }
 
@@ -274,7 +290,7 @@ namespace machine {
         }
     }
 
-    void render_node_editor(machine::object& active_machine, machine::selectable& selected, const controller::object::list& controller_db, const port::object::list& port_db, runtime::tracker& runtime_tracker) {
+    void render_node_editor(machine::object& active_machine, const controller::object::list& controller_db, const port::object::list& port_db, runtime::tracker& runtime_tracker, ui::selection& selection) {
         ui::begin("Machine Editor", 0);
         ui::node::context_begin(active_machine.id());
 
@@ -301,24 +317,23 @@ namespace machine {
                 ui::menu::end();
             }
             if (ui::menu::begin("Driver")) {
-                if (ui::menu::item(std::string(ICON_FA_NETWORK_WIRED) + " UDP")) {
+                ui::font::push(ui::font::type::code);
+                if (ui::menu::item(std::string(driver::type_to_icon(driver::type::udp)) + "  " + driver::type_to_typename(driver::type::udp))) {
                     driver::instance new_driver(driver::type::udp);
                     new_driver.name = "udp_driver";
                     active_machine.drivers.push_back(new_driver);
                 }
-                if (ui::menu::item(std::string(ICON_FA_FILE_LINES) + " Config")) {
+                if (ui::menu::item(std::string(driver::type_to_icon(driver::type::config)) + "  " + driver::type_to_typename(driver::type::config))) {
                     driver::instance new_driver(driver::type::config);
                     new_driver.name = "config_driver";
                     active_machine.drivers.push_back(new_driver);
                 }
+                ui::font::pop();
                 ImGui::EndMenu();
             }
             ui::popup::end();
         }
         ui::same_line();
-
-
-        bool node_selected = selected.element != nullptr || selected.plug != nullptr || selected.socket != nullptr;
 
         ed::LinkId selected_links[1000];
         ed::NodeId selected_nodes[1000];
@@ -332,14 +347,12 @@ namespace machine {
                 if (multi_node_selected) {
                     for (int i = 0; i < selected_node_count; ++i) {
                         uint64_t node_id = selected_nodes[i].Get();
-                        // Remove associated links before deleting the node
                         active_machine.remove_links_to_node(node_id);
                         ui::graph::delete_nodes_by_id(node_id,
                             active_machine.controllers,
                             active_machine.drivers);
                     }
-                    selected.controller = nullptr;
-                    selected.driver = nullptr;
+                    selection.clear();
                 }
 
                 if (link_selected) {
@@ -360,66 +373,73 @@ namespace machine {
 
         ui::node::begin(active_machine.uuid);
 
-        // Apply pending selection from hierarchy
-        if (uint64_t pending_id = ui::hierarchy::consume_pending_selection()) {
-            ed::SelectNode(pending_id, false);
-            ed::NavigateToSelection();
+        // Sync node editor with shared selection - selection is the single source of truth
+        if (selection.has_selection()) {
+            bool is_in_this_machine = find_selected_controller(active_machine, selection) || find_selected_driver(active_machine, selection);
+            if (is_in_this_machine) {
+                ed::SelectNode(ed::NodeId(selection.selected_id), false);
+            } else {
+                ed::ClearSelection();
+            }
+        } else {
+            ed::ClearSelection();
         }
 
         ui::font::push(ui::font::type::code);
         for (auto& controller_instance : active_machine.controllers) {
             render_controller_node(controller_instance, active_machine);
         }
-        for (auto& driver_obj : active_machine.drivers) {
-            render_driver_node(driver_obj, active_machine);
+        for (auto& driver_instance : active_machine.drivers) {
+            render_driver_node(driver_instance, active_machine);
         }
         ui::graph::handle_link_creation(active_machine);
         ui::graph::render_existing_links(active_machine);
         ui::font::pop();
-        ui::node::end();
 
         // Handle click on empty canvas to deselect
         if (ed::GetBackgroundClickButtonIndex() == 0) {
-            ed::ClearSelection();
+            selection.clear();
         }
 
-        uint64_t selected_node_id = controller::query_selected_node();
-
-        // Update hierarchy with current canvas selection
-        ui::hierarchy::set_canvas_selection(selected_node_id);
-
-        if (selected_node_id != 0) {
-            selected.controller = ui::graph::find_selected_in(active_machine.controllers, selected_node_id);
-            selected.driver = ui::graph::find_selected_in(active_machine.drivers, selected_node_id);
-        }
-
-        // Handle double-click drill-down (only for controllers - they have a canvas to navigate into)
+        // Handle double-click drill-down (controllers have a canvas to navigate into)
+        // Clear selection when drilling down to a new container
         ed::NodeId double_clicked_node = ed::GetDoubleClickedNode();
         if (double_clicked_node && on_drill_down) {
             uint64_t id = double_clicked_node.Get();
+            selection.clear();
             ui::graph::try_drilldown_prototype(active_machine.controllers, id, ui::focus::level::controller, on_drill_down);
         }
 
+        // Handle single click on node - update shared selection
+        ed::NodeId clicked_node = ed::GetClickedNode();
+        if (clicked_node) {
+            selection.select(clicked_node.Get());
+        }
+
+        ui::node::end();
         ui::node::context_end();
         ui::end();
     }
 
-    void render_editor(machine::object& active_machine, const controller::object::list& controller_db, const element::object::list& element_db, const port::object::list& port_db, const function::object::list& function_db, runtime::tracker& runtime_tracker) {
-        machine::selectable selected;
-        render_machine_properties(active_machine, selected);
-        render_node_editor(active_machine, selected, controller_db, port_db, runtime_tracker);
+    void render_editor(machine::object& active_machine, const controller::object::list& controller_db, const element::object::list& element_db, const port::object::list& port_db, const function::object::list& function_db, runtime::tracker& runtime_tracker, ui::selection& selection) {
+        render_machine_properties(active_machine, selection);
+        render_node_editor(active_machine, controller_db, port_db, runtime_tracker, selection);
 
-        if (selected.controller != nullptr) {
+        // Derive selected items from shared selection
+        controller::instance* selected_controller = find_selected_controller(active_machine, selection);
+        driver::instance* selected_driver = find_selected_driver(active_machine, selection);
+
+        if (selected_controller != nullptr) {
             ui::begin("Controller Instance");
-            selected.controller->editor();
+            selected_controller->editor();
 
-            ui::graph::render_list(ui::icon::plug, "Inputs", selected.controller->inputs());
-            ui::graph::render_list(ui::icon::socket, "Outputs", selected.controller->outputs());
+            ui::graph::render_list(ui::icon::plug, "Inputs", selected_controller->inputs());
+            ui::graph::render_list(ui::icon::socket, "Outputs", selected_controller->outputs());
             ui::end();
         }
-        if (selected.driver != nullptr) {
+        if (selected_driver != nullptr) {
             ui::begin("Driver");
-            driver::render_editor(*selected.driver, port_db);
+            driver::render_editor(*selected_driver, port_db);
             ui::end();
         }
     }

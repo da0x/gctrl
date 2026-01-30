@@ -22,6 +22,7 @@
 #pragma once
 
 #include "controls/machine/object.hpp"
+#include "controls/machine/instance.hpp"
 #include "controls/driver/type.hpp"
 #include <nlohmann/json.hpp>
 #include <string>
@@ -40,16 +41,12 @@ namespace network {
 
     class object {
     public:
-        machine::object::list machines;
+        machine::instance::list machines;
 
         object() = default;
 
-        object(const json& j, const controller::object::list& controllers, const port::object::list& ports) {
-            if (j.contains("machines")) {
-                for (const auto& mach_json : j["machines"]) {
-                    machines.emplace_back(mach_json, controllers, ports);
-                }
-            }
+        object(const json& j, const machine::object::list& machine_db) {
+            load_instances(j, "machines", machines, machine_db);
         }
 
         json serialize() const {

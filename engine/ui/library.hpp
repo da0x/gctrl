@@ -23,7 +23,8 @@
 
 #include "ui/ui.hpp"
 #include "ui/icons.hpp"
-#include "ui/navigation.hpp"
+#include "ui/focus.hpp"
+#include "ui/selection.hpp"
 #include "controls/machine/object.hpp"
 #include "controls/controller/object.hpp"
 #include "controls/element/object.hpp"
@@ -33,73 +34,102 @@
 namespace ui {
 namespace library {
 
-    // Callback to clear focus path when library item is selected
-    inline std::function<void()> on_item_selected;
+    // Current state pointers (set during render)
+    inline focus::path* current_focus_path = nullptr;
+    inline selection* current_selection = nullptr;
 
+    // Render a library category with objects
     template<typename T>
     void render_category(const char* icon, const char* label, const char* add_label,
-                         std::list<T>& records, ui::navigation::type type) {
-        auto current_entry = ui::navigation::current_entry();
+                         std::list<T>& records, focus::level level) {
 
-        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
-        bool is_category_selected = current_entry.type == static_cast<int>(type) && current_entry.index == -1;
-        if (is_category_selected) {
-            flags |= ImGuiTreeNodeFlags_Selected;
+        // Check if any item in this category is currently being edited
+        bool category_has_focus = false;
+        if (current_focus_path && !current_focus_path->empty()) {
+            auto& current = current_focus_path->current();
+            if (current.type == level) {
+                for (const auto& record : records) {
+                    if (record.uuid == current.uuid) {
+                        category_has_focus = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
+
+        // Auto-expand if this category has the focused item
+        if (category_has_focus) {
+            ImGui::SetNextItemOpen(true, ImGuiCond_Always);
         }
 
         bool open = ImGui::TreeNodeEx(label, flags);
-
-        if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen()) {
-            ui::navigation::push(ui::navigation::entry{ static_cast<int>(type), -1, current_entry.mode });
-        }
 
         // Context menu for adding new items
         if (ImGui::BeginPopupContextItem()) {
             if (ImGui::MenuItem(add_label)) {
                 records.emplace_back();
-                ui::navigation::push(ui::navigation::entry{
-                    static_cast<int>(type),
-                    static_cast<int>(records.size() - 1),
-                    current_entry.mode
-                });
+                auto& new_record = records.back();
+                // Navigate to the new object
+                if (current_focus_path) {
+                    current_focus_path->clear();
+                    current_focus_path->push({level, new_record.uuid, new_record.display_name()});
+                }
+                if (current_selection) {
+                    current_selection->clear();
+                }
             }
             ImGui::EndPopup();
         }
 
         if (open) {
-            int index = 0;
             for (auto& record : records) {
                 ImGui::PushID(record.uuid.c_str());
 
-                ImGuiTreeNodeFlags item_flags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
-                bool is_selected = current_entry.type == static_cast<int>(type) && current_entry.index == index;
+                // Check if this specific item is being edited
+                bool is_selected = false;
+                if (current_focus_path && !current_focus_path->empty()) {
+                    auto& current = current_focus_path->current();
+                    is_selected = (current.type == level && current.uuid == record.uuid);
+                }
+
+                ImGuiTreeNodeFlags item_flags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_SpanAvailWidth;
                 if (is_selected) {
                     item_flags |= ImGuiTreeNodeFlags_Selected;
                 }
 
                 ImGui::TreeNodeEx(record.uuid.c_str(), item_flags, "%s %s", icon, record.display_name().c_str());
 
+                // Single click navigates to this object's editor
                 if (ImGui::IsItemClicked()) {
-                    ui::navigation::push(ui::navigation::entry{ static_cast<int>(type), index, current_entry.mode });
-                    if (on_item_selected) on_item_selected();
+                    if (current_focus_path) {
+                        current_focus_path->clear();
+                        current_focus_path->push({level, record.uuid, record.display_name()});
+                    }
+                    // Clear hierarchy selection - we're now editing a library object directly
+                    if (current_selection) {
+                        current_selection->clear();
+                    }
                 }
 
                 // Context menu for deleting
                 if (ImGui::BeginPopupContextItem()) {
                     if (ImGui::MenuItem(ICON_FA_TRASH " Delete")) {
-                        auto it = records.begin();
-                        std::advance(it, index);
-                        records.erase(it);
-                        ui::navigation::delete_entry(static_cast<int>(type), index, current_entry.mode);
-                        if (is_selected) {
-                            ui::navigation::push(ui::navigation::entry{ static_cast<int>(type), -1, current_entry.mode });
+                        bool was_selected = is_selected;
+                        auto it = std::find_if(records.begin(), records.end(),
+                            [&](const T& r) { return r.uuid == record.uuid; });
+                        if (it != records.end()) {
+                            records.erase(it);
+                        }
+                        if (was_selected && current_focus_path) {
+                            current_focus_path->clear();
                         }
                     }
                     ImGui::EndPopup();
                 }
 
                 ImGui::PopID();
-                ++index;
             }
             ImGui::TreePop();
         }
@@ -113,9 +143,19 @@ namespace library {
         controller::object::list& controllers,
         element::object::list& elements,
         function::object::list& functions,
-        port::object::list& ports
+        port::object::list& ports,
+        focus::path& focus_path,
+        selection& sel
     ) {
+        current_focus_path = &focus_path;
+        current_selection = &sel;
+
         ui::begin("Library");
+
+        // Push prominent selection/hover colors (same as hierarchy)
+        ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.29f, 0.59f, 0.82f, 0.80f));
+        ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.29f, 0.59f, 0.82f, 0.50f));
+        ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.29f, 0.59f, 0.82f, 1.00f));
 
         // Expand/Collapse buttons
         if (ImGui::Button(ICON_FA_EXPAND " Expand")) {
@@ -135,26 +175,29 @@ namespace library {
         };
 
         apply_tree_action();
-        render_category(ui::icon::machine, "Machines", "Add Machine", machines, ui::navigation::type::machine);
+        render_category(ui::icon::machine, "Machines", "Add Machine", machines, focus::level::machine);
 
         apply_tree_action();
-        render_category(ui::icon::controller, "Controllers", "Add Controller", controllers, ui::navigation::type::controller);
-
-        // Drivers removed - they are now added directly to machines via Insert > Driver menu
+        render_category(ui::icon::controller, "Controllers", "Add Controller", controllers, focus::level::controller);
 
         apply_tree_action();
-        render_category(ui::icon::element, "Elements", "Add Element", elements, ui::navigation::type::element);
+        render_category(ui::icon::element, "Elements", "Add Element", elements, focus::level::element);
 
         apply_tree_action();
-        render_category(ui::icon::function, "Functions", "Add Function", functions, ui::navigation::type::function);
+        render_category(ui::icon::function, "Functions", "Add Function", functions, focus::level::function);
 
         apply_tree_action();
-        render_category(ui::icon::plug, "Ports", "Add Port", ports, ui::navigation::type::port);
+        render_category(ui::icon::plug, "Ports", "Add Port", ports, focus::level::plug);
 
         // Reset action after processing all categories
         tree_open_action = 0;
 
+        ImGui::PopStyleColor(3);
+
         ui::end();
+
+        current_focus_path = nullptr;
+        current_selection = nullptr;
     }
 
 } // namespace library
