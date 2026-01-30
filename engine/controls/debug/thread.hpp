@@ -38,6 +38,10 @@ namespace controls {
             std::mutex data_mutex;
             std::atomic<bool> keep_listening{ true };
             std::thread listener;
+            std::string listen_ip = "127.0.0.1";
+            int listen_port = 8080;
+            bool enabled = true;
+            std::string machine_name;  // Name of the machine being debugged
         };
 
         inline State& get_state() {
@@ -57,9 +61,9 @@ namespace controls {
         inline void listener_thread() {
             auto& state = get_state();
             try {
-                network::udp::udp_listener listener("127.0.0.1", 8080);
+                network::udp::udp_listener listener(state.listen_ip, static_cast<uint16_t>(state.listen_port));
 
-                listener.start([](uint64_t id, const std::vector<uint8_t>& data) {
+                listener.start([&state](uint64_t id, const std::vector<uint8_t>& data) {
                     if (data.size() < sizeof(float)) {
                         std::cerr << "Received data is too small: " << data.size() << " bytes\n";
                         return;
@@ -68,7 +72,8 @@ namespace controls {
                     float value;
                     std::memcpy(&value, data.data(), sizeof(float));
 
-                    std::cerr << "Received Signal ID: " << id << ", Value: " << value << "\n";
+                    std::string machine_label = state.machine_name.empty() ? "unknown" : state.machine_name;
+                    std::cerr << "[" << machine_label << "] Signal ID: " << id << ", Value: " << value << "\n";
 
                     add_signal_value(id, value);
                 });
@@ -83,13 +88,31 @@ namespace controls {
             }
         }
 
+        // Initialize with network settings
+        inline void init(const std::string& ip, int port, bool is_enabled, const std::string& machine_name = "") {
+            auto& state = get_state();
+            state.listen_ip = ip;
+            state.listen_port = port;
+            state.enabled = is_enabled;
+            state.machine_name = machine_name;
+        }
+
         inline void begin() {
             auto& state = get_state();
+            if (!state.enabled) {
+                return;
+            }
             if (state.listener.joinable()) {
                 throw std::runtime_error("Listener thread already running!");
             }
             state.keep_listening.store(true);
             state.listener = std::thread(listener_thread);
+        }
+
+        // Overload that takes settings directly
+        inline void begin(const std::string& ip, int port, bool is_enabled = true) {
+            init(ip, port, is_enabled);
+            begin();
         }
 
         inline void end() {

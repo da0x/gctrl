@@ -73,6 +73,10 @@ namespace controls {
             return prototype.id();
         }
 
+        const std::string& get_prototype_uuid() const {
+            return prototype_uuid;
+        }
+
         virtual void generate() const {
             prototype.generate();
         }

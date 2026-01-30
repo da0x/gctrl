@@ -45,6 +45,7 @@ namespace ui {
 		inline constexpr type plug = ICON_FA_SQUARE_PLUS;
 		inline constexpr type socket = ICON_FA_SQUARE_MINUS;
 		inline constexpr type signal = ICON_FA_BOLT;
+		inline constexpr type network = ICON_FA_DIAGRAM_PROJECT;
 
 		inline constexpr type square = ICON_FA_SQUARE;
 	}

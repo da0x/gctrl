@@ -27,27 +27,63 @@
 
 #include "ui/ui.hpp"
 #include "ui/graph.hpp"
+#include "ui/focus.hpp"
+#include "ui/selection.hpp"
 #include <nlohmann/json.hpp>
 #include <list>
 #include <string>
 #include <cstdint>
+#include <functional>
 
 namespace ed = ax::NodeEditor;
 
 namespace controller {
 
+    using drill_down_callback = std::function<void(const ui::focus::focus_entry&)>;
+    inline drill_down_callback on_drill_down;
+
+    // Legacy struct for viewer compatibility (not used in main selection flow)
     struct selectable {
         element::instance* element = nullptr;
         port::plug::instance* plug = nullptr;
         port::socket::instance* socket = nullptr;
     };
 
-    void render_controller_properties(controller::object& active_controller, selectable& selected) {
+    // Find selected element/plug/socket from shared selection
+    inline element::instance* find_selected_element(controller::object& controller, ui::selection& selection) {
+        if (!selection.has_selection()) return nullptr;
+        for (auto& element : controller.elements) {
+            if (element.id() == selection.selected_id) return &element;
+        }
+        return nullptr;
+    }
+
+    inline port::plug::instance* find_selected_plug(controller::object& controller, ui::selection& selection) {
+        if (!selection.has_selection()) return nullptr;
+        for (auto& plug : controller.plugs) {
+            if (plug.id() == selection.selected_id) return &plug;
+        }
+        return nullptr;
+    }
+
+    inline port::socket::instance* find_selected_socket(controller::object& controller, ui::selection& selection) {
+        if (!selection.has_selection()) return nullptr;
+        for (auto& socket : controller.sockets) {
+            if (socket.id() == selection.selected_id) return &socket;
+        }
+        return nullptr;
+    }
+
+    void render_controller_properties(controller::object& active_controller, ui::selection& selection) {
+        element::instance* selected_element = find_selected_element(active_controller, selection);
+        port::plug::instance* selected_plug = find_selected_plug(active_controller, selection);
+        port::socket::instance* selected_socket = find_selected_socket(active_controller, selection);
+
         ui::begin("Controller Properties");
         active_controller.editor();
-        ui::graph::render_list(ui::icon::element, "Elements", active_controller.elements, selected.element);
-        ui::graph::render_list(ui::icon::plug, "Plugs", active_controller.plugs, selected.plug);
-        ui::graph::render_list(ui::icon::socket, "Sockets", active_controller.sockets, selected.socket);
+        ui::graph::render_list(ui::icon::element, "Elements", active_controller.elements, selected_element);
+        ui::graph::render_list(ui::icon::plug, "Plugs", active_controller.plugs, selected_plug);
+        ui::graph::render_list(ui::icon::socket, "Sockets", active_controller.sockets, selected_socket);
         ui::end();
     }
 
@@ -90,7 +126,7 @@ namespace controller {
         return 0;
     }
 
-    void render_node_editor(controller::object& active_controller, controller::selectable& selected, const element::object::list& element_db, const port::object::list& port_db) {
+    void render_node_editor(controller::object& active_controller, const element::object::list& element_db, const port::object::list& port_db, ui::selection& selection) {
         ui::begin("Controller Editor", 0);
         ui::node::context_begin(active_controller.id());
         ui::columns(2);
@@ -129,7 +165,6 @@ namespace controller {
         }
 
         ui::same_line();
-        bool node_selected = selected.element != nullptr || selected.plug != nullptr || selected.socket != nullptr;
 
         ed::LinkId selected_links[1000];
         ed::NodeId selected_nodes[1000];
@@ -142,28 +177,14 @@ namespace controller {
             if (ui::button(ICON_FA_TRASH " Delete")) {
                 if (multi_node_selected) {
                     for (int i = 0; i < selected_node_count; ++i) {
-                        uint64_t selected_node_id = selected_nodes[i].Get();
-
-                        active_controller.elements.remove_if(
-                            [selected_node_id](const element::instance& elem) {
-                                return elem.id() == selected_node_id;
-                            }
-                        );
-
-                        active_controller.plugs.remove_if(
-                            [selected_node_id](const port::plug::instance& plug) {
-                                return plug.id() == selected_node_id;
-                            }
-                        );
-                        active_controller.sockets.remove_if(
-                            [selected_node_id](const port::socket::instance& socket) {
-                                return socket.id() == selected_node_id;
-                            }
-                        );
+                        uint64_t node_id = selected_nodes[i].Get();
+                        active_controller.remove_links_to_node(node_id);
+                        ui::graph::delete_nodes_by_id(node_id,
+                            active_controller.elements,
+                            active_controller.plugs,
+                            active_controller.sockets);
                     }
-                    selected.element = nullptr;
-                    selected.plug = nullptr;
-                    selected.socket = nullptr;
+                    selection.clear();
                 }
 
                 if (link_selected) {
@@ -184,15 +205,27 @@ namespace controller {
 
         if (ui::button("Save & Compile")) {
             ui::cout << "Not implemented ..." << ui::endl;
-//            code::delete_gctrl_directory();
-//            active_controller.generate();
-//            system::compile();
         }
 
         ui::separator();
         ui::columns(1);
 
         ui::node::begin(active_controller.uuid);
+
+        // Sync node editor with shared selection - selection is the single source of truth
+        if (selection.has_selection()) {
+            bool is_in_this_controller = find_selected_element(active_controller, selection) ||
+                                         find_selected_plug(active_controller, selection) ||
+                                         find_selected_socket(active_controller, selection);
+            if (is_in_this_controller) {
+                ed::SelectNode(ed::NodeId(selection.selected_id), false);
+            } else {
+                ed::ClearSelection();
+            }
+        } else {
+            ed::ClearSelection();
+        }
+
         ui::font::push(ui::font::type::code);
         for (auto& element_instance : active_controller.elements) {
             render_element_node(element_instance, active_controller);
@@ -206,66 +239,64 @@ namespace controller {
         ui::graph::handle_link_creation(active_controller);
         ui::graph::render_existing_links(active_controller);
         ui::font::pop();
-        ui::node::end();
 
-        uint64_t selected_node_id = query_selected_node();
-
-        if (selected_node_id != 0) {
-            selected.element = nullptr;
-            selected.plug = nullptr;
-            selected.socket = nullptr;
-
-            for (auto& element_instance : active_controller.elements) {
-                if (element_instance.id() == selected_node_id) {
-                    selected.element = &element_instance;
-                    break;
-                }
-            }
-            for (auto& plug_instance : active_controller.plugs) {
-                if (plug_instance.id() == selected_node_id) {
-                    selected.plug = &plug_instance;
-                    break;
-                }
-            }
-            for (auto& socket_instance : active_controller.sockets) {
-                if (socket_instance.id() == selected_node_id) {
-                    selected.socket = &socket_instance;
-                    break;
-                }
-            }
+        // Handle click on empty canvas to deselect
+        if (ed::GetBackgroundClickButtonIndex() == 0) {
+            selection.clear();
         }
 
+        // Handle double-click drill-down (elements can be edited)
+        // Clear selection when drilling down to a new container
+        ed::NodeId double_clicked_node = ed::GetDoubleClickedNode();
+        if (double_clicked_node && on_drill_down) {
+            uint64_t id = double_clicked_node.Get();
+            selection.clear();
+            ui::graph::try_drilldown_prototype(active_controller.elements, id, ui::focus::level::element, on_drill_down);
+        }
+
+        // Handle single click on node - update shared selection
+        // Only update if user clicked (not just reading stale state)
+        ed::NodeId clicked_node = ed::GetClickedNode();
+        if (clicked_node) {
+            uint64_t node_id = clicked_node.Get();
+            selection.select(node_id);
+        }
+
+        ui::node::end();
         ui::node::context_end();
         ui::end();
     }
 
-    void render_editor(controller::object& active_controller, const element::object::list& element_db, const port::object::list& port_db) {
-        selectable selected;
-        render_controller_properties(active_controller, selected);
-        render_node_editor(active_controller, selected, element_db, port_db);
+    void render_editor(controller::object& active_controller, const element::object::list& element_db, const port::object::list& port_db, ui::selection& selection) {
+        render_controller_properties(active_controller, selection);
+        render_node_editor(active_controller, element_db, port_db, selection);
 
+        // Derive selected items from shared selection
+        element::instance* selected_element = find_selected_element(active_controller, selection);
+        port::plug::instance* selected_plug = find_selected_plug(active_controller, selection);
+        port::socket::instance* selected_socket = find_selected_socket(active_controller, selection);
 
-        if (selected.element) {
+        if (selected_element) {
             ui::begin("Element Properties");
-            selected.element->editor();
+            selected_element->editor();
 
-            ui::graph::render_list(ui::icon::signal, "Inputs", selected.element->inputs());
-            ui::graph::render_list(ui::icon::signal, "Outputs", selected.element->outputs());
+            ui::graph::render_list(ui::icon::signal, "Inputs", selected_element->inputs());
+            ui::graph::render_list(ui::icon::signal, "Outputs", selected_element->outputs());
 
             ui::end();
         }
-        else if (selected.plug) {
+        else if (selected_plug) {
             ui::begin("Plug Properties");
-            selected.plug->editor();
-            ui::graph::render_list(ui::icon::signal, "Inputs", selected.plug->inputs());
-            ui::graph::render_list(ui::icon::signal, "Outputs", selected.plug->outputs());
+            selected_plug->editor();
+            ui::graph::render_list(ui::icon::signal, "Inputs", selected_plug->inputs());
+            ui::graph::render_list(ui::icon::signal, "Outputs", selected_plug->outputs());
             ui::end();
         }
-        else if (selected.socket) {
+        else if (selected_socket) {
             ui::begin("Socket Properties");
-            selected.socket->editor();
-            ui::graph::render_list(ui::icon::signal, "Inputs", selected.socket->inputs());
-            ui::graph::render_list(ui::icon::signal, "Outputs", selected.socket->outputs());
+            selected_socket->editor();
+            ui::graph::render_list(ui::icon::signal, "Inputs", selected_socket->inputs());
+            ui::graph::render_list(ui::icon::signal, "Outputs", selected_socket->outputs());
             ui::end();
         }
     }

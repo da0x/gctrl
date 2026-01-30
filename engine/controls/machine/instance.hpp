@@ -33,6 +33,19 @@ namespace machine {
         instance(const json& j, const machine::object& e) : controls::instance(j, e) {}
         using controls::instance::prototype;
         std::string icon() const override { return ui::icon::machine; }
+
+        // Access prototype's controllers and drivers
+        const controller::instance::list& controllers() const {
+            return dynamic_cast<const machine::object*>(&prototype)->controllers;
+        }
+        const driver::instance::list& drivers() const {
+            return dynamic_cast<const machine::object*>(&prototype)->drivers;
+        }
+
+        // Access the machine prototype
+        const machine::object& machine_prototype() const {
+            return *dynamic_cast<const machine::object*>(&prototype);
+        }
     };
 
-} // namespace controller
+} // namespace machine

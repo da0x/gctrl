@@ -39,7 +39,10 @@ namespace gctrl {
         void signal_registry::notify(uint64_t id, const std::vector<uint8_t>& data) {
             std::lock_guard<std::mutex> lock(mutex_);
             if (registry_.count(id)) {
+                std::cerr << "[UDP] Received signal ID " << id << " - found subscriber\n";
                 registry_[id](data);
+            } else {
+                std::cerr << "[UDP] Received signal ID " << id << " - NO subscriber found\n";
             }
         }
 

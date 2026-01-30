@@ -26,6 +26,8 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <cstring>
+#include <cerrno>
+#include <iostream>
 #include <stdexcept>
 
 namespace network {
@@ -126,9 +128,12 @@ namespace network {
             sockaddr_in server_addr{};
             server_addr.sin_family = AF_INET;
             server_addr.sin_port = htons(port_);
-            inet_pton(AF_INET, address_.c_str(), &server_addr.sin_addr);
+            if (inet_pton(AF_INET, address_.c_str(), &server_addr.sin_addr) <= 0) {
+                std::cerr << "UDP send: Invalid address " << address_ << std::endl;
+                return;
+            }
 
-            sendto(
+            ssize_t sent = sendto(
                 socket_fd_,
                 packet.data(),
                 packet.size(),
@@ -136,6 +141,10 @@ namespace network {
                 reinterpret_cast<sockaddr*>(&server_addr),
                 sizeof(server_addr)
             );
+
+            if (sent < 0) {
+                std::cerr << "UDP send failed: " << strerror(errno) << std::endl;
+            }
         }
 
         void udp_sender::close_socket() {

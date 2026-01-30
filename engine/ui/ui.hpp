@@ -434,6 +434,10 @@ namespace ui {
             config.UserPointer = &editor_states[id];
 
             ed::SetCurrentEditor(ed::CreateEditor(&config));
+
+            // Disable hover border to reduce visual flickering
+            auto& style = ed::GetStyle();
+            style.HoveredNodeBorderWidth = 0.0f;
         }
 
         inline void context_end() {}

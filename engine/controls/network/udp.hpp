@@ -31,6 +31,7 @@
 #include <mutex>
 #include <string>
 #include <iostream>
+#include <memory>
 
 #if GCTRL_PLATFORM_WINDOWS
     #include <winsock2.h>
@@ -109,14 +110,43 @@ namespace network {
 
 namespace debug {
 
+    // Configurable send settings (target machine's listen port)
+    struct send_settings {
+        std::string target_ip = "127.0.0.1";
+        uint16_t target_port = 8081;
+    };
+
+    inline send_settings& get_send_settings() {
+        static send_settings settings;
+        return settings;
+    }
+
+    inline void configure_send(const std::string& ip, uint16_t port) {
+        auto& settings = get_send_settings();
+        settings.target_ip = ip;
+        settings.target_port = port;
+    }
+
     inline void send(uint64_t id, float value) {
-        static network::udp::udp_sender sender("127.0.0.1", 8081);
+        auto& settings = get_send_settings();
+        static std::unique_ptr<network::udp::udp_sender> sender;
+        static std::string cached_ip;
+        static uint16_t cached_port = 0;
+
+        // Recreate sender if settings changed
+        if (!sender || cached_ip != settings.target_ip || cached_port != settings.target_port) {
+            std::cerr << "Creating UDP sender to " << settings.target_ip << ":" << settings.target_port << "\n";
+            sender = std::make_unique<network::udp::udp_sender>(settings.target_ip, settings.target_port);
+            cached_ip = settings.target_ip;
+            cached_port = settings.target_port;
+        }
 
         // Serialize the float value
         auto serialized_data = network::udp::serialize(value);
 
         // Send the data with the specified signal ID
-        sender.send(id, serialized_data);
+        std::cerr << "Sending Signal ID: " << id << ", Value: " << value << " to " << cached_ip << ":" << cached_port << "\n";
+        sender->send(id, serialized_data);
     }
 
 }

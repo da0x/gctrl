@@ -25,10 +25,57 @@
 #include "ui/icons.hpp"
 #include "ui/connector.hpp"
 #include "ui/instance.hpp"
+#include "ui/focus.hpp"
 
 namespace ui {
 	namespace graph {
         namespace ed = ax::NodeEditor;
+
+        // Find an item in a collection by its node ID
+        template<typename T>
+        T* find_selected_in(std::list<T>& collection, uint64_t node_id) {
+            for (auto& item : collection) {
+                if (item.id() == node_id) return &item;
+            }
+            return nullptr;
+        }
+
+        // Handle drill-down on double-click for a collection
+        template<typename T, typename Callback, typename UuidGetter>
+        bool try_drilldown(std::list<T>& collection, uint64_t node_id,
+                          focus::level level, Callback&& callback, UuidGetter&& get_uuid) {
+            for (auto& item : collection) {
+                if (item.id() == node_id) {
+                    callback({level, get_uuid(item), item.instance_name()});
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Convenience overload for items with prototype.uuid
+        template<typename T, typename Callback>
+        bool try_drilldown_prototype(std::list<T>& collection, uint64_t node_id,
+                                     focus::level level, Callback&& callback) {
+            return try_drilldown(collection, node_id, level, callback,
+                [](const T& item) { return item.prototype.uuid; });
+        }
+
+        // Convenience overload for items with get_prototype_uuid()
+        template<typename T, typename Callback>
+        bool try_drilldown_port(std::list<T>& collection, uint64_t node_id,
+                               focus::level level, Callback&& callback) {
+            return try_drilldown(collection, node_id, level, callback,
+                [](const T& item) { return item.get_prototype_uuid(); });
+        }
+
+        // Delete selected nodes from multiple collections
+        template<typename... Collections>
+        void delete_nodes_by_id(uint64_t node_id, Collections&... collections) {
+            (collections.remove_if([node_id](const auto& item) {
+                return item.id() == node_id;
+            }), ...);
+        }
 
         void render_list(const char* icon, const std::string& label, auto& instances) {
             ui::separator(label);
