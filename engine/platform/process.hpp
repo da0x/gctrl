@@ -70,5 +70,8 @@ namespace process {
     // Check if the command queue finished processing
     bool finished();
 
+    // Get the command currently being executed (empty if none)
+    std::string current();
+
 } // namespace process
 } // namespace platform

@@ -29,6 +29,7 @@ namespace process {
 
     static state global_state;
     static HANDLE process_handle = nullptr;
+    static std::string current_command;
 
     state& get_state() {
         return global_state;
@@ -57,6 +58,7 @@ namespace process {
     void process_next_command() {
         global_state.finished_flag = false;
         if (global_state.cancel_flag || global_state.command_queue.empty()) {
+            current_command.clear();
             global_state.running = false;
             global_state.finished_flag = true;
             return;
@@ -64,6 +66,7 @@ namespace process {
 
         std::string command = global_state.command_queue.front();
         global_state.command_queue.pop();
+        current_command = command;
         global_state.running = true;
         global_state.success_flag = false;
 
@@ -203,6 +206,11 @@ namespace process {
 
     bool finished() {
         return global_state.finished_flag;
+    }
+
+    std::string current() {
+        std::lock_guard<std::mutex> lock(global_state.cmd_mutex);
+        return current_command;
     }
 
 } // namespace process

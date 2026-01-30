@@ -158,7 +158,7 @@ namespace project {
             ImGui::TextColored(ui::theme::vs2022::text_disabled, ("Last opened: " + project.last_opened).c_str());
 
             ImGui::SameLine(ImGui::GetWindowWidth() - 50);
-            if (ui::button((std::string(ICON_FA_TRASH "##") + std::to_string(i)).c_str())) {
+            if (ui::button((std::string(ui::icon::trash) + "##" + std::to_string(i)).c_str())) {
                 recent_projects.erase(recent_projects.begin() + i);
                 save_recent_projects(recent_projects);
                 --i;

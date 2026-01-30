@@ -34,6 +34,9 @@
 #include "controls/element/editor.hpp"
 #include "controls/port/editor.hpp"
 #include "controls/debug/viewer.hpp"
+#include "controls/dashboard/listener.hpp"
+#include "controls/dashboard/viewer.hpp"
+#include "controls/panel/sender.hpp"
 #include "controls/build/build.hpp"
 #include "controls/list.hpp"
 #include "controls/network/object.hpp"
@@ -93,6 +96,9 @@ namespace controls {
             ui::navigation::save(engine_file);
             if (terminal::is_running())
                 terminal::cancel();
+            // Stop all dashboard listeners and panel senders on shutdown
+            dashboard::stop_all_listeners();
+            panel::remove_all_senders();
         }
 
         void set_mode(ui::navigation::mode new_mode) {
@@ -276,18 +282,7 @@ namespace controls {
             // Unified mode - always render edit mode, it now includes runtime overlays
             render_edit_mode();
 
-            // Render debug viewer when any machine is running
-            if (runtime.is_any_running()) {
-                render_debug_viewer();
-            }
-
             ui::terminal::render();
-        }
-
-        void render_debug_viewer() {
-            auto& state = debug::get_state();
-            std::lock_guard<std::mutex> lock(state.data_mutex);
-            debug::viewer::render(machines, state.signal_data);
         }
 
     private:
@@ -348,7 +343,50 @@ namespace controls {
                     focus_on(entry);
                 }
             };
-            ui::hierarchy::render(network.machines, runtime, selection, cbs);
+            cbs.on_delete_dashboard_link = [this](uint64_t link_id) {
+                // Stop listener before removing link
+                for (const auto& link : network.dashboard_links) {
+                    if (link.id == link_id) {
+                        dashboard::stop_listener(link.dashboard_uuid);
+                        break;
+                    }
+                }
+                network.remove_dashboard_link(link_id);
+                selection.clear();
+            };
+            cbs.on_delete_panel_link = [this](uint64_t link_id) {
+                // Remove sender before removing link
+                for (const auto& link : network.panel_links) {
+                    if (link.id == link_id) {
+                        panel::remove_sender(link.panel_uuid);
+                        break;
+                    }
+                }
+                network.remove_panel_link(link_id);
+                selection.clear();
+            };
+            cbs.on_open_dashboard_viewer = [this](const std::string& dashboard_uuid) {
+                // Find the dashboard and its connected driver
+                auto* dash = network.find_dashboard_by_uuid(dashboard_uuid);
+                if (dash && dash->is_connected()) {
+                    // Find the connected driver
+                    for (const auto& mach : network.machines) {
+                        if (mach.uuid == dash->connected_machine_uuid) {
+                            for (const auto& drv : mach.drivers()) {
+                                if (drv.uuid == dash->connected_driver_uuid) {
+                                    dashboard::open_viewer(*dash, &drv);
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+                // Open even without driver connection
+                if (dash) {
+                    dashboard::open_viewer(*dash, nullptr);
+                }
+            };
+            ui::hierarchy::render(network, runtime, selection, cbs);
         }
 
         void render_breadcrumb() {
@@ -487,13 +525,16 @@ namespace controls {
             // Render focused content (network view when empty, specific view when focused)
             render_focused_content();
 
+            // Render dashboard viewer if open
+            dashboard::render_viewer();
+
             ui::chart::show_my_window();
         }
 
         void render_menu() {
             if (ui::main_menu::begin()) {
                 ImGui::BeginDisabled(!ui::navigation::can_go_back());
-                if (ImGui::Button(ICON_FA_CIRCLE_LEFT " Back")) {
+                if (ImGui::Button(ui::icon::back)) {
                     navigate_back();
                 }
                 ImGui::EndDisabled();
@@ -501,7 +542,7 @@ namespace controls {
                 ImGui::SameLine();
 
                 ImGui::BeginDisabled(!ui::navigation::can_go_forward());
-                if (ImGui::Button(ICON_FA_CIRCLE_RIGHT " Forward")) {
+                if (ImGui::Button(ui::icon::forward)) {
                     navigate_forward();
                 }
                 ImGui::EndDisabled();

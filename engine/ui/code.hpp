@@ -138,7 +138,7 @@ namespace ui {
 
             TextEditor& editor = editor_map[current_id];
 
-            if (ui::button(ICON_FA_CALCULATOR " Constants")) {
+            if (ui::button(ui::icon::constants)) {
                 ui::popup::open("Constants Menu");
             }
 
@@ -151,7 +151,7 @@ namespace ui {
                 ui::popup::end();
             }
             ui::same_line();
-            if (ui::button(ICON_FA_CODE " Functions")) {
+            if (ui::button(ui::icon::funcs)) {
                 ui::popup::open("Functions Menu");
             }
 
