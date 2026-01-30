@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-GCtrl is a C++20 control systems IDE and programming language for control engineers. It provides visual diagram-driven development, automatic C++ code generation, and cross-platform deployment (Windows, Linux, embedded systems).
+GCtrl is a C++23 control systems IDE and programming language for control engineers. It provides visual diagram-driven development, automatic C++ code generation, and cross-platform deployment (Windows, Linux, embedded systems).
 
 ## Build Commands
 
@@ -105,6 +105,48 @@ Projects are stored as `.ctrl` files (JSON format) containing machines, controll
 - OpenGL/GLEW - Rendering
 - ImGui, ImPlot, imgui-node-editor - UI (in `lib/`)
 - nlohmann/json - Serialization (in `lib/`)
+
+## Programming Guide
+
+### Naming Conventions
+
+- Use short, single-word names when possible
+- No abbreviations unless widely known (e.g., `id`, `ui`, `config`)
+- Getters and setters share the same name:
+  ```cpp
+  float value();        // getter
+  void value(float v);  // setter
+  ```
+
+### Code Style
+
+- Avoid lambda functions; use named functions or function objects instead
+- Prefer references over pointers; use pointers only when null state is needed
+
+### UI Layer (`engine/ui/`)
+
+- Create inline wrappers in the `ui` namespace for ImGui functions
+- Application code uses `std::string`, UI wrappers handle conversion to `const char*`
+- Icons are centralized in `ui::icon::` namespace (`engine/ui/icons.hpp`)
+  ```cpp
+  // Icons only (single glyph)
+  ui::icon::trash
+  ui::icon::play
+
+  // Button labels (icon + text, ready to use)
+  ui::icon::remove   // "🗑 Delete"
+  ui::icon::run      // "▶ Run"
+  ```
+
+### Strings
+
+- Use `std::string` throughout application code
+- UI layer handles conversion to C-strings internally
+- String concatenation happens in application code, not at call sites
+
+### Libraries (`lib/`)
+
+Open source libraries included in the project are open for extension and bug fixes when it simplifies application code and keeps it clean.
 
 ## Contributing
 

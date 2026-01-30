@@ -77,14 +77,12 @@ int main(int argc, char* argv[]) {
 
     if (!project_path.empty()) {
         controls::engine e(project_path);
-        controls::debug::begin();
+        // Old debug listener disabled - dashboards now handle signal visualization
 
         while (app.frame()) {
             e.render();
             app.render();
         }
-
-        controls::debug::end();
     }
 
     return 0;

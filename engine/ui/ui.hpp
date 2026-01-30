@@ -139,12 +139,12 @@ namespace ui {
 
     enum class direction { ltr, rtl };
 
-    inline void begin(const char* title) {
-        ImGui::Begin(title, nullptr, ImGuiWindowFlags_DockNodeHost);
+    inline void begin(const std::string& title) {
+        ImGui::Begin(title.c_str(), nullptr, ImGuiWindowFlags_DockNodeHost);
     }
 
-    inline void begin(const char* title, ImGuiWindowFlags flags) {
-        ImGui::Begin(title, nullptr, flags | ImGuiWindowFlags_DockNodeHost);
+    inline void begin(const std::string& title, ImGuiWindowFlags flags) {
+        ImGui::Begin(title.c_str(), nullptr, flags | ImGuiWindowFlags_DockNodeHost);
     }
 
     inline void end() {
@@ -222,6 +222,41 @@ namespace ui {
         }
     }
 
+    // Width-constrained separator for use inside nodes
+    inline void separator(const std::string& value, float width) {
+        if (value.empty()) {
+            ImGui::PushItemWidth(width);
+            ImGui::Separator();
+            ImGui::PopItemWidth();
+        }
+        else {
+            // Draw text centered with lines on either side
+            float text_width = ImGui::CalcTextSize(value.c_str()).x;
+            float line_width = (width - text_width - 20.0f) * 0.5f;
+            if (line_width < 0) line_width = 0;
+
+            ImVec2 pos = ImGui::GetCursorScreenPos();
+            float y = pos.y + ImGui::GetTextLineHeight() * 0.5f;
+            ImU32 col = ImGui::GetColorU32(ImGuiCol_Separator);
+
+            ImGui::GetWindowDrawList()->AddLine(
+                ImVec2(pos.x, y),
+                ImVec2(pos.x + line_width, y),
+                col);
+
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + line_width + 10.0f);
+            ImGui::TextDisabled("%s", value.c_str());
+
+            ImGui::SameLine();
+            ImGui::GetWindowDrawList()->AddLine(
+                ImVec2(pos.x + line_width + 10.0f + text_width + 10.0f, y),
+                ImVec2(pos.x + width, y),
+                col);
+
+            ImGui::NewLine();
+        }
+    }
+
     inline void text(const std::string& value) {
         ImGui::Text(value.c_str());
     }
@@ -244,11 +279,11 @@ namespace ui {
         return ImGui::Selectable(value.c_str(), is_selected, flags);
     }
 
-    inline bool button(const char* title) {
-        return ImGui::Button(title);
+    inline bool button(const std::string& title) {
+        return ImGui::Button(title.c_str());
     }
 
-    inline bool bordered_button(const char* title) {
+    inline bool bordered_button(const std::string& title) {
         ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.0f);
         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
         ImGui::PushStyleColor(ImGuiCol_Border, IM_COL32(255, 255, 255, 255));
@@ -261,7 +296,7 @@ namespace ui {
     }
 
 
-    inline int combo(const char* label, int current_value, const std::map<int, std::string>& items) {
+    inline int combo(const std::string& label, int current_value, const std::map<int, std::string>& items) {
         std::vector<const char*> item_labels;
         for (const auto& item : items) {
             item_labels.push_back(item.second.c_str());
@@ -273,7 +308,7 @@ namespace ui {
             current_index++;
         }
 
-        if (ImGui::Combo(label, &current_index, item_labels.data(), static_cast<int>(item_labels.size()))) {
+        if (ImGui::Combo(label.c_str(), &current_index, item_labels.data(), static_cast<int>(item_labels.size()))) {
             auto it = std::next(items.begin(), current_index);
             return it->first;
         }
@@ -283,20 +318,20 @@ namespace ui {
 
     namespace input {
 
-        inline void text(const char* title, string& value) {
+        inline void text(const std::string& title, string& value) {
             char buffer[1024*10];
             strncpy(buffer, value.c_str(), sizeof(buffer));
             buffer[sizeof(buffer) - 1] = 0;
 
-            if (ImGui::InputText(title, buffer, sizeof(buffer))) {
+            if (ImGui::InputText(title.c_str(), buffer, sizeof(buffer))) {
                 value = buffer;
             }
         }
 
-        inline void multiline_text(const char* title, string& value) {
+        inline void multiline_text(const std::string& title, string& value) {
             std::vector<char> desc_buffer(1024 * 100);
             std::strncpy(desc_buffer.data(), value.c_str(), desc_buffer.size());
-            if (ImGui::InputTextMultiline(title, desc_buffer.data(), desc_buffer.size())) {
+            if (ImGui::InputTextMultiline(title.c_str(), desc_buffer.data(), desc_buffer.size())) {
                 value = std::string(desc_buffer.data());
             }
         }
@@ -328,11 +363,11 @@ namespace ui {
             }
         }
 
-        inline void float_(const char* label, float& value) {
+        inline void float_(const std::string& label, float& value) {
             std::string eng_str = engineering::to_string(value);
             std::vector<char> buffer(256);
             std::strncpy(buffer.data(), eng_str.c_str(), buffer.size());
-            if (ImGui::InputText(label, buffer.data(), buffer.size())) {
+            if (ImGui::InputText(label.c_str(), buffer.data(), buffer.size())) {
                 try {
                     value = engineering::to_float(buffer.data());
                 }
@@ -565,13 +600,13 @@ namespace ui {
 
     namespace popup {
 
-        inline bool begin(const char* title) {
+        inline bool begin(const std::string& title) {
             ui::style::color::push(ui::colors::border, ui::theme::vs2022::dark_yellow);
-            bool begin = ImGui::BeginPopup(title);
-            if (!begin) {
+            bool result = ImGui::BeginPopup(title.c_str());
+            if (!result) {
                 ui::style::color::pop();
             }
-            return begin;
+            return result;
         }
 
         inline void end() {
@@ -579,8 +614,8 @@ namespace ui {
             ImGui::EndPopup();
         }
 
-        inline void open(const char* title) {
-            ImGui::OpenPopup(title);
+        inline void open(const std::string& title) {
+            ImGui::OpenPopup(title.c_str());
         }
 
         inline void close() {

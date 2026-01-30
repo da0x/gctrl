@@ -74,7 +74,7 @@ namespace signal {
                 ui::style::color::pop();
 
                 ImGui::TableSetColumnIndex(5);
-                if (ui::button(ICON_FA_TRASH)) {
+                if (ui::button(ui::icon::trash)) {
                     it = properties.erase(it);
                     ImGui::PopID();
                     continue;

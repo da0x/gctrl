@@ -186,5 +186,9 @@ namespace terminal {
         return platform::process::finished();
     }
 
+    inline std::string current() {
+        return platform::process::current();
+    }
+
 } // namespace terminal
 

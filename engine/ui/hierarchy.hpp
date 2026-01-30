@@ -34,6 +34,11 @@
 #include "controls/element/object.hpp"
 #include "controls/port/object.hpp"
 #include "controls/runtime/state.hpp"
+#include "controls/network/object.hpp"
+#include "controls/dashboard/instance.hpp"
+#include "controls/dashboard/listener.hpp"
+#include "controls/panel/instance.hpp"
+#include "controls/panel/sender.hpp"
 
 namespace ui {
 namespace hierarchy {
@@ -41,12 +46,16 @@ namespace hierarchy {
     struct callbacks {
         std::function<void(const focus::focus_entry&)> on_select;
         std::function<void(const focus::focus_entry&)> on_drill_down;
+        std::function<void(uint64_t)> on_delete_dashboard_link;
+        std::function<void(uint64_t)> on_delete_panel_link;
+        std::function<void(const std::string&)> on_open_dashboard_viewer;
     };
 
     inline callbacks current_callbacks;
     inline selection* current_selection = nullptr;
     inline runtime::tracker* current_runtime_tracker = nullptr;
     inline machine::instance::list* current_machines = nullptr;
+    inline network::object* current_network = nullptr;
 
     // Push prominent selection/hover colors for tree items
     inline void push_tree_colors() {
@@ -226,18 +235,18 @@ namespace hierarchy {
         ImVec4 status_color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 
         if (current_runtime_tracker) {
-            auto status = current_runtime_tracker->get_status(mach.id());
+            auto status = current_runtime_tracker->status_of(mach.id());
             switch (status) {
                 case runtime::status::running:
-                    status_indicator = ICON_FA_PLAY " ";
+                    status_indicator = ui::icon::play;
                     status_color = ImVec4(0.0f, 0.8f, 0.0f, 1.0f);
                     break;
                 case runtime::status::building:
-                    status_indicator = ICON_FA_HAMMER " ";
+                    status_indicator = ui::icon::hammer;
                     status_color = ImVec4(1.0f, 0.7f, 0.0f, 1.0f);
                     break;
                 case runtime::status::error:
-                    status_indicator = ICON_FA_TRIANGLE_EXCLAMATION " ";
+                    status_indicator = ui::icon::warning;
                     status_color = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
                     break;
                 default:
@@ -246,7 +255,9 @@ namespace hierarchy {
         }
 
         // Build display string: icon + instance name
-        std::string display_text = std::string(status_indicator) + ui::icon::machine + " " + mach.instance_name();
+        std::string display_text = std::string(status_indicator);
+        if (!display_text.empty()) display_text += " ";
+        display_text += std::string(ui::icon::machine) + " " + mach.instance_name();
 
         ImGui::PushStyleColor(ImGuiCol_Text, status_color);
         bool open = ImGui::TreeNodeEx(reinterpret_cast<void*>(mach.id()), flags, "%s", display_text.c_str());
@@ -270,15 +281,149 @@ namespace hierarchy {
         }
     }
 
+    inline void render_dashboard_link(const network::dashboard_link& link) {
+        if (!current_network) return;
+
+        // Find dashboard and driver names for display
+        std::string dash_name = "?";
+        std::string driver_name = "?";
+        std::string machine_name = "?";
+
+        for (const auto& dash : current_network->dashboards) {
+            if (dash.uuid == link.dashboard_uuid) {
+                dash_name = dash.name;
+                break;
+            }
+        }
+        for (const auto& mach : current_network->machines) {
+            if (mach.uuid == link.machine_uuid) {
+                machine_name = mach.instance_name();
+                for (const auto& drv : mach.drivers()) {
+                    if (drv.uuid == link.driver_uuid) {
+                        driver_name = drv.name;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+        bool is_selected = current_selection && current_selection->is_selected(link.id);
+        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_SpanAvailWidth;
+        if (is_selected) flags |= ImGuiTreeNodeFlags_Selected;
+
+        std::string label = dash_name + " -> " + machine_name + "/" + driver_name;
+        ImGui::TreeNodeEx(reinterpret_cast<void*>(link.id), flags, "%s %s", ui::icon::link, label.c_str());
+
+        if (ImGui::IsItemClicked()) {
+            if (current_selection) current_selection->select(link.id);
+        }
+
+        // Context menu for deletion
+        if (ImGui::BeginPopupContextItem()) {
+            if (ImGui::MenuItem(ui::icon::remove)) {
+                if (current_callbacks.on_delete_dashboard_link) {
+                    current_callbacks.on_delete_dashboard_link(link.id);
+                }
+            }
+            ImGui::EndPopup();
+        }
+    }
+
+    inline void render_panel_link(const network::panel_link& link) {
+        if (!current_network) return;
+
+        // Find panel and driver names for display
+        std::string panel_name = "?";
+        std::string driver_name = "?";
+        std::string machine_name = "?";
+
+        for (const auto& pnl : current_network->panels) {
+            if (pnl.uuid == link.panel_uuid) {
+                panel_name = pnl.name;
+                break;
+            }
+        }
+        for (const auto& mach : current_network->machines) {
+            if (mach.uuid == link.machine_uuid) {
+                machine_name = mach.instance_name();
+                for (const auto& drv : mach.drivers()) {
+                    if (drv.uuid == link.driver_uuid) {
+                        driver_name = drv.name;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+        bool is_selected = current_selection && current_selection->is_selected(link.id);
+        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_SpanAvailWidth;
+        if (is_selected) flags |= ImGuiTreeNodeFlags_Selected;
+
+        std::string label = panel_name + " -> " + machine_name + "/" + driver_name;
+        ImGui::TreeNodeEx(reinterpret_cast<void*>(link.id), flags, "%s %s", ui::icon::link, label.c_str());
+
+        if (ImGui::IsItemClicked()) {
+            if (current_selection) current_selection->select(link.id);
+        }
+
+        // Context menu for deletion
+        if (ImGui::BeginPopupContextItem()) {
+            if (ImGui::MenuItem(ui::icon::remove)) {
+                if (current_callbacks.on_delete_panel_link) {
+                    current_callbacks.on_delete_panel_link(link.id);
+                }
+            }
+            ImGui::EndPopup();
+        }
+    }
+
+    inline void render_dashboard_instance(const dashboard::instance& dash) {
+        bool is_selected = current_selection && current_selection->is_selected(dash.id());
+        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_SpanAvailWidth;
+        if (is_selected) flags |= ImGuiTreeNodeFlags_Selected;
+
+        // Show connection status
+        std::string status = dash.is_connected() ? " (linked)" : "";
+        ImGui::TreeNodeEx(reinterpret_cast<void*>(dash.id()), flags, "%s %s%s", ui::icon::dashboard, dash.name.c_str(), status.c_str());
+
+        // Double-click opens the viewer window
+        if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0)) {
+            if (current_callbacks.on_open_dashboard_viewer) {
+                current_callbacks.on_open_dashboard_viewer(dash.uuid);
+            }
+        }
+        // Single click selects
+        else if (ImGui::IsItemClicked()) {
+            if (current_selection) current_selection->select(dash.id());
+        }
+    }
+
+    inline void render_panel_instance(const panel::instance& pnl) {
+        bool is_selected = current_selection && current_selection->is_selected(pnl.id());
+        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_SpanAvailWidth;
+        if (is_selected) flags |= ImGuiTreeNodeFlags_Selected;
+
+        // Show connection status
+        std::string status = pnl.is_connected() ? " (linked)" : "";
+        ImGui::TreeNodeEx(reinterpret_cast<void*>(pnl.id()), flags, "%s %s%s", ui::icon::panel, pnl.name.c_str(), status.c_str());
+
+        if (ImGui::IsItemClicked()) {
+            if (current_selection) current_selection->select(pnl.id());
+        }
+    }
+
     inline void render(
-        machine::instance::list& machines,
+        network::object& net,
         runtime::tracker& runtime_tracker,
         selection& sel,
         const callbacks& cbs = {}
     ) {
         current_callbacks = cbs;
         current_runtime_tracker = &runtime_tracker;
-        current_machines = &machines;
+        current_machines = &net.machines;
+        current_network = &net;
         current_selection = &sel;
 
         ui::begin("Hierarchy");
@@ -304,9 +449,47 @@ namespace hierarchy {
         }
 
         if (open) {
-            for (auto& mach : machines) {
+            // Machines
+            for (auto& mach : net.machines) {
                 render_machine_instance(mach);
             }
+
+            // Dashboards section
+            if (!net.dashboards.empty()) {
+                ImGuiTreeNodeFlags dash_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
+                if (ImGui::TreeNodeEx("dashboards_section", dash_flags, "%s Dashboards", ui::icon::dashboard)) {
+                    for (const auto& dash : net.dashboards) {
+                        render_dashboard_instance(dash);
+                    }
+                    ImGui::TreePop();
+                }
+            }
+
+            // Panels section
+            if (!net.panels.empty()) {
+                ImGuiTreeNodeFlags panel_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
+                if (ImGui::TreeNodeEx("panels_section", panel_flags, "%s Panels", ui::icon::panel)) {
+                    for (const auto& pnl : net.panels) {
+                        render_panel_instance(pnl);
+                    }
+                    ImGui::TreePop();
+                }
+            }
+
+            // Links section
+            if (!net.dashboard_links.empty() || !net.panel_links.empty()) {
+                ImGuiTreeNodeFlags link_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
+                if (ImGui::TreeNodeEx("links_section", link_flags, "%s Links", ui::icon::link)) {
+                    for (const auto& link : net.dashboard_links) {
+                        render_dashboard_link(link);
+                    }
+                    for (const auto& link : net.panel_links) {
+                        render_panel_link(link);
+                    }
+                    ImGui::TreePop();
+                }
+            }
+
             ImGui::TreePop();
         }
 
@@ -318,6 +501,7 @@ namespace hierarchy {
 
         current_runtime_tracker = nullptr;
         current_machines = nullptr;
+        current_network = nullptr;
         current_selection = nullptr;
     }
 

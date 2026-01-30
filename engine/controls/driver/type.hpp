@@ -54,8 +54,8 @@ namespace driver {
 
     inline const char* type_to_icon(type t) {
         switch (t) {
-            case type::udp:    return ICON_FA_NETWORK_WIRED;
-            case type::config: return ICON_FA_FILE_LINES;
+            case type::udp:    return ui::icon::network_wired;
+            case type::config: return ui::icon::file_lines;
             default:           return ui::icon::driver;
         }
     }

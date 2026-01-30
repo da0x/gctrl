@@ -76,7 +76,7 @@ namespace controls {
 
         ui::same_line();
         if (item_selected) {
-            if (ui::button(ICON_FA_TRASH " Delete")) {
+            if (ui::button(ui::icon::remove)) {
                 int deleted_index = current_entry.index;
 
                 auto it = records.begin();
@@ -92,7 +92,7 @@ namespace controls {
         }
         else {
             ImGui::BeginDisabled();
-            ui::button(ICON_FA_TRASH " Delete");
+            ui::button(ui::icon::remove);
             ImGui::EndDisabled();
         }
 

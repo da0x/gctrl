@@ -66,20 +66,18 @@ namespace runtime {
     }
 
     // Configure debug communication based on machine's UDP drivers
+    // Note: The old debug listener is disabled - dashboards now handle signal visualization
     inline void configure_debug_for_machine(const machine::object& machine) {
         auto endpoints = network::object::get_udp_endpoints(machine);
         if (!endpoints.empty()) {
             // Use first UDP driver's settings
             const auto& ep = endpoints[0];
 
-            // GCtrl listens where machine sends
-            controls::debug::init(ep.listen_ip, ep.listen_port, true, machine.name);
-
-            // GCtrl sends where machine listens
+            // Only configure send (for sending commands to machine)
+            // Listening is now handled by dashboard listeners
             debug::configure_send(ep.send_ip, static_cast<uint16_t>(ep.send_port));
 
-            ui::cout << "Debug configured for " << machine.name << ": listen on " << ep.listen_ip << ":" << ep.listen_port
-                     << ", send to " << ep.send_ip << ":" << ep.send_port << ui::endl;
+            ui::cout << "Debug configured for " << machine.name << ": send to " << ep.send_ip << ":" << ep.send_port << ui::endl;
         }
     }
 
@@ -91,7 +89,7 @@ namespace runtime {
             return;
         }
 
-        runtime.set_status(machine_id, status::building);
+        runtime.status_of(machine_id, status::building);
         ui::cout << "Building machine: " << machine.name << ui::endl;
 
         // Always regenerate code before building
@@ -117,7 +115,7 @@ namespace runtime {
         std::string exe_path = get_executable_path(machine);
 
         if (!std::filesystem::exists(exe_path)) {
-            runtime.set_status(machine_id, status::error, "Executable not found: " + exe_path);
+            runtime.status_of(machine_id, status::error, "Executable not found: " + exe_path);
             ui::cerr << "Executable not found: " << exe_path << ui::endl;
             return;
         }
@@ -125,7 +123,7 @@ namespace runtime {
         // Configure debug communication based on machine's UDP drivers
         configure_debug_for_machine(machine);
 
-        runtime.set_status(machine_id, status::running);
+        runtime.status_of(machine_id, status::running);
         ui::cout << "Running machine: " << machine.name << ui::endl;
 
         // Execute the machine process
@@ -141,7 +139,7 @@ namespace runtime {
 
         ui::cout << "Stopping machine: " << machine.name << ui::endl;
         terminal::cancel();
-        runtime.set_status(machine_id, status::stopped);
+        runtime.status_of(machine_id, status::stopped);
     }
 
     inline void build_and_run_machine(machine::object& machine, tracker& runtime) {
@@ -152,7 +150,7 @@ namespace runtime {
             return;
         }
 
-        runtime.set_status(machine_id, status::building);
+        runtime.status_of(machine_id, status::building);
         ui::cout << "Building machine: " << machine.name << ui::endl;
 
         // Always regenerate code before building
@@ -172,7 +170,7 @@ namespace runtime {
 
     // Update runtime state based on terminal status - call this from engine::render()
     inline void update_machine_state(uint64_t machine_id, tracker& runtime) {
-        auto& state = runtime.get_state(machine_id);
+        auto& state = runtime.state(machine_id);
 
         if (state.current_status == status::building || state.current_status == status::running) {
             if (terminal::finished()) {
@@ -180,9 +178,9 @@ namespace runtime {
                     if (state.current_status == status::building) {
                         ui::good << "Build succeeded!" << ui::endl;
                     }
-                    runtime.set_status(machine_id, status::stopped);
+                    runtime.status_of(machine_id, status::stopped);
                 } else {
-                    runtime.set_status(machine_id, status::error, "Process failed");
+                    runtime.status_of(machine_id, status::error, "Process failed");
                     ui::cerr << "Process failed!" << ui::endl;
                 }
             }

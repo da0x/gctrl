@@ -132,7 +132,7 @@ namespace controller {
         ui::columns(2);
         ui::separator("Insert");
 
-        if (ui::button(ICON_FA_PLUS " Insert")) {
+        if (ui::button(ui::icon::insert)) {
             ui::popup::open("InsertMenu");
         }
 
@@ -174,7 +174,7 @@ namespace controller {
         bool multi_node_selected = selected_node_count > 0;
 
         if (multi_node_selected || link_selected) {
-            if (ui::button(ICON_FA_TRASH " Delete")) {
+            if (ui::button(ui::icon::remove)) {
                 if (multi_node_selected) {
                     for (int i = 0; i < selected_node_count; ++i) {
                         uint64_t node_id = selected_nodes[i].Get();
@@ -196,7 +196,7 @@ namespace controller {
         }
         else {
             ui::disabled::begin();
-            ui::button(ICON_FA_TRASH " Delete");
+            ui::button(ui::icon::remove);
             ui::disabled::end();
         }
 

@@ -115,7 +115,7 @@ namespace library {
 
                 // Context menu for deleting
                 if (ImGui::BeginPopupContextItem()) {
-                    if (ImGui::MenuItem(ICON_FA_TRASH " Delete")) {
+                    if (ImGui::MenuItem(ui::icon::remove)) {
                         bool was_selected = is_selected;
                         auto it = std::find_if(records.begin(), records.end(),
                             [&](const T& r) { return r.uuid == record.uuid; });
@@ -158,11 +158,11 @@ namespace library {
         ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.29f, 0.59f, 0.82f, 1.00f));
 
         // Expand/Collapse buttons
-        if (ImGui::Button(ICON_FA_EXPAND " Expand")) {
+        if (ImGui::Button(ui::icon::expand)) {
             tree_open_action = 1;
         }
         ImGui::SameLine();
-        if (ImGui::Button(ICON_FA_COMPRESS " Collapse")) {
+        if (ImGui::Button(ui::icon::collapse)) {
             tree_open_action = -1;
         }
         ImGui::Separator();

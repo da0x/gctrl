@@ -246,7 +246,7 @@ namespace ui {
 
             ui::dummy(0.0f, 10.0f);
             ui::group::begin();
-            if (ui::button(ICON_FA_ARROW_RIGHT_ARROW_LEFT)) {
+            if (ui::button(ui::icon::swap)) {
                 instance.direction = (instance.direction == ui::direction::ltr) ? ui::direction::rtl : ui::direction::ltr;
             }
 

@@ -36,6 +36,7 @@ namespace process {
 
     static state global_state;
     static pid_t current_pid = -1;
+    static std::string current_command;
 
     state& get_state() {
         return global_state;
@@ -139,6 +140,10 @@ namespace process {
                     global_state.command_queue.pop();
                 }
 
+                {
+                    std::lock_guard<std::mutex> lock(global_state.cmd_mutex);
+                    current_command = command;
+                }
                 ui::good << "$ " << command << ui::endl;
 
                 if (!run_single_command(command)) {
@@ -146,6 +151,10 @@ namespace process {
                 }
             }
 
+            {
+                std::lock_guard<std::mutex> lock(global_state.cmd_mutex);
+                current_command.clear();
+            }
             global_state.running = false;
             global_state.finished_flag = true;
             return global_state.success_flag;
@@ -186,6 +195,11 @@ namespace process {
 
     bool finished() {
         return global_state.finished_flag;
+    }
+
+    std::string current() {
+        std::lock_guard<std::mutex> lock(global_state.cmd_mutex);
+        return current_command;
     }
 
 } // namespace process

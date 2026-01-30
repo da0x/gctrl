@@ -105,13 +105,13 @@ namespace runtime {
             return false;
         }
 
-        status get_status(uint64_t machine_id) const {
+        status status_of(uint64_t machine_id) const {
             auto it = machines.find(machine_id);
             if (it == machines.end()) return status::stopped;
             return it->second.current_status;
         }
 
-        void set_status(uint64_t machine_id, status s, const std::string& error = "") {
+        void status_of(uint64_t machine_id, status s, const std::string& error = "") {
             machines[machine_id].current_status = s;
             if (s == status::error) {
                 machines[machine_id].error_message = error;
@@ -120,25 +120,25 @@ namespace runtime {
             }
         }
 
-        void set_process_id(uint64_t machine_id, process_id_t pid) {
+        void process_id(uint64_t machine_id, process_id_t pid) {
             machines[machine_id].process_id = pid;
         }
 
-        void clear_process_id(uint64_t machine_id) {
+        void clear_process(uint64_t machine_id) {
             machines[machine_id].process_id = std::nullopt;
         }
 
-        std::optional<process_id_t> get_process_id(uint64_t machine_id) const {
+        std::optional<process_id_t> process_id(uint64_t machine_id) const {
             auto it = machines.find(machine_id);
             if (it == machines.end()) return std::nullopt;
             return it->second.process_id;
         }
 
-        const machine_state& get_state(uint64_t machine_id) {
+        machine_state& state(uint64_t machine_id) {
             return machines[machine_id];
         }
 
-        std::string get_error(uint64_t machine_id) const {
+        std::string error(uint64_t machine_id) const {
             auto it = machines.find(machine_id);
             if (it == machines.end()) return "";
             return it->second.error_message;

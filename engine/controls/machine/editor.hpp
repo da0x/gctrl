@@ -176,7 +176,7 @@ namespace machine {
 
         ui::dummy(0.0f, 10.0f);
         ui::group::begin();
-        if (ui::button(ICON_FA_ARROW_RIGHT_ARROW_LEFT)) {
+        if (ui::button(ui::icon::swap)) {
             instance.direction = (instance.direction == ui::direction::ltr) ? ui::direction::rtl : ui::direction::ltr;
         }
 
@@ -223,7 +223,7 @@ namespace machine {
     }
 
     void render_runtime_toolbar(machine::object& machine, runtime::tracker& runtime_tracker) {
-        auto& state = runtime_tracker.get_state(machine.id());
+        auto& state = runtime_tracker.state(machine.id());
 
         // Status indicator
         ImVec4 status_color;
@@ -233,22 +233,22 @@ namespace machine {
         switch (state.current_status) {
             case runtime::status::stopped:
                 status_color = ImVec4(0.5f, 0.5f, 0.5f, 1.0f);
-                status_icon = ICON_FA_STOP;
+                status_icon = ui::icon::stop;
                 status_text = "Stopped";
                 break;
             case runtime::status::building:
                 status_color = ImVec4(1.0f, 0.7f, 0.0f, 1.0f);
-                status_icon = ICON_FA_HAMMER;
+                status_icon = ui::icon::hammer;
                 status_text = "Building...";
                 break;
             case runtime::status::running:
                 status_color = ImVec4(0.0f, 0.8f, 0.0f, 1.0f);
-                status_icon = ICON_FA_PLAY;
+                status_icon = ui::icon::play;
                 status_text = "Running";
                 break;
             case runtime::status::error:
                 status_color = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
-                status_icon = ICON_FA_TRIANGLE_EXCLAMATION;
+                status_icon = ui::icon::warning;
                 status_text = "Error";
                 break;
         }
@@ -267,7 +267,7 @@ namespace machine {
 
         // Build button
         ImGui::BeginDisabled(state.is_building() || state.is_running());
-        if (ui::button(ICON_FA_HAMMER " Build")) {
+        if (ui::button(ui::icon::build)) {
             runtime::build_machine(machine, runtime_tracker);
         }
         ImGui::EndDisabled();
@@ -276,16 +276,16 @@ namespace machine {
 
         // Run/Stop button
         if (state.is_stopped() || state.has_error()) {
-            if (ui::button(ICON_FA_PLAY " Run")) {
+            if (ui::button(ui::icon::run)) {
                 runtime::run_machine(machine, runtime_tracker);
             }
         } else if (state.is_running()) {
-            if (ui::button(ICON_FA_STOP " Stop")) {
+            if (ui::button(ui::icon::halt)) {
                 runtime::stop_machine(machine, runtime_tracker);
             }
         } else if (state.is_building()) {
             ImGui::BeginDisabled(true);
-            ui::button(ICON_FA_PLAY " Run");
+            ui::button(ui::icon::run);
             ImGui::EndDisabled();
         }
     }
@@ -343,7 +343,7 @@ namespace machine {
         bool multi_node_selected = selected_node_count > 0;
 
         if (multi_node_selected || link_selected) {
-            if (ui::button(ICON_FA_TRASH " Delete")) {
+            if (ui::button(ui::icon::remove)) {
                 if (multi_node_selected) {
                     for (int i = 0; i < selected_node_count; ++i) {
                         uint64_t node_id = selected_nodes[i].Get();
@@ -364,7 +364,7 @@ namespace machine {
         }
         else {
             ui::disabled::begin();
-            ui::button(ICON_FA_TRASH " Delete");
+            ui::button(ui::icon::remove);
             ui::disabled::end();
         }
 

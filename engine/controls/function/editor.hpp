@@ -55,7 +55,7 @@ namespace function {
                 ui::text(func.prototype_typename());
 
                 ImGui::TableSetColumnIndex(3);
-                if (ui::button(ICON_FA_TRASH)) {
+                if (ui::button(ui::icon::trash)) {
                     it = functions.erase(it);
                     ui::id::pop();
                     ImGui::EndTable();
