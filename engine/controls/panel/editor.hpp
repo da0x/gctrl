@@ -100,19 +100,41 @@ namespace panel {
         ui::node::begin_node(panel.id());
         ui::id::push(panel.id());
 
-        // Header
+        // Establish node width early to ensure proper layout
+        float content_width_full = panel.node_size - 30.0f;
+
+        // Header row with collapse/expand button
         ui::style::color::push(ui::colors::text, ui::theme::vs2022::code_typename);
         ui::text(std::string(ui::icon::panel) + " Panel");
         ui::style::color::pop();
+
+        // Calculate spacing to push button to right edge
+        float header_text_width = ImGui::CalcTextSize((std::string(ui::icon::panel) + " Panel").c_str()).x;
+        std::string collapse_btn_label = panel.collapsed ? "+" : "-";
+        float btn_width = ImGui::CalcTextSize(collapse_btn_label.c_str()).x + ImGui::GetStyle().FramePadding.x * 2;
+        float header_spacing = content_width_full - header_text_width - btn_width;
+
+        // Collapse/expand button on top right using spacing
+        ui::same_line();
+        if (header_spacing > 0) {
+            ui::dummy(header_spacing, 0.0f);
+            ui::same_line();
+        }
+        std::string collapse_btn_id = collapse_btn_label + "##collapse_" + panel.uuid;
+        if (ImGui::SmallButton(collapse_btn_id.c_str())) {
+            panel.collapsed = !panel.collapsed;
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip(panel.collapsed ? "Expand panel" : "Collapse panel");
+        }
 
         ui::style::color::push(ui::colors::text, ui::theme::vs2022::code_instance);
         ui::text(panel.name);
         ui::style::color::pop();
 
+        // Force node width
+        ui::dummy(content_width_full, 0.0f);
         ui::dummy(0.0f, 5.0f);
-
-        // Connection status row with output pin on right
-        float content_width_full = panel.node_size - 30.0f;
 
         // Connection status text
         std::string status_text;
@@ -155,63 +177,31 @@ namespace panel {
         ui::connector::diamond(is_linked);
         ed::EndPin();
 
-        ui::dummy(0.0f, 10.0f);
-
         // Content area
         float content_width = panel.node_size - 30.0f;
 
+        // Collect signal IDs for Send All (needed in both collapsed and expanded)
+        std::vector<uint64_t> all_signal_ids;
         if (driver && driver->backend_type == driver::type::udp) {
-            // Show input controls for driver's input signals (sockets incoming, plugs incoming)
-            int control_count = 0;
-            int max_controls = 8;
-            std::vector<uint64_t> all_signal_ids;
-
-            // Get send configuration
-            std::string send_ip = driver->backend_config.value("listen_ip", "127.0.0.1");
-            int send_port = driver->backend_config.value("listen_port", 8081);
-
-            ImGui::TextDisabled("Sending to %s:%d", send_ip.c_str(), send_port);
-            ui::dummy(0.0f, 5.0f);
-
-            // Sockets have incoming signals that we can send TO the machine
             for (const auto& socket : driver->sockets) {
                 for (const auto& signal : socket.incoming) {
-                    if (control_count >= max_controls) break;
-                    uint64_t signal_id = socket.id() | signal.id();
-                    all_signal_ids.push_back(signal_id);
-
-                    if (render_signal_input(signal.name, signal_id, panel, content_width)) {
-                        // Value changed, send it
-                        if (udp_sender) {
-                            udp_sender->send(signal_id, panel.value(signal_id));
-                        }
-                    }
-                    control_count++;
+                    all_signal_ids.push_back(socket.id() | signal.id());
                 }
             }
-
-            // Plugs have incoming signals too
             for (const auto& plug : driver->plugs) {
                 for (const auto& signal : plug.incoming) {
-                    if (control_count >= max_controls) break;
-                    uint64_t signal_id = plug.id() | signal.id();
-                    all_signal_ids.push_back(signal_id);
-
-                    if (render_signal_input(signal.name, signal_id, panel, content_width)) {
-                        // Value changed, send it
-                        if (udp_sender) {
-                            udp_sender->send(signal_id, panel.value(signal_id));
-                        }
-                    }
-                    control_count++;
+                    all_signal_ids.push_back(plug.id() | signal.id());
                 }
             }
+        }
 
-            if (control_count == 0) {
-                ImGui::TextDisabled("No input signals");
-            } else {
-                // Send All button
-                ui::dummy(0.0f, 5.0f);
+        if (panel.collapsed) {
+            // Collapsed view: horizontal line + Send All footer
+            ImGui::Separator();
+            ui::dummy(0.0f, 5.0f);
+
+            // Show Send All button only for UDP driver with signals
+            if (driver && driver->backend_type == driver::type::udp && !all_signal_ids.empty()) {
                 float btn_width = ImGui::CalcTextSize("Send All").x + ImGui::GetStyle().FramePadding.x * 2 + 20;
                 ImGui::SetCursorPosX(ImGui::GetCursorPosX() + content_width - btn_width);
                 if (ImGui::Button((std::string(ui::icon::send) + " Send All").c_str())) {
@@ -222,19 +212,88 @@ namespace panel {
                     }
                 }
             }
-        } else if (driver && driver->backend_type == driver::type::config) {
-            ui::text("Config Driver");
-            std::string config_file = driver->backend_config.value("config_file", "config.json");
-            ui::text("File: " + config_file);
-        } else if (!is_linked) {
-            ImGui::TextDisabled("Connect to a driver to send commands");
-            ui::dummy(content_width, 150.0f);
         } else {
-            ImGui::TextDisabled("Unknown driver type");
+            // Expanded view: full content
+            ui::dummy(0.0f, 10.0f);
+
+            if (driver && driver->backend_type == driver::type::udp) {
+                // Show input controls for driver's input signals (sockets incoming, plugs incoming)
+                int control_count = 0;
+                int max_controls = 8;
+
+                // Get send configuration
+                std::string send_ip = driver->backend_config.value("listen_ip", "127.0.0.1");
+                int send_port = driver->backend_config.value("listen_port", 8081);
+
+                ImGui::TextDisabled("Sending to %s:%d", send_ip.c_str(), send_port);
+                ui::dummy(0.0f, 5.0f);
+
+                // Sockets have incoming signals that we can send TO the machine
+                for (const auto& socket : driver->sockets) {
+                    for (const auto& signal : socket.incoming) {
+                        if (control_count >= max_controls) break;
+                        uint64_t signal_id = socket.id() | signal.id();
+
+                        if (render_signal_input(signal.name, signal_id, panel, content_width)) {
+                            // Value changed, send it
+                            if (udp_sender) {
+                                udp_sender->send(signal_id, panel.value(signal_id));
+                            }
+                        }
+                        control_count++;
+                    }
+                }
+
+                // Plugs have incoming signals too
+                for (const auto& plug : driver->plugs) {
+                    for (const auto& signal : plug.incoming) {
+                        if (control_count >= max_controls) break;
+                        uint64_t signal_id = plug.id() | signal.id();
+
+                        if (render_signal_input(signal.name, signal_id, panel, content_width)) {
+                            // Value changed, send it
+                            if (udp_sender) {
+                                udp_sender->send(signal_id, panel.value(signal_id));
+                            }
+                        }
+                        control_count++;
+                    }
+                }
+
+                if (control_count == 0) {
+                    ImGui::TextDisabled("No input signals");
+                } else {
+                    // Send All button
+                    ui::dummy(0.0f, 5.0f);
+                    float btn_width = ImGui::CalcTextSize("Send All").x + ImGui::GetStyle().FramePadding.x * 2 + 20;
+                    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + content_width - btn_width);
+                    if (ImGui::Button((std::string(ui::icon::send) + " Send All").c_str())) {
+                        if (udp_sender) {
+                            for (uint64_t sig_id : all_signal_ids) {
+                                udp_sender->send(sig_id, panel.value(sig_id));
+                            }
+                        }
+                    }
+                }
+            } else if (driver && driver->backend_type == driver::type::config) {
+                ui::text("Config Driver");
+                std::string config_file = driver->backend_config.value("config_file", "config.json");
+                ui::text("File: " + config_file);
+            } else if (!is_linked) {
+                ImGui::TextDisabled("Connect to a driver to send commands");
+                ui::dummy(content_width, 150.0f);
+            } else {
+                ImGui::TextDisabled("Unknown driver type");
+            }
         }
 
         ui::id::pop();
         ui::node::end_node();
+
+        // Handle double-click to toggle collapse state
+        if (ed::GetDoubleClickedNode().Get() == panel.id()) {
+            panel.collapsed = !panel.collapsed;
+        }
 
         ed::PopStyleColor(2);
         ed::PopStyleVar(2);

@@ -865,7 +865,22 @@ namespace network {
             ui::end();
         } else if (selected_dashboard) {
             ui::begin("Dashboard Instance");
-            dashboard::render_instance_editor(*selected_dashboard);
+            // Find connected driver for signal list
+            const driver::instance* dashboard_driver = nullptr;
+            if (selected_dashboard->is_connected()) {
+                for (auto& mach : net.machines) {
+                    if (mach.uuid == selected_dashboard->connected_machine_uuid) {
+                        for (const auto& drv : mach.drivers()) {
+                            if (drv.uuid == selected_dashboard->connected_driver_uuid) {
+                                dashboard_driver = &drv;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            dashboard::render_instance_editor(*selected_dashboard, dashboard_driver);
             ui::end();
         } else if (selected_panel) {
             ui::begin("Panel Instance");

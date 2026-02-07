@@ -57,7 +57,7 @@ namespace library {
             }
         }
 
-        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
+        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_AllowOverlap;
 
         // Auto-expand if this category has the focused item
         if (category_has_focus) {
@@ -65,6 +65,26 @@ namespace library {
         }
 
         bool open = ImGui::TreeNodeEx(label, flags);
+
+        // Add "+" button on the same line, right-aligned
+        ImGui::SameLine(ImGui::GetContentRegionAvail().x + ImGui::GetCursorPosX() - ImGui::GetFrameHeight());
+        ImGui::PushID(label);
+        if (ImGui::SmallButton(ui::icon::plus)) {
+            records.emplace_back();
+            auto& new_record = records.back();
+            // Navigate to the new object
+            if (current_focus_path) {
+                current_focus_path->clear();
+                current_focus_path->push({level, new_record.uuid, new_record.display_name()});
+            }
+            if (current_selection) {
+                current_selection->clear();
+            }
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("%s", add_label);
+        }
+        ImGui::PopID();
 
         // Context menu for adding new items
         if (ImGui::BeginPopupContextItem()) {

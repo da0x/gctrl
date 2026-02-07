@@ -38,6 +38,7 @@ namespace panel {
         std::string connected_machine_uuid;  // UUID of connected machine (empty if not connected)
         std::string connected_driver_uuid;   // UUID of connected driver (empty if not connected)
         float node_size = 400.0f;
+        bool collapsed = false;  // Panel collapse state
 
         // Stored signal values (signal_id -> value)
         std::map<uint64_t, float> signal_values;
@@ -55,6 +56,7 @@ namespace panel {
             connected_machine_uuid = j.value("connected_machine_uuid", "");
             connected_driver_uuid = j.value("connected_driver_uuid", "");
             node_size = j.value("node_size", 400.0f);
+            collapsed = j.value("collapsed", false);
 
             // Load signal values
             if (j.contains("signal_values")) {
@@ -71,6 +73,7 @@ namespace panel {
             j["connected_machine_uuid"] = connected_machine_uuid;
             j["connected_driver_uuid"] = connected_driver_uuid;
             j["node_size"] = node_size;
+            j["collapsed"] = collapsed;
 
             // Save signal values
             json values_json;
