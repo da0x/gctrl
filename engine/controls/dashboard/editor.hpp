@@ -193,16 +193,17 @@ namespace dashboard {
             int max_charts = 5;
 
             if (driver && driver->backend_type == driver::type::udp) {
-                // Show signal charts for UDP driver
+                // Show signal charts for UDP driver - filtered by connected port
                 int chart_count = 0;
 
-                // Count expected signals
+                // Find the connected port and count expected signals
                 int expected_signals = 0;
+                const std::string& port_uuid = dash.connected_port_uuid;
+
+                // Only show signals from the connected plug
                 for (const auto& plug : driver->plugs) {
+                    if (!port_uuid.empty() && plug.uuid != port_uuid) continue;
                     expected_signals += plug.outgoing.size();
-                }
-                for (const auto& socket : driver->sockets) {
-                    expected_signals += socket.outgoing.size();
                 }
 
                 if (signal_data.empty()) {
@@ -215,6 +216,7 @@ namespace dashboard {
                 } else {
                     // Show charts for plug outgoing signals (data FROM machine)
                     for (const auto& plug : driver->plugs) {
+                        if (!port_uuid.empty() && plug.uuid != port_uuid) continue;
                         if (plug.outgoing.empty()) continue;
 
                         // Check if any signals in this plug are visible
@@ -244,45 +246,6 @@ namespace dashboard {
                         for (const auto& signal : plug.outgoing) {
                             if (chart_count >= max_charts) break;
                             uint64_t signal_id = plug.id() | signal.id();
-                            // Only show visible signals
-                            if (dash.is_signal_visible(signal_id)) {
-                                render_signal_chart(signal.name, signal_id, signal_data, content_width, chart_height);
-                                chart_count++;
-                            }
-                        }
-                    }
-
-                    // Show charts for socket outgoing signals (data FROM machine)
-                    for (const auto& socket : driver->sockets) {
-                        if (socket.outgoing.empty()) continue;
-
-                        // Check if any signals in this socket are visible
-                        bool has_visible = false;
-                        for (const auto& signal : socket.outgoing) {
-                            uint64_t signal_id = socket.id() | signal.id();
-                            if (dash.is_signal_visible(signal_id)) {
-                                has_visible = true;
-                                break;
-                            }
-                        }
-                        if (!has_visible) continue;
-
-                        // Socket header with icon, typename, and instance name
-                        ui::text(std::string(ui::icon::socket) + " ");
-                        ui::same_line();
-                        ui::style::color::push(ui::colors::text, ui::theme::vs2022::code_typename);
-                        ui::text(socket.prototype_typename());
-                        ui::style::color::pop();
-                        ui::same_line();
-                        ui::text(" ");
-                        ui::same_line();
-                        ui::style::color::push(ui::colors::text, ui::theme::vs2022::code_instance);
-                        ui::text(socket.instance_name());
-                        ui::style::color::pop();
-
-                        for (const auto& signal : socket.outgoing) {
-                            if (chart_count >= max_charts) break;
-                            uint64_t signal_id = socket.id() | signal.id();
                             // Only show visible signals
                             if (dash.is_signal_visible(signal_id)) {
                                 render_signal_chart(signal.name, signal_id, signal_data, content_width, chart_height);
@@ -343,6 +306,9 @@ namespace dashboard {
             ui::separator("Connection");
             ui::text("Machine: " + dash.connected_machine_uuid.substr(0, 8) + "...");
             ui::text("Driver: " + dash.connected_driver_uuid.substr(0, 8) + "...");
+            if (!dash.connected_port_uuid.empty()) {
+                ui::text("Port: " + dash.connected_port_uuid.substr(0, 8) + "...");
+            }
             if (ui::button("Disconnect")) {
                 dash.disconnect();
             }
@@ -351,11 +317,13 @@ namespace dashboard {
             if (driver && driver->backend_type == driver::type::udp) {
                 ui::separator("Signals");
 
-                // Collect all signals from plugs and sockets
+                // Only show signals from the connected port
+                const std::string& port_uuid = dash.connected_port_uuid;
                 bool has_signals = false;
 
-                // Plug outgoing signals
+                // Plug outgoing signals (filtered by connected port)
                 for (const auto& plug : driver->plugs) {
+                    if (!port_uuid.empty() && plug.uuid != port_uuid) continue;
                     if (plug.outgoing.empty()) continue;
                     has_signals = true;
 
@@ -375,37 +343,6 @@ namespace dashboard {
 
                     for (const auto& signal : plug.outgoing) {
                         uint64_t signal_id = plug.id() | signal.id();
-                        bool visible = dash.is_signal_visible(signal_id);
-
-                        ImGui::PushID(static_cast<int>(signal_id));
-                        if (ImGui::Checkbox(signal.name.c_str(), &visible)) {
-                            dash.set_signal_visible(signal_id, visible);
-                        }
-                        ImGui::PopID();
-                    }
-                }
-
-                // Socket outgoing signals
-                for (const auto& socket : driver->sockets) {
-                    if (socket.outgoing.empty()) continue;
-                    has_signals = true;
-
-                    // Socket header with icon, typename, and instance name
-                    ui::dummy(0.0f, 5.0f);
-                    ui::text(std::string(ui::icon::socket) + " ");
-                    ui::same_line();
-                    ui::style::color::push(ui::colors::text, ui::theme::vs2022::code_typename);
-                    ui::text(socket.prototype_typename());
-                    ui::style::color::pop();
-                    ui::same_line();
-                    ui::text(" ");
-                    ui::same_line();
-                    ui::style::color::push(ui::colors::text, ui::theme::vs2022::code_instance);
-                    ui::text(socket.instance_name());
-                    ui::style::color::pop();
-
-                    for (const auto& signal : socket.outgoing) {
-                        uint64_t signal_id = socket.id() | signal.id();
                         bool visible = dash.is_signal_visible(signal_id);
 
                         ImGui::PushID(static_cast<int>(signal_id));

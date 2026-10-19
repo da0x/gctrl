@@ -37,6 +37,7 @@ namespace panel {
         std::string name;
         std::string connected_machine_uuid;  // UUID of connected machine (empty if not connected)
         std::string connected_driver_uuid;   // UUID of connected driver (empty if not connected)
+        std::string connected_port_uuid;     // UUID of connected port (empty if not connected)
         float node_size = 400.0f;
         bool collapsed = false;  // Panel collapse state
 
@@ -55,6 +56,7 @@ namespace panel {
             name = j.value("name", "config_panel");
             connected_machine_uuid = j.value("connected_machine_uuid", "");
             connected_driver_uuid = j.value("connected_driver_uuid", "");
+            connected_port_uuid = j.value("connected_port_uuid", "");
             node_size = j.value("node_size", 400.0f);
             collapsed = j.value("collapsed", false);
 
@@ -72,6 +74,7 @@ namespace panel {
             j["name"] = name;
             j["connected_machine_uuid"] = connected_machine_uuid;
             j["connected_driver_uuid"] = connected_driver_uuid;
+            j["connected_port_uuid"] = connected_port_uuid;
             j["node_size"] = node_size;
             j["collapsed"] = collapsed;
 
@@ -93,14 +96,16 @@ namespace panel {
             return !connected_machine_uuid.empty() && !connected_driver_uuid.empty();
         }
 
-        void connect(const std::string& machine_uuid, const std::string& driver_uuid) {
+        void connect(const std::string& machine_uuid, const std::string& driver_uuid, const std::string& port_uuid) {
             connected_machine_uuid = machine_uuid;
             connected_driver_uuid = driver_uuid;
+            connected_port_uuid = port_uuid;
         }
 
         void disconnect() {
             connected_machine_uuid.clear();
             connected_driver_uuid.clear();
+            connected_port_uuid.clear();
         }
 
         std::string instance_name() const {

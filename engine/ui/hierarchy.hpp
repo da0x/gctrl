@@ -35,6 +35,7 @@
 #include "controls/port/object.hpp"
 #include "controls/runtime/state.hpp"
 #include "controls/network/object.hpp"
+#include "controls/client/instance.hpp"
 #include "controls/dashboard/instance.hpp"
 #include "controls/dashboard/listener.hpp"
 #include "controls/panel/instance.hpp"
@@ -46,6 +47,7 @@ namespace hierarchy {
     struct callbacks {
         std::function<void(const focus::focus_entry&)> on_select;
         std::function<void(const focus::focus_entry&)> on_drill_down;
+        std::function<void(uint64_t)> on_delete_client_link;
         std::function<void(uint64_t)> on_delete_dashboard_link;
         std::function<void(uint64_t)> on_delete_panel_link;
         std::function<void(const std::string&)> on_open_dashboard_viewer;
@@ -284,10 +286,11 @@ namespace hierarchy {
     inline void render_dashboard_link(const network::dashboard_link& link) {
         if (!current_network) return;
 
-        // Find dashboard and driver names for display
+        // Find dashboard, driver, and port names for display
         std::string dash_name = "?";
         std::string driver_name = "?";
         std::string machine_name = "?";
+        std::string port_name = "";
 
         for (const auto& dash : current_network->dashboards) {
             if (dash.uuid == link.dashboard_uuid) {
@@ -301,6 +304,12 @@ namespace hierarchy {
                 for (const auto& drv : mach.drivers()) {
                     if (drv.uuid == link.driver_uuid) {
                         driver_name = drv.name;
+                        for (const auto& plug : drv.plugs) {
+                            if (plug.uuid == link.port_uuid) {
+                                port_name = plug.instance_name();
+                                break;
+                            }
+                        }
                         break;
                     }
                 }
@@ -313,6 +322,7 @@ namespace hierarchy {
         if (is_selected) flags |= ImGuiTreeNodeFlags_Selected;
 
         std::string label = dash_name + " -> " + machine_name + "/" + driver_name;
+        if (!port_name.empty()) label += "/" + port_name;
         ImGui::TreeNodeEx(reinterpret_cast<void*>(link.id), flags, "%s %s", ui::icon::link, label.c_str());
 
         if (ImGui::IsItemClicked()) {
@@ -333,14 +343,83 @@ namespace hierarchy {
     inline void render_panel_link(const network::panel_link& link) {
         if (!current_network) return;
 
-        // Find panel and driver names for display
+        // Find panel, driver, and port names for display
         std::string panel_name = "?";
         std::string driver_name = "?";
         std::string machine_name = "?";
+        std::string port_name = "";
 
         for (const auto& pnl : current_network->panels) {
             if (pnl.uuid == link.panel_uuid) {
                 panel_name = pnl.name;
+                break;
+            }
+        }
+        for (const auto& mach : current_network->machines) {
+            if (mach.uuid == link.machine_uuid) {
+                machine_name = mach.instance_name();
+                for (const auto& drv : mach.drivers()) {
+                    if (drv.uuid == link.driver_uuid) {
+                        driver_name = drv.name;
+                        for (const auto& socket : drv.sockets) {
+                            if (socket.uuid == link.port_uuid) {
+                                port_name = socket.instance_name();
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+        bool is_selected = current_selection && current_selection->is_selected(link.id);
+        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_SpanAvailWidth;
+        if (is_selected) flags |= ImGuiTreeNodeFlags_Selected;
+
+        std::string label = panel_name + " -> " + machine_name + "/" + driver_name;
+        if (!port_name.empty()) label += "/" + port_name;
+        ImGui::TreeNodeEx(reinterpret_cast<void*>(link.id), flags, "%s %s", ui::icon::link, label.c_str());
+
+        if (ImGui::IsItemClicked()) {
+            if (current_selection) current_selection->select(link.id);
+        }
+
+        // Context menu for deletion
+        if (ImGui::BeginPopupContextItem()) {
+            if (ImGui::MenuItem(ui::icon::remove)) {
+                if (current_callbacks.on_delete_panel_link) {
+                    current_callbacks.on_delete_panel_link(link.id);
+                }
+            }
+            ImGui::EndPopup();
+        }
+    }
+
+    inline void render_client_instance(const client::instance& cli) {
+        bool is_selected = current_selection && current_selection->is_selected(cli.id());
+        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_SpanAvailWidth;
+        if (is_selected) flags |= ImGuiTreeNodeFlags_Selected;
+
+        std::string status = cli.is_connected() ? " (linked)" : "";
+        ImGui::TreeNodeEx(reinterpret_cast<void*>(cli.id()), flags, "%s %s%s", ui::icon::network_wired, cli.name.c_str(), status.c_str());
+
+        if (ImGui::IsItemClicked()) {
+            if (current_selection) current_selection->select(cli.id());
+        }
+    }
+
+    inline void render_client_link(const network::client_link& link) {
+        if (!current_network) return;
+
+        std::string client_name = "?";
+        std::string driver_name = "?";
+        std::string machine_name = "?";
+
+        for (const auto& cli : current_network->clients) {
+            if (cli.uuid == link.client_uuid) {
+                client_name = cli.name;
                 break;
             }
         }
@@ -361,18 +440,17 @@ namespace hierarchy {
         ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_SpanAvailWidth;
         if (is_selected) flags |= ImGuiTreeNodeFlags_Selected;
 
-        std::string label = panel_name + " -> " + machine_name + "/" + driver_name;
+        std::string label = client_name + " -> " + machine_name + "/" + driver_name;
         ImGui::TreeNodeEx(reinterpret_cast<void*>(link.id), flags, "%s %s", ui::icon::link, label.c_str());
 
         if (ImGui::IsItemClicked()) {
             if (current_selection) current_selection->select(link.id);
         }
 
-        // Context menu for deletion
         if (ImGui::BeginPopupContextItem()) {
             if (ImGui::MenuItem(ui::icon::remove)) {
-                if (current_callbacks.on_delete_panel_link) {
-                    current_callbacks.on_delete_panel_link(link.id);
+                if (current_callbacks.on_delete_client_link) {
+                    current_callbacks.on_delete_client_link(link.id);
                 }
             }
             ImGui::EndPopup();
@@ -454,6 +532,17 @@ namespace hierarchy {
                 render_machine_instance(mach);
             }
 
+            // Clients section
+            if (!net.clients.empty()) {
+                ImGuiTreeNodeFlags client_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
+                if (ImGui::TreeNodeEx("clients_section", client_flags, "%s Clients", ui::icon::network_wired)) {
+                    for (const auto& cli : net.clients) {
+                        render_client_instance(cli);
+                    }
+                    ImGui::TreePop();
+                }
+            }
+
             // Dashboards section
             if (!net.dashboards.empty()) {
                 ImGuiTreeNodeFlags dash_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
@@ -477,9 +566,12 @@ namespace hierarchy {
             }
 
             // Links section
-            if (!net.dashboard_links.empty() || !net.panel_links.empty()) {
+            if (!net.client_links.empty() || !net.dashboard_links.empty() || !net.panel_links.empty()) {
                 ImGuiTreeNodeFlags link_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
                 if (ImGui::TreeNodeEx("links_section", link_flags, "%s Links", ui::icon::link)) {
+                    for (const auto& link : net.client_links) {
+                        render_client_link(link);
+                    }
                     for (const auto& link : net.dashboard_links) {
                         render_dashboard_link(link);
                     }

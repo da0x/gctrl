@@ -26,6 +26,7 @@
 #include "controls/driver/type.hpp"
 #include "controls/dashboard/instance.hpp"
 #include "controls/panel/instance.hpp"
+#include "controls/client/instance.hpp"
 #include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
@@ -47,6 +48,7 @@ namespace network {
         std::string dashboard_uuid;
         std::string machine_uuid;
         std::string driver_uuid;
+        std::string port_uuid;
 
         json serialize() const {
             json j;
@@ -54,6 +56,7 @@ namespace network {
             j["dashboard_uuid"] = dashboard_uuid;
             j["machine_uuid"] = machine_uuid;
             j["driver_uuid"] = driver_uuid;
+            j["port_uuid"] = port_uuid;
             return j;
         }
 
@@ -64,6 +67,7 @@ namespace network {
             dashboard_uuid = j.value("dashboard_uuid", "");
             machine_uuid = j.value("machine_uuid", "");
             driver_uuid = j.value("driver_uuid", "");
+            port_uuid = j.value("port_uuid", "");
         }
     };
 
@@ -73,6 +77,7 @@ namespace network {
         std::string panel_uuid;
         std::string machine_uuid;
         std::string driver_uuid;
+        std::string port_uuid;
 
         json serialize() const {
             json j;
@@ -80,6 +85,7 @@ namespace network {
             j["panel_uuid"] = panel_uuid;
             j["machine_uuid"] = machine_uuid;
             j["driver_uuid"] = driver_uuid;
+            j["port_uuid"] = port_uuid;
             return j;
         }
 
@@ -90,16 +96,46 @@ namespace network {
             panel_uuid = j.value("panel_uuid", "");
             machine_uuid = j.value("machine_uuid", "");
             driver_uuid = j.value("driver_uuid", "");
+            port_uuid = j.value("port_uuid", "");
+        }
+    };
+
+    // Client-to-driver link (client breakout node connects to machine driver)
+    struct client_link {
+        uint64_t id;
+        std::string client_uuid;
+        std::string machine_uuid;
+        std::string driver_uuid;
+
+        json serialize() const {
+            json j;
+            j["id"] = id;
+            j["client_uuid"] = client_uuid;
+            j["machine_uuid"] = machine_uuid;
+            j["driver_uuid"] = driver_uuid;
+            return j;
+        }
+
+        client_link() : id(0) {}
+
+        client_link(const json& j) {
+            id = j.value("id", 0);
+            client_uuid = j.value("client_uuid", "");
+            machine_uuid = j.value("machine_uuid", "");
+            driver_uuid = j.value("driver_uuid", "");
         }
     };
 
     class object {
     public:
         machine::instance::list machines;
+        client::instance::list clients;
         dashboard::instance::list dashboards;
         panel::instance::list panels;
+        std::list<client_link> client_links;
         std::list<dashboard_link> dashboard_links;
         std::list<panel_link> panel_links;
+        uint64_t next_client_link_id = 1;
         uint64_t next_dashboard_link_id = 1;
         uint64_t next_panel_link_id = 1;
 
@@ -107,6 +143,13 @@ namespace network {
 
         object(const json& j, const machine::object::list& machine_db) {
             load_instances(j, "machines", machines, machine_db);
+
+            // Load clients
+            if (j.contains("clients")) {
+                for (const auto& cli_json : j["clients"]) {
+                    clients.emplace_back(cli_json);
+                }
+            }
 
             // Load dashboards
             if (j.contains("dashboards")) {
@@ -119,6 +162,13 @@ namespace network {
             if (j.contains("panels")) {
                 for (const auto& panel_json : j["panels"]) {
                     panels.emplace_back(panel_json);
+                }
+            }
+
+            // Load client links
+            if (j.contains("client_links")) {
+                for (const auto& link_json : j["client_links"]) {
+                    client_links.emplace_back(link_json);
                 }
             }
 
@@ -136,6 +186,7 @@ namespace network {
                 }
             }
 
+            next_client_link_id = j.value("next_client_link_id", 1);
             next_dashboard_link_id = j.value("next_dashboard_link_id", 1);
             next_panel_link_id = j.value("next_panel_link_id", 1);
         }
@@ -147,6 +198,13 @@ namespace network {
                 machines_json.push_back(mach.serialize());
             }
             j["machines"] = machines_json;
+
+            // Serialize clients
+            json clients_json = json::array();
+            for (const auto& cli : clients) {
+                clients_json.push_back(cli.serialize());
+            }
+            j["clients"] = clients_json;
 
             // Serialize dashboards
             json dashboards_json = json::array();
@@ -161,6 +219,14 @@ namespace network {
                 panels_json.push_back(panel.serialize());
             }
             j["panels"] = panels_json;
+
+            // Serialize client links
+            json client_links_json = json::array();
+            for (const auto& link : client_links) {
+                client_links_json.push_back(link.serialize());
+            }
+            j["client_links"] = client_links_json;
+            j["next_client_link_id"] = next_client_link_id;
 
             // Serialize dashboard links
             json dash_links_json = json::array();
@@ -200,18 +266,20 @@ namespace network {
         // Add a dashboard link
         uint64_t add_dashboard_link(const std::string& dashboard_uuid,
                                     const std::string& machine_uuid,
-                                    const std::string& driver_uuid) {
+                                    const std::string& driver_uuid,
+                                    const std::string& port_uuid) {
             dashboard_link link;
             link.id = next_dashboard_link_id++;
             link.dashboard_uuid = dashboard_uuid;
             link.machine_uuid = machine_uuid;
             link.driver_uuid = driver_uuid;
+            link.port_uuid = port_uuid;
             dashboard_links.push_back(link);
 
             // Update dashboard connection info
             auto* dash = find_dashboard_by_uuid(dashboard_uuid);
             if (dash) {
-                dash->connect(machine_uuid, driver_uuid);
+                dash->connect(machine_uuid, driver_uuid, port_uuid);
             }
 
             return link.id;
@@ -248,6 +316,71 @@ namespace network {
             return false;
         }
 
+        // Client methods
+        client::instance* find_client(uint64_t node_id) {
+            for (auto& cli : clients) {
+                if (cli.id() == node_id) return &cli;
+            }
+            return nullptr;
+        }
+
+        client::instance* find_client_by_uuid(const std::string& uuid) {
+            for (auto& cli : clients) {
+                if (cli.uuid == uuid) return &cli;
+            }
+            return nullptr;
+        }
+
+        uint64_t add_client_link(const std::string& client_uuid,
+                                 const std::string& machine_uuid,
+                                 const std::string& driver_uuid) {
+            client_link link;
+            link.id = next_client_link_id++;
+            link.client_uuid = client_uuid;
+            link.machine_uuid = machine_uuid;
+            link.driver_uuid = driver_uuid;
+            client_links.push_back(link);
+
+            auto* cli = find_client_by_uuid(client_uuid);
+            if (cli) {
+                cli->connect(machine_uuid, driver_uuid);
+            }
+
+            return link.id;
+        }
+
+        void remove_client_link(uint64_t link_id) {
+            for (auto it = client_links.begin(); it != client_links.end(); ++it) {
+                if (it->id == link_id) {
+                    auto* cli = find_client_by_uuid(it->client_uuid);
+                    if (cli) {
+                        cli->disconnect();
+                    }
+                    client_links.erase(it);
+                    return;
+                }
+            }
+        }
+
+        const client_link* find_link_for_client(const std::string& client_uuid) const {
+            for (const auto& link : client_links) {
+                if (link.client_uuid == client_uuid) {
+                    return &link;
+                }
+            }
+            return nullptr;
+        }
+
+        client::instance* find_client_for_driver(const std::string& machine_uuid,
+                                                  const std::string& driver_uuid) {
+            for (const auto& link : client_links) {
+                if (link.machine_uuid == machine_uuid && link.driver_uuid == driver_uuid) {
+                    return find_client_by_uuid(link.client_uuid);
+                }
+            }
+            return nullptr;
+        }
+
         // Config panel methods
         panel::instance* find_panel(uint64_t node_id) {
             for (auto& panel : panels) {
@@ -265,17 +398,19 @@ namespace network {
 
         uint64_t add_panel_link(const std::string& panel_uuid,
                                       const std::string& machine_uuid,
-                                      const std::string& driver_uuid) {
+                                      const std::string& driver_uuid,
+                                      const std::string& port_uuid) {
             panel_link link;
             link.id = next_panel_link_id++;
             link.panel_uuid = panel_uuid;
             link.machine_uuid = machine_uuid;
             link.driver_uuid = driver_uuid;
+            link.port_uuid = port_uuid;
             panel_links.push_back(link);
 
             auto* panel = find_panel_by_uuid(panel_uuid);
             if (panel) {
-                panel->connect(machine_uuid, driver_uuid);
+                panel->connect(machine_uuid, driver_uuid, port_uuid);
             }
 
             return link.id;

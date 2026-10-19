@@ -180,17 +180,14 @@ namespace panel {
         // Content area
         float content_width = panel.node_size - 30.0f;
 
-        // Collect signal IDs for Send All (needed in both collapsed and expanded)
+        // Collect signal IDs for Send All (filtered by connected port)
+        const std::string& port_uuid = panel.connected_port_uuid;
         std::vector<uint64_t> all_signal_ids;
         if (driver && driver->backend_type == driver::type::udp) {
             for (const auto& socket : driver->sockets) {
+                if (!port_uuid.empty() && socket.uuid != port_uuid) continue;
                 for (const auto& signal : socket.incoming) {
                     all_signal_ids.push_back(socket.id() | signal.id());
-                }
-            }
-            for (const auto& plug : driver->plugs) {
-                for (const auto& signal : plug.incoming) {
-                    all_signal_ids.push_back(plug.id() | signal.id());
                 }
             }
         }
@@ -229,26 +226,12 @@ namespace panel {
                 ui::dummy(0.0f, 5.0f);
 
                 // Sockets have incoming signals that we can send TO the machine
+                // Filtered by connected port
                 for (const auto& socket : driver->sockets) {
+                    if (!port_uuid.empty() && socket.uuid != port_uuid) continue;
                     for (const auto& signal : socket.incoming) {
                         if (control_count >= max_controls) break;
                         uint64_t signal_id = socket.id() | signal.id();
-
-                        if (render_signal_input(signal.name, signal_id, panel, content_width)) {
-                            // Value changed, send it
-                            if (udp_sender) {
-                                udp_sender->send(signal_id, panel.value(signal_id));
-                            }
-                        }
-                        control_count++;
-                    }
-                }
-
-                // Plugs have incoming signals too
-                for (const auto& plug : driver->plugs) {
-                    for (const auto& signal : plug.incoming) {
-                        if (control_count >= max_controls) break;
-                        uint64_t signal_id = plug.id() | signal.id();
 
                         if (render_signal_input(signal.name, signal_id, panel, content_width)) {
                             // Value changed, send it
@@ -314,6 +297,9 @@ namespace panel {
             ui::separator("Connection");
             ui::text("Machine: " + panel.connected_machine_uuid.substr(0, 8) + "...");
             ui::text("Driver: " + panel.connected_driver_uuid.substr(0, 8) + "...");
+            if (!panel.connected_port_uuid.empty()) {
+                ui::text("Port: " + panel.connected_port_uuid.substr(0, 8) + "...");
+            }
             if (ui::button("Disconnect")) {
                 panel.disconnect();
             }

@@ -38,6 +38,8 @@
 #include "controls/dashboard/listener.hpp"
 #include "controls/panel/instance.hpp"
 #include "controls/panel/editor.hpp"
+#include "controls/client/instance.hpp"
+#include "controls/client/editor.hpp"
 #include "controls/runtime/build.hpp"
 #include "ui/terminal.hpp"
 #include "controls/panel/sender.hpp"
@@ -52,38 +54,22 @@ namespace network {
     // Unique context ID for network editor (using a large value to avoid collision)
     inline constexpr uint64_t network_context_id = 0xFFFFFFFF00000001;
 
-    // Pin ID markers (use high byte to avoid collision)
-    inline constexpr uint64_t DRIVER_OUTPUT_PIN_MARKER = 0xDC00000000000000ULL;  // Driver output (to dashboard)
-    inline constexpr uint64_t DRIVER_INPUT_PIN_MARKER = 0xDD00000000000000ULL;   // Driver input (from config panel)
+    // Pin ID marker for per-driver output pins on machine node (one per driver)
+    inline constexpr uint64_t DRIVER_OUTPUT_PIN_MARKER = 0xDC00000000000000ULL;
 
-    // Generate unique pin ID for driver output (right side, connects to dashboard)
     inline uint64_t driver_output_pin_id(const machine::instance& mach, const driver::instance& drv) {
         uint64_t base = (mach.id() ^ drv.id()) & 0x00FFFFFFFFFFFFFFULL;
         return base | DRIVER_OUTPUT_PIN_MARKER;
     }
 
-    // Generate unique pin ID for driver input (left side, connects from config panel)
-    inline uint64_t driver_input_pin_id(const machine::instance& mach, const driver::instance& drv) {
-        uint64_t base = (mach.id() ^ drv.id()) & 0x00FFFFFFFFFFFFFFULL;
-        return base | DRIVER_INPUT_PIN_MARKER;
-    }
-
-    // Check if a pin ID is a driver output pin
     inline bool is_driver_output_pin(uint64_t pin_id) {
         return (pin_id & 0xFF00000000000000ULL) == DRIVER_OUTPUT_PIN_MARKER;
     }
 
-    // Check if a pin ID is a driver input pin
-    inline bool is_driver_input_pin(uint64_t pin_id) {
-        return (pin_id & 0xFF00000000000000ULL) == DRIVER_INPUT_PIN_MARKER;
-    }
-
-    // Check if a pin ID is a dashboard pin
     inline bool is_dashboard_pin(uint64_t pin_id) {
         return (pin_id & 0xFF00000000000000ULL) == dashboard::PIN_MARKER;
     }
 
-    // Check if a pin ID is a config panel pin
     inline bool is_panel_pin(uint64_t pin_id) {
         return (pin_id & 0xFF00000000000000ULL) == panel::PIN_MARKER;
     }
@@ -95,10 +81,15 @@ namespace network {
         return nullptr;
     }
 
-    // Find machine and driver by driver output pin ID (for dashboard connections)
-    inline std::pair<machine::instance*, driver::instance*> find_by_driver_output_pin(
+    // Find machine and driver by driver output pin ID
+    struct driver_pin_info {
+        machine::instance* machine = nullptr;
+        driver::instance* driver = nullptr;
+    };
+
+    inline driver_pin_info find_by_driver_output_pin(
         machine::instance::list& machines, uint64_t pin_id) {
-        if (!is_driver_output_pin(pin_id)) return {nullptr, nullptr};
+        if (!is_driver_output_pin(pin_id)) return {};
 
         for (auto& mach : machines) {
             for (auto& drv : mach.drivers()) {
@@ -112,27 +103,7 @@ namespace network {
                 }
             }
         }
-        return {nullptr, nullptr};
-    }
-
-    // Find machine and driver by driver input pin ID (for config panel connections)
-    inline std::pair<machine::instance*, driver::instance*> find_by_driver_input_pin(
-        machine::instance::list& machines, uint64_t pin_id) {
-        if (!is_driver_input_pin(pin_id)) return {nullptr, nullptr};
-
-        for (auto& mach : machines) {
-            for (auto& drv : mach.drivers()) {
-                if (driver_input_pin_id(mach, drv) == pin_id) {
-                    auto& proto = const_cast<machine::object&>(mach.machine_prototype());
-                    for (auto& proto_drv : proto.drivers) {
-                        if (proto_drv.uuid == drv.uuid) {
-                            return {&mach, &proto_drv};
-                        }
-                    }
-                }
-            }
-        }
-        return {nullptr, nullptr};
+        return {};
     }
 
     // Find dashboard by its input pin ID
@@ -159,12 +130,76 @@ namespace network {
         return nullptr;
     }
 
+    // Find client by its input pin ID
+    inline client::instance* find_client_by_input_pin(client::instance::list& clients, uint64_t pin_id) {
+        if (!client::is_client_input_pin(pin_id)) return nullptr;
+
+        for (auto& cli : clients) {
+            if (client::input_pin_id(cli) == pin_id) {
+                return &cli;
+            }
+        }
+        return nullptr;
+    }
+
+    // Find client and port by plug output pin ID
+    struct client_plug_pin_info {
+        client::instance* cli = nullptr;
+        std::string port_uuid;
+    };
+
+    inline client_plug_pin_info find_client_by_plug_output_pin(
+        client::instance::list& clients, machine::instance::list& machines, uint64_t pin_id) {
+        if (!client::is_client_plug_output_pin(pin_id)) return {};
+
+        for (auto& cli : clients) {
+            if (!cli.is_connected()) continue;
+            for (auto& mach : machines) {
+                if (mach.uuid != cli.connected_machine_uuid) continue;
+                for (const auto& drv : mach.drivers()) {
+                    if (drv.uuid != cli.connected_driver_uuid) continue;
+                    for (const auto& plug : drv.plugs) {
+                        if (client::plug_output_pin_id(cli, plug) == pin_id) {
+                            return {&cli, plug.uuid};
+                        }
+                    }
+                }
+            }
+        }
+        return {};
+    }
+
+    // Find client and port by socket output pin ID
+    struct client_socket_pin_info {
+        client::instance* cli = nullptr;
+        std::string port_uuid;
+    };
+
+    inline client_socket_pin_info find_client_by_socket_output_pin(
+        client::instance::list& clients, machine::instance::list& machines, uint64_t pin_id) {
+        if (!client::is_client_socket_output_pin(pin_id)) return {};
+
+        for (auto& cli : clients) {
+            if (!cli.is_connected()) continue;
+            for (auto& mach : machines) {
+                if (mach.uuid != cli.connected_machine_uuid) continue;
+                for (const auto& drv : mach.drivers()) {
+                    if (drv.uuid != cli.connected_driver_uuid) continue;
+                    for (const auto& socket : drv.sockets) {
+                        if (client::socket_output_pin_id(cli, socket) == pin_id) {
+                            return {&cli, socket.uuid};
+                        }
+                    }
+                }
+            }
+        }
+        return {};
+    }
+
     inline void render_machine_node(machine::instance& mach, runtime::tracker& runtime_tracker,
                                     const network::object& net) {
-        // Use the prototype's ID for runtime status (that's what runtime::run_machine uses)
         auto status = runtime_tracker.status_of(mach.machine_prototype().id());
 
-        // Set node colors based on status
         ImVec4 border_color = ui::theme::vs2022::highlight;
         switch (status) {
             case runtime::status::running:
@@ -188,17 +223,15 @@ namespace network {
 
         ui::dummy(0.0f, 10.0f);
 
-        // Calculate widths for centering
         float padding = 40.0f;
         std::string type_text = mach.prototype_typename();
         float type_width = ui::text_size(type_text).x;
         float name_width = ui::text_size(mach.instance_name()).x;
 
-        // Calculate max driver text width
         float max_driver_width = 0.0f;
         for (const auto& drv : mach.drivers()) {
             std::string drv_text = std::string(driver::type_to_icon(drv.backend_type)) + " " + drv.name;
-            float drv_width = ui::text_size(drv_text).x + 30.0f; // Extra space for connector
+            float drv_width = ui::text_size(drv_text).x + 30.0f;
             max_driver_width = std::max(max_driver_width, drv_width);
         }
 
@@ -274,58 +307,35 @@ namespace network {
 
         ui::dummy(0.0f, 10.0f);
 
-        // Driver pins - full row: [input pin] [name] [output pin]
+        // Driver output pins - one per driver (simple row: icon name [pin])
         if (!mach.drivers().empty()) {
             ui::separator("Drivers", total_width);
             for (const auto& drv : mach.drivers()) {
-                uint64_t input_pin = driver_input_pin_id(mach, drv);
-                uint64_t output_pin = driver_output_pin_id(mach, drv);
-
-                // Check if this driver is connected to dashboard (output)
-                bool output_connected = false;
-                for (const auto& link : net.dashboard_links) {
-                    if (link.machine_uuid == mach.uuid && link.driver_uuid == drv.uuid) {
-                        output_connected = true;
-                        break;
-                    }
-                }
-
-                // Check if this driver is connected to config panel (input)
-                bool input_connected = false;
-                for (const auto& link : net.panel_links) {
-                    if (link.machine_uuid == mach.uuid && link.driver_uuid == drv.uuid) {
-                        input_connected = true;
-                        break;
-                    }
-                }
-
-                // Driver row: [input] [icon + name] [output]
-                std::string drv_text = std::string(driver::type_to_icon(drv.backend_type)) + " " + drv.name;
-                float drv_text_width = ui::text_size(drv_text).x;
                 float connector_size = 16.0f;
                 float spacing = 10.0f;
-                float row_content_width = connector_size + spacing + drv_text_width + spacing + connector_size;
-                float padding_left = (total_width - row_content_width) * 0.5f;
 
-                // Input pin (left side)
-                ed::BeginPin(ed::PinId(input_pin), ed::PinKind::Input);
-                ui::connector::square(input_connected);
-                ed::EndPin();
+                uint64_t output_pin = driver_output_pin_id(mach, drv);
 
+                bool driver_connected = false;
+                for (const auto& link : net.client_links) {
+                    if (link.machine_uuid == mach.uuid && link.driver_uuid == drv.uuid) {
+                        driver_connected = true;
+                        break;
+                    }
+                }
+
+                std::string drv_text = std::string(driver::type_to_icon(drv.backend_type)) + " " + drv.name;
+                float drv_text_width = ui::text_size(drv_text).x;
+                float drv_spacing = total_width - drv_text_width - connector_size - spacing;
+                ui::dummy(drv_spacing > 0 ? drv_spacing : 0.0f, 0.0f);
                 ui::same_line();
-                ui::dummy(padding_left > 0 ? padding_left : spacing, 0.0f);
-                ui::same_line();
-
-                // Driver name centered
                 ui::text(drv_text);
-
                 ui::same_line();
-                ui::dummy(padding_left > 0 ? padding_left : spacing, 0.0f);
+                ui::dummy(spacing, 0.0f);
                 ui::same_line();
 
-                // Output pin (right side)
                 ed::BeginPin(ed::PinId(output_pin), ed::PinKind::Output);
-                ui::connector::square(output_connected);
+                ui::connector::square(driver_connected);
                 ed::EndPin();
             }
         }
@@ -338,10 +348,31 @@ namespace network {
         ed::PopStyleColor(2);
     }
 
+    inline void render_client_node(client::instance& cli, network::object& net,
+                                    machine::instance::list& machines,
+                                    runtime::tracker& runtime_tracker) {
+        const driver::instance* connected_driver = nullptr;
+
+        if (cli.is_connected()) {
+            for (auto& mach : machines) {
+                if (mach.uuid == cli.connected_machine_uuid) {
+                    for (const auto& drv : mach.drivers()) {
+                        if (drv.uuid == cli.connected_driver_uuid) {
+                            connected_driver = &drv;
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        client::render_node(cli, connected_driver, net);
+    }
+
     inline void render_dashboard_node(dashboard::instance& dash, network::object& net,
                                       machine::instance::list& machines,
                                       runtime::tracker& runtime_tracker) {
-        // Find connected driver if any
         const driver::instance* connected_driver = nullptr;
         std::map<uint64_t, std::vector<float>> signal_data;
         bool machine_is_running = false;
@@ -350,7 +381,6 @@ namespace network {
         if (is_linked) {
             for (auto& mach : machines) {
                 if (mach.uuid == dash.connected_machine_uuid) {
-                    // Check if machine executable is actually running (not just status)
                     std::string exe_path = runtime::get_executable_path(mach.machine_prototype());
                     std::string current_cmd = terminal::current();
                     machine_is_running = !current_cmd.empty() && current_cmd.find(exe_path) != std::string::npos;
@@ -363,7 +393,6 @@ namespace network {
                                 auto* existing_listener = dashboard::get_listener(dash.uuid);
 
                                 if (machine_is_running) {
-                                    // Start listener if machine is running and not already listening
                                     if (!existing_listener || !existing_listener->keep_listening.load()) {
                                         std::string listen_ip = drv.backend_config.value("send_ip", "127.0.0.1");
                                         int listen_port = drv.backend_config.value("send_port", 8080);
@@ -371,7 +400,6 @@ namespace network {
                                         ui::cout << "Dashboard connected: listening on " << listen_ip << ":" << listen_port << ui::endl;
                                     }
                                 } else {
-                                    // Pause listener if machine stopped (retain data)
                                     if (existing_listener && existing_listener->keep_listening.load()) {
                                         dashboard::pause_listener(dash.uuid);
                                         ui::cout << "Dashboard paused: machine stopped" << ui::endl;
@@ -385,15 +413,61 @@ namespace network {
                 }
             }
 
-            // Get signal data from listener (even when paused, to show retained data)
             auto* listener = dashboard::get_listener(dash.uuid);
             if (listener) {
                 signal_data = listener->get_data();
             }
         }
 
-        // Pass both link status and active status to render
         dashboard::render_node(dash, connected_driver, signal_data, is_linked, machine_is_running);
+    }
+
+    inline void render_panel_node(panel::instance& pnl, network::object& net,
+                                   machine::instance::list& machines,
+                                   runtime::tracker& runtime_tracker) {
+        const driver::instance* connected_driver = nullptr;
+        panel::sender* udp_sender = nullptr;
+        bool machine_is_running = false;
+        bool is_linked = pnl.is_connected();
+
+        if (is_linked) {
+            for (auto& mach : machines) {
+                if (mach.uuid == pnl.connected_machine_uuid) {
+                    std::string exe_path = runtime::get_executable_path(mach.machine_prototype());
+                    std::string current_cmd = terminal::current();
+                    machine_is_running = !current_cmd.empty() && current_cmd.find(exe_path) != std::string::npos;
+
+                    for (const auto& drv : mach.drivers()) {
+                        if (drv.uuid == pnl.connected_driver_uuid) {
+                            connected_driver = &drv;
+
+                            if (drv.backend_type == driver::type::udp) {
+                                auto* existing_sender = panel::get_sender(pnl.uuid);
+
+                                if (machine_is_running) {
+                                    if (!existing_sender || !existing_sender->is_configured()) {
+                                        std::string send_ip = drv.backend_config.value("listen_ip", "127.0.0.1");
+                                        int send_port = drv.backend_config.value("listen_port", 8081);
+                                        panel::configure_sender(pnl.uuid, send_ip, send_port);
+                                        ui::cout << "Panel connected: sending to " << send_ip << ":" << send_port << ui::endl;
+                                    }
+                                    udp_sender = panel::get_sender(pnl.uuid);
+                                } else {
+                                    if (existing_sender) {
+                                        panel::remove_sender(pnl.uuid);
+                                        ui::cout << "Panel disconnected: machine stopped" << ui::endl;
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        panel::render_node(pnl, connected_driver, is_linked, machine_is_running, udp_sender);
     }
 
     inline void handle_link_creation(network::object& net, machine::instance::list& machines) {
@@ -405,26 +479,99 @@ namespace network {
 
                 bool handled = false;
 
-                // Check for dashboard -> driver output connection
+                // Case 1: Machine driver output <-> Client input
                 {
-                    uint64_t dashboard_pin = 0;
                     uint64_t driver_pin_val = 0;
+                    uint64_t client_pin_val = 0;
 
-                    if (is_dashboard_pin(start_id) && is_driver_output_pin(end_id)) {
-                        dashboard_pin = start_id;
-                        driver_pin_val = end_id;
-                    } else if (is_driver_output_pin(start_id) && is_dashboard_pin(end_id)) {
-                        dashboard_pin = end_id;
+                    if (is_driver_output_pin(start_id) && client::is_client_input_pin(end_id)) {
                         driver_pin_val = start_id;
+                        client_pin_val = end_id;
+                    } else if (client::is_client_input_pin(start_id) && is_driver_output_pin(end_id)) {
+                        client_pin_val = start_id;
+                        driver_pin_val = end_id;
                     }
 
-                    if (dashboard_pin && driver_pin_val) {
-                        auto* dash = find_dashboard_by_pin(net.dashboards, dashboard_pin);
-                        auto [mach, drv] = find_by_driver_output_pin(machines, driver_pin_val);
+                    if (driver_pin_val && client_pin_val) {
+                        auto info = find_by_driver_output_pin(machines, driver_pin_val);
+                        auto* cli = find_client_by_input_pin(net.clients, client_pin_val);
 
-                        if (dash && mach && drv) {
+                        if (info.machine && info.driver && cli) {
                             if (ed::AcceptNewItem()) {
-                                // Remove existing connection if any
+                                // Remove existing client connection if any
+                                if (cli->is_connected()) {
+                                    // Cascade: remove dashboard/panel links that go through this client
+                                    net.dashboard_links.remove_if([&cli](const dashboard_link& link) {
+                                        if (link.machine_uuid == cli->connected_machine_uuid &&
+                                            link.driver_uuid == cli->connected_driver_uuid) {
+                                            dashboard::stop_listener(link.dashboard_uuid);
+                                            return true;
+                                        }
+                                        return false;
+                                    });
+                                    net.panel_links.remove_if([&cli](const panel_link& link) {
+                                        if (link.machine_uuid == cli->connected_machine_uuid &&
+                                            link.driver_uuid == cli->connected_driver_uuid) {
+                                            panel::remove_sender(link.panel_uuid);
+                                            return true;
+                                        }
+                                        return false;
+                                    });
+
+                                    for (auto it = net.client_links.begin(); it != net.client_links.end(); ++it) {
+                                        if (it->client_uuid == cli->uuid) {
+                                            net.client_links.erase(it);
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                net.add_client_link(cli->uuid, info.machine->uuid, info.driver->uuid);
+                                ui::cout << "Connected client to driver: " << info.driver->name << ui::endl;
+                            }
+                            handled = true;
+                        }
+                    }
+                }
+
+                // Case 2: Client plug/socket output <-> Dashboard input
+                if (!handled) {
+                    uint64_t client_output_pin = 0;
+                    uint64_t dashboard_pin = 0;
+
+                    auto is_client_output = [](uint64_t id) {
+                        return client::is_client_plug_output_pin(id) || client::is_client_socket_output_pin(id);
+                    };
+
+                    if (is_client_output(start_id) && is_dashboard_pin(end_id)) {
+                        client_output_pin = start_id;
+                        dashboard_pin = end_id;
+                    } else if (is_dashboard_pin(start_id) && is_client_output(end_id)) {
+                        dashboard_pin = start_id;
+                        client_output_pin = end_id;
+                    }
+
+                    if (client_output_pin && dashboard_pin) {
+                        client::instance* resolved_cli = nullptr;
+                        std::string resolved_port_uuid;
+
+                        auto plug_info = find_client_by_plug_output_pin(net.clients, machines, client_output_pin);
+                        if (plug_info.cli) {
+                            resolved_cli = plug_info.cli;
+                            resolved_port_uuid = plug_info.port_uuid;
+                        } else {
+                            auto socket_info = find_client_by_socket_output_pin(net.clients, machines, client_output_pin);
+                            if (socket_info.cli) {
+                                resolved_cli = socket_info.cli;
+                                resolved_port_uuid = socket_info.port_uuid;
+                            }
+                        }
+
+                        auto* dash = find_dashboard_by_pin(net.dashboards, dashboard_pin);
+
+                        if (resolved_cli && dash) {
+                            if (ed::AcceptNewItem()) {
+                                // Remove existing dashboard connection if any
                                 if (dash->is_connected()) {
                                     dashboard::stop_listener(dash->uuid);
                                     for (auto it = net.dashboard_links.begin(); it != net.dashboard_links.end(); ++it) {
@@ -435,60 +582,88 @@ namespace network {
                                     }
                                 }
 
-                                net.add_dashboard_link(dash->uuid, mach->uuid, drv->uuid);
+                                net.add_dashboard_link(dash->uuid,
+                                    resolved_cli->connected_machine_uuid,
+                                    resolved_cli->connected_driver_uuid,
+                                    resolved_port_uuid);
 
-                                if (drv->backend_type == driver::type::udp) {
-                                    std::string listen_ip = drv->backend_config.value("send_ip", "127.0.0.1");
-                                    int listen_port = drv->backend_config.value("send_port", 8080);
-                                    dashboard::start_listener(dash->uuid, listen_ip, listen_port);
+                                // Find the driver to start listener
+                                for (auto& mach : machines) {
+                                    if (mach.uuid == resolved_cli->connected_machine_uuid) {
+                                        for (const auto& drv : mach.drivers()) {
+                                            if (drv.uuid == resolved_cli->connected_driver_uuid) {
+                                                if (drv.backend_type == driver::type::udp) {
+                                                    std::string listen_ip = drv.backend_config.value("send_ip", "127.0.0.1");
+                                                    int listen_port = drv.backend_config.value("send_port", 8080);
+                                                    dashboard::start_listener(dash->uuid, listen_ip, listen_port);
+                                                }
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
                                 }
 
-                                ui::cout << "Connected dashboard to driver output: " << drv->name << ui::endl;
+                                ui::cout << "Connected dashboard to client port" << ui::endl;
                             }
                             handled = true;
                         }
                     }
                 }
 
-                // Check for config panel -> driver input connection
+                // Case 3: Panel output <-> Client socket output
                 if (!handled) {
                     uint64_t panel_pin = 0;
-                    uint64_t driver_pin_val = 0;
+                    uint64_t client_socket_pin = 0;
 
-                    if (is_panel_pin(start_id) && is_driver_input_pin(end_id)) {
+                    if (is_panel_pin(start_id) && client::is_client_socket_output_pin(end_id)) {
                         panel_pin = start_id;
-                        driver_pin_val = end_id;
-                    } else if (is_driver_input_pin(start_id) && is_panel_pin(end_id)) {
+                        client_socket_pin = end_id;
+                    } else if (client::is_client_socket_output_pin(start_id) && is_panel_pin(end_id)) {
+                        client_socket_pin = start_id;
                         panel_pin = end_id;
-                        driver_pin_val = start_id;
                     }
 
-                    if (panel_pin && driver_pin_val) {
-                        auto* panel = find_panel_by_pin(net.panels, panel_pin);
-                        auto [mach, drv] = find_by_driver_input_pin(machines, driver_pin_val);
+                    if (panel_pin && client_socket_pin) {
+                        auto socket_info = find_client_by_socket_output_pin(net.clients, machines, client_socket_pin);
+                        auto* pnl = find_panel_by_pin(net.panels, panel_pin);
 
-                        if (panel && mach && drv) {
+                        if (socket_info.cli && pnl) {
                             if (ed::AcceptNewItem()) {
-                                // Remove existing connection if any
-                                if (panel->is_connected()) {
-                                    panel::remove_sender(panel->uuid);
+                                // Remove existing panel connection if any
+                                if (pnl->is_connected()) {
+                                    panel::remove_sender(pnl->uuid);
                                     for (auto it = net.panel_links.begin(); it != net.panel_links.end(); ++it) {
-                                        if (it->panel_uuid == panel->uuid) {
+                                        if (it->panel_uuid == pnl->uuid) {
                                             net.panel_links.erase(it);
                                             break;
                                         }
                                     }
                                 }
 
-                                net.add_panel_link(panel->uuid, mach->uuid, drv->uuid);
+                                net.add_panel_link(pnl->uuid,
+                                    socket_info.cli->connected_machine_uuid,
+                                    socket_info.cli->connected_driver_uuid,
+                                    socket_info.port_uuid);
 
-                                if (drv->backend_type == driver::type::udp) {
-                                    std::string send_ip = drv->backend_config.value("listen_ip", "127.0.0.1");
-                                    int send_port = drv->backend_config.value("listen_port", 8081);
-                                    panel::configure_sender(panel->uuid, send_ip, send_port);
+                                // Find the driver to configure sender
+                                for (auto& mach : machines) {
+                                    if (mach.uuid == socket_info.cli->connected_machine_uuid) {
+                                        for (const auto& drv : mach.drivers()) {
+                                            if (drv.uuid == socket_info.cli->connected_driver_uuid) {
+                                                if (drv.backend_type == driver::type::udp) {
+                                                    std::string send_ip = drv.backend_config.value("listen_ip", "127.0.0.1");
+                                                    int send_port = drv.backend_config.value("listen_port", 8081);
+                                                    panel::configure_sender(pnl->uuid, send_ip, send_port);
+                                                }
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
                                 }
 
-                                ui::cout << "Connected config panel to driver input: " << drv->name << ui::endl;
+                                ui::cout << "Connected panel to client socket" << ui::endl;
                             }
                             handled = true;
                         }
@@ -510,6 +685,40 @@ namespace network {
                 if (ed::AcceptDeletedItem()) {
                     uint64_t id = link_id.Get();
 
+                    // Check client links
+                    for (auto it = net.client_links.begin(); it != net.client_links.end(); ++it) {
+                        if (it->id == id) {
+                            auto* cli = net.find_client_by_uuid(it->client_uuid);
+
+                            // Cascade: remove dashboard/panel links through this client
+                            std::string mach_uuid = it->machine_uuid;
+                            std::string drv_uuid = it->driver_uuid;
+                            net.dashboard_links.remove_if([&](const dashboard_link& link) {
+                                if (link.machine_uuid == mach_uuid && link.driver_uuid == drv_uuid) {
+                                    dashboard::stop_listener(link.dashboard_uuid);
+                                    auto* dash = net.find_dashboard_by_uuid(link.dashboard_uuid);
+                                    if (dash) dash->disconnect();
+                                    return true;
+                                }
+                                return false;
+                            });
+                            net.panel_links.remove_if([&](const panel_link& link) {
+                                if (link.machine_uuid == mach_uuid && link.driver_uuid == drv_uuid) {
+                                    panel::remove_sender(link.panel_uuid);
+                                    auto* pnl = net.find_panel_by_uuid(link.panel_uuid);
+                                    if (pnl) pnl->disconnect();
+                                    return true;
+                                }
+                                return false;
+                            });
+
+                            if (cli) cli->disconnect();
+                            net.client_links.erase(it);
+                            ui::cout << "Disconnected client link" << ui::endl;
+                            break;
+                        }
+                    }
+
                     // Check dashboard links
                     for (auto it = net.dashboard_links.begin(); it != net.dashboard_links.end(); ++it) {
                         if (it->id == id) {
@@ -526,8 +735,8 @@ namespace network {
                     for (auto it = net.panel_links.begin(); it != net.panel_links.end(); ++it) {
                         if (it->id == id) {
                             panel::remove_sender(it->panel_uuid);
-                            auto* panel = net.find_panel_by_uuid(it->panel_uuid);
-                            if (panel) panel->disconnect();
+                            auto* pnl = net.find_panel_by_uuid(it->panel_uuid);
+                            if (pnl) pnl->disconnect();
                             net.panel_links.erase(it);
                             ui::cout << "Disconnected config panel link" << ui::endl;
                             break;
@@ -541,6 +750,41 @@ namespace network {
             while (ed::QueryDeletedNode(&node_id)) {
                 if (ed::AcceptDeletedItem()) {
                     uint64_t id = node_id.Get();
+
+                    // Check if it's a client
+                    auto* cli = net.find_client(id);
+                    if (cli) {
+                        // Cascade: remove dashboard/panel links through this client
+                        if (cli->is_connected()) {
+                            std::string mach_uuid = cli->connected_machine_uuid;
+                            std::string drv_uuid = cli->connected_driver_uuid;
+                            net.dashboard_links.remove_if([&](const dashboard_link& link) {
+                                if (link.machine_uuid == mach_uuid && link.driver_uuid == drv_uuid) {
+                                    dashboard::stop_listener(link.dashboard_uuid);
+                                    auto* dash = net.find_dashboard_by_uuid(link.dashboard_uuid);
+                                    if (dash) dash->disconnect();
+                                    return true;
+                                }
+                                return false;
+                            });
+                            net.panel_links.remove_if([&](const panel_link& link) {
+                                if (link.machine_uuid == mach_uuid && link.driver_uuid == drv_uuid) {
+                                    panel::remove_sender(link.panel_uuid);
+                                    auto* pnl = net.find_panel_by_uuid(link.panel_uuid);
+                                    if (pnl) pnl->disconnect();
+                                    return true;
+                                }
+                                return false;
+                            });
+                        }
+                        net.client_links.remove_if([&cli](const client_link& link) {
+                            return link.client_uuid == cli->uuid;
+                        });
+                        net.clients.remove_if([id](const client::instance& c) {
+                            return c.id() == id;
+                        });
+                        ui::cout << "Deleted client" << ui::endl;
+                    }
 
                     // Check if it's a dashboard
                     auto* dash = net.find_dashboard(id);
@@ -573,65 +817,13 @@ namespace network {
         ed::EndDelete();
     }
 
-    inline void render_panel_node(panel::instance& pnl, network::object& net,
-                                   machine::instance::list& machines,
-                                   runtime::tracker& runtime_tracker) {
-        // Find connected driver if any
-        const driver::instance* connected_driver = nullptr;
-        panel::sender* udp_sender = nullptr;
-        bool machine_is_running = false;
-        bool is_linked = pnl.is_connected();
+    inline void render_all_links(network::object& net, machine::instance::list& machines) {
+        // Render client links (machine driver output -> client input)
+        for (const auto& link : net.client_links) {
+            auto* cli = net.find_client_by_uuid(link.client_uuid);
+            if (!cli) continue;
 
-        if (is_linked) {
-            for (auto& mach : machines) {
-                if (mach.uuid == pnl.connected_machine_uuid) {
-                    // Check if machine executable is actually running (not just status)
-                    std::string exe_path = runtime::get_executable_path(mach.machine_prototype());
-                    std::string current_cmd = terminal::current();
-                    machine_is_running = !current_cmd.empty() && current_cmd.find(exe_path) != std::string::npos;
-
-                    for (const auto& drv : mach.drivers()) {
-                        if (drv.uuid == pnl.connected_driver_uuid) {
-                            connected_driver = &drv;
-
-                            if (drv.backend_type == driver::type::udp) {
-                                auto* existing_sender = panel::get_sender(pnl.uuid);
-
-                                if (machine_is_running) {
-                                    // Configure sender if machine is running
-                                    if (!existing_sender || !existing_sender->is_configured()) {
-                                        std::string send_ip = drv.backend_config.value("listen_ip", "127.0.0.1");
-                                        int send_port = drv.backend_config.value("listen_port", 8081);
-                                        panel::configure_sender(pnl.uuid, send_ip, send_port);
-                                        ui::cout << "Panel connected: sending to " << send_ip << ":" << send_port << ui::endl;
-                                    }
-                                    udp_sender = panel::get_sender(pnl.uuid);
-                                } else {
-                                    // Remove sender if machine is not running
-                                    if (existing_sender) {
-                                        panel::remove_sender(pnl.uuid);
-                                        ui::cout << "Panel disconnected: machine stopped" << ui::endl;
-                                    }
-                                }
-                            }
-                            break;
-                        }
-                    }
-                    break;
-                }
-            }
-        }
-
-        panel::render_node(pnl, connected_driver, is_linked, machine_is_running, udp_sender);
-    }
-
-    inline void render_all_links(const network::object& net, machine::instance::list& machines) {
-        // Render dashboard links (driver output -> dashboard input)
-        for (const auto& link : net.dashboard_links) {
-            auto* dash = const_cast<network::object&>(net).find_dashboard_by_uuid(link.dashboard_uuid);
-            if (!dash) continue;
-
-            uint64_t dash_pin = dashboard::input_pin_id(*dash);
+            uint64_t cli_pin = client::input_pin_id(*cli);
             uint64_t drv_pin = 0;
 
             for (auto& mach : machines) {
@@ -647,32 +839,85 @@ namespace network {
             }
 
             if (drv_pin) {
-                ed::Link(ed::LinkId(link.id), ed::PinId(drv_pin), ed::PinId(dash_pin));
+                ed::Link(ed::LinkId(link.id), ed::PinId(drv_pin), ed::PinId(cli_pin));
             }
         }
 
-        // Render config panel links (config panel output -> driver input)
-        for (const auto& link : net.panel_links) {
-            auto* panel = const_cast<network::object&>(net).find_panel_by_uuid(link.panel_uuid);
-            if (!panel) continue;
+        // Render dashboard links (client plug output -> dashboard input)
+        for (const auto& link : net.dashboard_links) {
+            auto* dash = net.find_dashboard_by_uuid(link.dashboard_uuid);
+            if (!dash) continue;
 
-            uint64_t panel_pin = panel::output_pin_id(*panel);
-            uint64_t drv_pin = 0;
+            uint64_t dash_pin = dashboard::input_pin_id(*dash);
+            uint64_t src_pin = 0;
 
-            for (auto& mach : machines) {
-                if (mach.uuid == link.machine_uuid) {
-                    for (const auto& drv : mach.drivers()) {
-                        if (drv.uuid == link.driver_uuid) {
-                            drv_pin = driver_input_pin_id(mach, drv);
-                            break;
+            // Find the client connected to this machine/driver
+            auto* cli = net.find_client_for_driver(link.machine_uuid, link.driver_uuid);
+            if (cli) {
+                // Route through client plug or socket output pin
+                for (auto& mach : machines) {
+                    if (mach.uuid == link.machine_uuid) {
+                        for (const auto& drv : mach.drivers()) {
+                            if (drv.uuid == link.driver_uuid) {
+                                for (const auto& plug : drv.plugs) {
+                                    if (plug.uuid == link.port_uuid) {
+                                        src_pin = client::plug_output_pin_id(*cli, plug);
+                                        break;
+                                    }
+                                }
+                                if (!src_pin) {
+                                    for (const auto& socket : drv.sockets) {
+                                        if (socket.uuid == link.port_uuid) {
+                                            src_pin = client::socket_output_pin_id(*cli, socket);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            }
                         }
+                        break;
                     }
-                    break;
                 }
             }
 
-            if (drv_pin) {
-                ed::Link(ed::LinkId(link.id + 0x10000000), ed::PinId(panel_pin), ed::PinId(drv_pin));
+            if (src_pin) {
+                ed::Link(ed::LinkId(link.id + 0x20000000), ed::PinId(src_pin), ed::PinId(dash_pin));
+            }
+        }
+
+        // Render config panel links (panel output -> client socket output)
+        for (const auto& link : net.panel_links) {
+            auto* pnl = net.find_panel_by_uuid(link.panel_uuid);
+            if (!pnl) continue;
+
+            uint64_t panel_pin = panel::output_pin_id(*pnl);
+            uint64_t dst_pin = 0;
+
+            // Find the client connected to this machine/driver
+            auto* cli = net.find_client_for_driver(link.machine_uuid, link.driver_uuid);
+            if (cli) {
+                // Route through client socket output pin
+                for (auto& mach : machines) {
+                    if (mach.uuid == link.machine_uuid) {
+                        for (const auto& drv : mach.drivers()) {
+                            if (drv.uuid == link.driver_uuid) {
+                                for (const auto& socket : drv.sockets) {
+                                    if (socket.uuid == link.port_uuid) {
+                                        dst_pin = client::socket_output_pin_id(*cli, socket);
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+
+            if (dst_pin) {
+                ed::Link(ed::LinkId(link.id + 0x30000000), ed::PinId(panel_pin), ed::PinId(dst_pin));
             }
         }
     }
@@ -684,6 +929,7 @@ namespace network {
 
         // Find currently selected item from shared selection
         machine::instance* selected_machine = find_machine_by_node_id(net.machines, sel.selected_id);
+        client::instance* selected_client = net.find_client(sel.selected_id);
         dashboard::instance* selected_dashboard = net.find_dashboard(sel.selected_id);
         panel::instance* selected_panel = net.find_panel(sel.selected_id);
 
@@ -693,7 +939,6 @@ namespace network {
         // Left column: Runtime controls
         ui::separator("Runtime");
         if (selected_machine) {
-            // Runtime toolbar works with the machine prototype (definition)
             machine::render_runtime_toolbar(const_cast<machine::object&>(selected_machine->machine_prototype()), runtime_tracker);
         } else {
             ImGui::TextDisabled("Select a machine to control");
@@ -709,12 +954,20 @@ namespace network {
             if (ui::menu::begin("Machine")) {
                 for (const auto& mach : machine_db) {
                     if (ui::menu::item(mach.display_name())) {
-                        // Create an instance of the machine with a default name
                         machine::instance new_instance(mach);
                         new_instance.name = mach.name + "_instance";
                         net.machines.push_back(new_instance);
                         ui::cout << "Added machine instance: " << new_instance.name << " (prototype: " << mach.display_name() << ")" << ui::endl;
                     }
+                }
+                ui::menu::end();
+            }
+            if (ui::menu::begin("Drivers")) {
+                if (ui::menu::item(std::string(ui::icon::network_wired) + " udp::client")) {
+                    client::instance new_client;
+                    new_client.name = "udp_client_" + std::to_string(net.clients.size() + 1);
+                    net.clients.push_back(new_client);
+                    ui::cout << "Added UDP client: " << new_client.name << ui::endl;
                 }
                 ui::menu::end();
             }
@@ -735,8 +988,8 @@ namespace network {
 
         ui::same_line();
 
-        // Delete selected item (machine, dashboard, or panel)
-        bool has_selection = selected_machine != nullptr || selected_dashboard != nullptr || selected_panel != nullptr;
+        // Delete selected item
+        bool has_selection = selected_machine || selected_client || selected_dashboard || selected_panel;
         if (!has_selection) {
             ui::disabled::begin();
         }
@@ -745,6 +998,38 @@ namespace network {
                 uint64_t id_to_remove = selected_machine->id();
                 net.machines.remove_if([id_to_remove](const machine::instance& m) {
                     return m.id() == id_to_remove;
+                });
+                sel.clear();
+            } else if (selected_client) {
+                // Cascade: remove dashboard/panel links through this client
+                if (selected_client->is_connected()) {
+                    std::string mach_uuid = selected_client->connected_machine_uuid;
+                    std::string drv_uuid = selected_client->connected_driver_uuid;
+                    net.dashboard_links.remove_if([&](const dashboard_link& link) {
+                        if (link.machine_uuid == mach_uuid && link.driver_uuid == drv_uuid) {
+                            dashboard::stop_listener(link.dashboard_uuid);
+                            auto* d = net.find_dashboard_by_uuid(link.dashboard_uuid);
+                            if (d) d->disconnect();
+                            return true;
+                        }
+                        return false;
+                    });
+                    net.panel_links.remove_if([&](const panel_link& link) {
+                        if (link.machine_uuid == mach_uuid && link.driver_uuid == drv_uuid) {
+                            panel::remove_sender(link.panel_uuid);
+                            auto* p = net.find_panel_by_uuid(link.panel_uuid);
+                            if (p) p->disconnect();
+                            return true;
+                        }
+                        return false;
+                    });
+                }
+                net.client_links.remove_if([&selected_client](const client_link& link) {
+                    return link.client_uuid == selected_client->uuid;
+                });
+                uint64_t id_to_remove = selected_client->id();
+                net.clients.remove_if([id_to_remove](const client::instance& c) {
+                    return c.id() == id_to_remove;
                 });
                 sel.clear();
             } else if (selected_dashboard) {
@@ -779,12 +1064,13 @@ namespace network {
 
         ui::node::begin(std::string("network_") + std::to_string(network_context_id));
 
-        // Sync node editor with shared selection - selection is the single source of truth
+        // Sync node editor with shared selection
         if (sel.has_selection()) {
             auto* mach = find_machine_by_node_id(net.machines, sel.selected_id);
+            auto* cli = net.find_client(sel.selected_id);
             auto* dash = net.find_dashboard(sel.selected_id);
             auto* panel = net.find_panel(sel.selected_id);
-            if (mach || dash || panel) {
+            if (mach || cli || dash || panel) {
                 ed::SelectNode(ed::NodeId(sel.selected_id), false);
             } else {
                 ed::ClearSelection();
@@ -798,6 +1084,11 @@ namespace network {
         // Render machine nodes
         for (auto& mach : net.machines) {
             render_machine_node(mach, runtime_tracker, net);
+        }
+
+        // Render client nodes
+        for (auto& cli : net.clients) {
+            render_client_node(cli, net, net.machines, runtime_tracker);
         }
 
         // Render dashboard nodes
@@ -819,9 +1110,8 @@ namespace network {
         handle_link_creation(net, net.machines);
         handle_link_deletion(net);
 
-        // Debug: Show machine count in toolbar area
-        if (net.machines.empty() && net.dashboards.empty() && net.panels.empty()) {
-            ImGui::TextDisabled("No machines, dashboards, or panels in network");
+        if (net.machines.empty() && net.clients.empty() && net.dashboards.empty() && net.panels.empty()) {
+            ImGui::TextDisabled("No machines, clients, dashboards, or panels in network");
         }
 
         // Handle click on empty canvas to deselect
@@ -853,6 +1143,7 @@ namespace network {
 
         // Refresh selections after potential changes
         selected_machine = find_machine_by_node_id(net.machines, sel.selected_id);
+        selected_client = net.find_client(sel.selected_id);
         selected_dashboard = net.find_dashboard(sel.selected_id);
         selected_panel = net.find_panel(sel.selected_id);
 
@@ -863,9 +1154,26 @@ namespace network {
             ui::graph::render_list(ui::icon::controller, "Controllers", selected_machine->controllers());
             ui::graph::render_list(ui::icon::driver, "Drivers", selected_machine->drivers());
             ui::end();
+        } else if (selected_client) {
+            ui::begin("Client Instance");
+            const driver::instance* client_driver = nullptr;
+            if (selected_client->is_connected()) {
+                for (auto& mach : net.machines) {
+                    if (mach.uuid == selected_client->connected_machine_uuid) {
+                        for (const auto& drv : mach.drivers()) {
+                            if (drv.uuid == selected_client->connected_driver_uuid) {
+                                client_driver = &drv;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            client::render_instance_editor(*selected_client, client_driver);
+            ui::end();
         } else if (selected_dashboard) {
             ui::begin("Dashboard Instance");
-            // Find connected driver for signal list
             const driver::instance* dashboard_driver = nullptr;
             if (selected_dashboard->is_connected()) {
                 for (auto& mach : net.machines) {

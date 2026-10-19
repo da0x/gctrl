@@ -58,6 +58,7 @@ namespace dashboard {
         bool open = false;
         std::string dashboard_uuid;
         std::string dashboard_name;
+        std::string port_uuid;
         const driver::instance* driver = nullptr;
         std::vector<signal_info> signals;
         std::map<uint64_t, chart_settings> settings;
@@ -65,13 +66,14 @@ namespace dashboard {
 
     inline viewer_state current_viewer;
 
-    // Build signal info list from driver, grouped by port
-    inline void build_signal_list(const driver::instance* drv) {
+    // Build signal info list from driver, filtered by connected port
+    inline void build_signal_list(const driver::instance* drv, const std::string& port_uuid) {
         current_viewer.signals.clear();
         if (!drv) return;
 
-        // Collect outgoing signals from plugs (data FROM machine)
+        // Collect outgoing signals from plugs (filtered by connected port)
         for (const auto& plug : drv->plugs) {
+            if (!port_uuid.empty() && plug.uuid != port_uuid) continue;
             for (const auto& signal : plug.outgoing) {
                 signal_info info;
                 info.name = signal.name;
@@ -84,8 +86,9 @@ namespace dashboard {
             }
         }
 
-        // Collect outgoing signals from sockets (data FROM machine)
+        // Collect outgoing signals from sockets (filtered by connected port)
         for (const auto& socket : drv->sockets) {
+            if (!port_uuid.empty() && socket.uuid != port_uuid) continue;
             for (const auto& signal : socket.outgoing) {
                 signal_info info;
                 info.name = signal.name;
@@ -104,8 +107,9 @@ namespace dashboard {
         current_viewer.open = true;
         current_viewer.dashboard_uuid = dash.uuid;
         current_viewer.dashboard_name = dash.name;
+        current_viewer.port_uuid = dash.connected_port_uuid;
         current_viewer.driver = drv;
-        build_signal_list(drv);
+        build_signal_list(drv, dash.connected_port_uuid);
     }
 
     // Close the viewer

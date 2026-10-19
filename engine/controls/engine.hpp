@@ -34,6 +34,8 @@
 #include "controls/element/editor.hpp"
 #include "controls/port/editor.hpp"
 #include "controls/debug/viewer.hpp"
+#include "controls/client/instance.hpp"
+#include "controls/client/editor.hpp"
 #include "controls/dashboard/listener.hpp"
 #include "controls/dashboard/viewer.hpp"
 #include "controls/panel/sender.hpp"
@@ -342,6 +344,36 @@ namespace controls {
                 } else {
                     focus_on(entry);
                 }
+            };
+            cbs.on_delete_client_link = [this](uint64_t link_id) {
+                // Cascade: remove dashboard/panel links through this client
+                for (const auto& link : network.client_links) {
+                    if (link.id == link_id) {
+                        std::string mach_uuid = link.machine_uuid;
+                        std::string drv_uuid = link.driver_uuid;
+                        network.dashboard_links.remove_if([&](const network::dashboard_link& dl) {
+                            if (dl.machine_uuid == mach_uuid && dl.driver_uuid == drv_uuid) {
+                                dashboard::stop_listener(dl.dashboard_uuid);
+                                auto* dash = network.find_dashboard_by_uuid(dl.dashboard_uuid);
+                                if (dash) dash->disconnect();
+                                return true;
+                            }
+                            return false;
+                        });
+                        network.panel_links.remove_if([&](const network::panel_link& pl) {
+                            if (pl.machine_uuid == mach_uuid && pl.driver_uuid == drv_uuid) {
+                                panel::remove_sender(pl.panel_uuid);
+                                auto* pnl = network.find_panel_by_uuid(pl.panel_uuid);
+                                if (pnl) pnl->disconnect();
+                                return true;
+                            }
+                            return false;
+                        });
+                        break;
+                    }
+                }
+                network.remove_client_link(link_id);
+                selection.clear();
             };
             cbs.on_delete_dashboard_link = [this](uint64_t link_id) {
                 // Stop listener before removing link
